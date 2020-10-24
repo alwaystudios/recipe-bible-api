@@ -3,4 +3,5 @@ dist
 coverage
 jest.config.js
 aws
+storage
 .eslintrc.js
