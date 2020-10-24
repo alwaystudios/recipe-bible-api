@@ -1,5 +1,8 @@
 create extension if not exists "uuid-ossp";
 
+-- todo: migration script
+
+-- todo: references chef table id not userId
 create table if not exists recipe (
     id bigint generated always as identity,
     internalReference uuid unique not null default uuid_generate_v1(),

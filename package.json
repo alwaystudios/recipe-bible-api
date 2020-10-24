@@ -16,7 +16,7 @@
     "lint": "yarn eslint . --ext .js,.jsx,.ts,.tsx",
     "build": "tsc --project tsconfig.json",
     "test": "jest --maxWorkers=4 src",
-    "test:acceptance": "echo todo",
+    "test:acceptance": "jest --runInBand ./test",
     "format": "prettier --write '{src,test}/**/*.{js,ts,json,md}'",
     "upgrade-libs": "yarn upgrade @alwaystudios/as-pg@latest @alwaystudios/as-utils@latest @alwaystudios/as-aws@latest"
   },
