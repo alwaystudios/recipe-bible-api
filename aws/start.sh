@@ -10,4 +10,4 @@ sleep 5
 PSQL_DB=$(docker ps | grep recipe-bible-db | cut -d" " -f1)
 docker exec -it $PSQL_DB psql -U postgres -c  "CREATE DATABASE recipebible"
 docker exec -i $PSQL_DB /bin/bash -c \
-  "export PGPASSWORD=$password && pg_dump -C -h $host -U postgres recipebible | psql -h localhost -U postgres recipebible"
+  "export PGPASSWORD=$password && pg_dump -C -h $host -U readonlyuser recipebible | psql -h localhost -U postgres recipebible"
