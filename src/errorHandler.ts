@@ -1,6 +1,6 @@
 import { NextFunction } from 'express'
 
-export const middlewareError = (next: NextFunction, message: string) => (error: Error) => {
+export const middlewareError = (next: NextFunction, message: string) => (error: Error): void => {
   // eslint-disable-next-line functional/immutable-data
-  return next(Object.assign(error, { message: `${message} ${error.message}` }))
+  return next(Object.assign(error, { message }))
 }

@@ -15,7 +15,7 @@ export const createRouter = (log: Logger, connectionPool: Pool): Router => {
 
   router.get('/healthcheck', (_, res) => res.send({ status: 'healthy' }))
 
-  router.use(createRecipeRouter(connectionPool))
+  router.use(createRecipeRouter(log, connectionPool))
 
   return router
 }

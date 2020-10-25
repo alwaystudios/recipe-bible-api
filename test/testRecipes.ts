@@ -1,4 +1,12 @@
-import { RecipeList } from '../src/types'
+import { Ingredient, Recipe, RecipeList } from '../src/recipe/recipetypes'
+import sampleRecipe from './super-tasty-pasta-bolognese.json'
+
+export const testRecipe = (title: string, id?: number): Recipe => ({
+  id,
+  title,
+  ...sampleRecipe,
+  ingredients: sampleRecipe.ingredients as Ingredient[],
+})
 
 export const testRecipes = (): RecipeList => [
   {
