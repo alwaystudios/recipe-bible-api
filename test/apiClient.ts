@@ -1,8 +1,8 @@
 import request from 'superagent'
 
-// todo: use config and a baseUrl
+const BASE_URL = 'http://localhost:3000/api/v2'
 
-export const healthCheck = async () =>
-  request.get(`http://localhost:3000/healthcheck`).then(({ body }) => {
-    return body
+export const healthCheck = async (): Promise<JSON> =>
+  request.get(`${BASE_URL}/healthcheck`).then(({ body }) => {
+    return body as JSON
   })

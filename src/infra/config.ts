@@ -3,7 +3,7 @@ import convict from 'convict'
 const config = convict({
   env: {
     doc: 'The application environment',
-    format: ['prod', 'dev'],
+    format: ['prod', 'dev', 'test'],
     env: 'NODE_ENV',
     default: 'dev',
   },
@@ -43,3 +43,5 @@ config.loadFile('./config/' + env + '.json')
 config.validate({ allowed: 'strict' })
 
 export default config
+
+export type Config = typeof config

@@ -22,8 +22,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn format && yarn lint && yarn test && git add .",
-      "pre-push": "yarn build && yarn test:acceptance"
+      "pre-commit": "yarn format && yarn lint && yarn test && yarn build",
+      "pre-push": "yarn test:acceptance"
     }
   },
   "dependencies": {

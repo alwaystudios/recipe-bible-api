@@ -1,0 +1,10 @@
+{
+  "env": "test",
+  "port": 80,
+  "logLevel": "debug",
+  "db": {
+    "host": "localhost",
+    "database": "db",
+    "password": "1234"
+  }
+}
