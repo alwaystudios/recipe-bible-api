@@ -27,8 +27,8 @@ export const createApp = (config: Config, log: Logger, connectionPool: Pool): Ap
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-    const { originalUrl, path } = req
-    log.error(`Service error, url: ${originalUrl} path: ${path} `, err)
+    const { originalUrl } = req
+    log.error(`Service error, url: ${originalUrl}`, err)
 
     res.status(500)
     res.send({

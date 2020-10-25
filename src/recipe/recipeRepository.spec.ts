@@ -19,9 +19,9 @@ describe('recipe repository', () => {
     expect(runInPoolClientSpy).toHaveBeenCalledTimes(1)
     expect(runInPoolClientSpy).toHaveBeenCalledWith(testPool)
     expect(query).toHaveBeenCalledTimes(1)
-    expect(query).toHaveBeenLastCalledWith('select title from recipe')
+    expect(query).toHaveBeenLastCalledWith(
+      `select title from recipe where coalesce(details->'metadata'->'reviewed', 'false') = 'true'`,
+    )
     expect(result).toEqual(recipes)
   })
-
-  it.todo('error scenarios')
 })

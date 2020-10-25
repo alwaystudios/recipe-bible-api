@@ -4,5 +4,9 @@ import { RecipeList } from '../types'
 
 export const getRecipes: (pool: Pool) => Promise<RecipeList> = async (pool: Pool) =>
   runInPoolClient(pool)((client: PoolClient) =>
-    client.query('select title from recipe').then(({ rows }) => rows),
-  ) // todo: filter only reviewed
+    client
+      .query(
+        `select title from recipe where coalesce(details->'metadata'->'reviewed', 'false') = 'true'`,
+      )
+      .then(({ rows }) => rows),
+  )
