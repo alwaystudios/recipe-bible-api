@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "yarn s3mock & NODE_ENV=prod node dist/src/index.js",
-    "s3mock": "yarn s3mock:kill && nodemon --exec 'ts-node --files --project tsconfig.json' src/s3mock/index.ts",
+    "s3mock": "ts-node --files --project tsconfig.json test/s3mock/index.ts",
     "s3mock:kill": "kill -9 $(lsof -t -i:5001)",
     "dev": "yarn s3mock & WATCH_MODE=true NODE_ENV=dev nodemon --exec 'ts-node --files --project tsconfig.json' src/index.ts",
     "lint": "yarn eslint . --ext .js,.jsx,.ts,.tsx",

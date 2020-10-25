@@ -1,8 +1,8 @@
 import express from 'express'
 import fs from 'fs'
 import path from 'path'
-import config from '../infra/config'
-import { createLogger } from '../infra/logger'
+import config from '../../src/infra/config'
+import { createLogger } from '../../src/infra/logger'
 
 const log = createLogger(config)
 const PORT = 5001
