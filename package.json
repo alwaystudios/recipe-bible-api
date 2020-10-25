@@ -16,7 +16,7 @@
     "lint": "yarn eslint . --ext .js,.jsx,.ts,.tsx",
     "build": "tsc --project tsconfig.json",
     "test": "jest --maxWorkers=4 src",
-    "test:acceptance": "jest --runInBand ./test",
+    "test:acceptance": "jest --runInBand ./test/acceptance",
     "format": "prettier --write '{src,test}/**/*.{js,ts,json,md}'",
     "upgrade-libs": "yarn upgrade @alwaystudios/as-pg@latest @alwaystudios/as-utils@latest @alwaystudios/as-aws@latest"
   },
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@alwaystudios/as-aws": "^1.0.2",
-    "@alwaystudios/as-pg": "^1.0.19",
+    "@alwaystudios/as-pg": "^1.0.21",
     "@alwaystudios/as-utils": "^1.0.7",
     "aws-sdk": "^2.778.0",
     "convict": "^6.0.0",

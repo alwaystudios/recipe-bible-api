@@ -4,7 +4,6 @@
   "logLevel": "debug",
   "db": {
     "host": "localhost",
-    "database": "recipebible",
     "password": "veronptas81"
   }
 }

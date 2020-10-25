@@ -1,12 +1,10 @@
 import cookieParser from 'cookie-parser'
 import { json, Router, urlencoded } from 'express'
+import { Pool } from 'pg'
 import { Logger } from 'winston'
+import { createRecipeRouter } from '../recipe/recipeRouter'
 
-export type RouterProps = {
-  log: Logger
-}
-
-export const createRouter = ({ log }: RouterProps): Router => {
+export const createRouter = (log: Logger, connectionPool: Pool): Router => {
   const router = Router()
 
   log.debug('Creating API routes')
@@ -16,6 +14,8 @@ export const createRouter = ({ log }: RouterProps): Router => {
   router.use(urlencoded({ extended: true }))
 
   router.get('/healthcheck', (_, res) => res.send({ status: 'healthy' }))
+
+  router.use(createRecipeRouter(connectionPool))
 
   return router
 }

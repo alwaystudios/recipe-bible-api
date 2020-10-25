@@ -1,8 +1,13 @@
 import { Express } from 'express'
 import { createApp } from '../src/createApp'
-import { Logger } from 'winston'
 import { Config } from '../src/infra/config'
+import { testLog } from './testLog'
+import { testConnectionPool } from '@alwaystudios/as-pg'
 
-export const testApp = (config: Config, log: Logger): Express => {
-  return createApp(config, log).app
+export const testApp = (
+  config: Config,
+  log = testLog(),
+  connectionPool = testConnectionPool(),
+): Express => {
+  return createApp(config, log, connectionPool).app
 }

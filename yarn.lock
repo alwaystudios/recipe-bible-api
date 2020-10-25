@@ -9,10 +9,10 @@
   dependencies:
     "@alwaystudios/as-utils" "^1.0.6"
 
-"@alwaystudios/as-pg@^1.0.19":
-  version "1.0.19"
-  resolved "https://registry.yarnpkg.com/@alwaystudios/as-pg/-/as-pg-1.0.19.tgz#d0f3ec458b8ae654029b91e54f4beb8fa37c96eb"
-  integrity sha512-ZBluBgidyl5oh2lYgzcvNA57/+52J2cPzTOq+n+YOhYuZfIiV7Y669V+EK/VGIeGtPfpTlvvDniaipfq4RResA==
+"@alwaystudios/as-pg@^1.0.21":
+  version "1.0.21"
+  resolved "https://registry.yarnpkg.com/@alwaystudios/as-pg/-/as-pg-1.0.21.tgz#6ee34c20ab3d5b1d7031f6106f512476f183b908"
+  integrity sha512-cBZ2axd31wnxOt8e2KIcl4mlcb0SVNeBO4EwgdmJUfwsJZQDY5TCQdQA3mzRY/b3m3BncbC0262CiQDlyyjueQ==
 
 "@alwaystudios/as-utils@^1.0.6", "@alwaystudios/as-utils@^1.0.7":
   version "1.0.7"

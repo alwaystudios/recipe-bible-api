@@ -23,17 +23,32 @@ const config = convict({
     host: {
       doc: 'Database host name',
       format: String,
+      env: 'DB_HOST',
       default: '',
     },
     database: {
       doc: 'Database name',
       format: String,
+      env: 'DB_DATABASE',
       default: 'recipebible',
+    },
+    username: {
+      doc: 'Database username',
+      format: String,
+      env: 'DB_USERNAME',
+      default: 'postgres',
     },
     password: {
       doc: 'Database password',
       format: String,
+      env: 'DB_PASSWORD',
       default: '',
+    },
+    port: {
+      doc: 'Database port',
+      format: 'port',
+      env: 'DB_PORT',
+      default: '5432',
     },
   },
 })
