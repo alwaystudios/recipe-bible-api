@@ -1,5 +1,5 @@
 import { Pool } from 'pg'
-import { createApp } from './createApp'
+import { createApp } from './server/createApp'
 import config from './infra/config'
 import { createLogger } from './infra/logger'
 

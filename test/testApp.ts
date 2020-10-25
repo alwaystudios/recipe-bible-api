@@ -1,5 +1,5 @@
 import { Express } from 'express'
-import { createApp } from '../src/createApp'
+import { createApp } from '../src/server/createApp'
 import { Config } from '../src/infra/config'
 import { testLog } from './testLog'
 import { testConnectionPool } from '@alwaystudios/as-pg'

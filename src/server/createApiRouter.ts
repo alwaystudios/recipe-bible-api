@@ -4,7 +4,7 @@ import { Pool } from 'pg'
 import { Logger } from 'winston'
 import { createRecipeRouter } from '../recipe/recipeRouter'
 
-export const createRouter = (log: Logger, connectionPool: Pool): Router => {
+export const createApiRouter = (log: Logger, connectionPool: Pool): Router => {
   const router = Router()
 
   log.debug('Creating API routes')

@@ -4,8 +4,8 @@ import { AddressInfo } from 'net'
 import { Pool } from 'pg'
 import { clone } from 'ramda'
 import { Logger } from 'winston'
-import { Config } from './infra/config'
-import { createRouter } from './routes'
+import { Config } from '../infra/config'
+import { createApiRouter } from './createApiRouter'
 
 interface App {
   app: express.Express
@@ -20,7 +20,7 @@ export const createApp = (config: Config, log: Logger, connectionPool: Pool): Ap
   clonedConfig.set('db.password', '***')
   log.info(`config: ${clonedConfig.toString()}`)
 
-  app.use('/api/v2', createRouter(log, connectionPool))
+  app.use('/api/v2', createApiRouter(log, connectionPool))
 
   app.all('*', (_, res) => {
     res.sendStatus(404)

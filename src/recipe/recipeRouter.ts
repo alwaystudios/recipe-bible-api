@@ -1,8 +1,8 @@
 import { Router } from 'express'
 import { Pool } from 'pg'
 import { Logger } from 'winston'
-import { checkJwt } from '../authMiddleware'
-import { middlewareError } from '../errorHandler'
+import { checkJwt } from '../server/authMiddleware'
+import { middlewareError } from '../server/errorHandler'
 import { createRecipe, getRecipes } from './recipeRepository'
 
 export const createRecipeRouter = (log: Logger, connectionPool: Pool): Router => {

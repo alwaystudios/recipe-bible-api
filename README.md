@@ -16,3 +16,4 @@ postgres@localhost/recipebible
 
 - helmet
 - csurf
+- validation

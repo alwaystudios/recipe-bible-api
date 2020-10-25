@@ -5,7 +5,7 @@ import config from '../infra/config'
 import * as recipeRepository from './recipeRepository'
 import { testLog } from '../../test/testLog'
 import { testConnectionPool } from '@alwaystudios/as-pg'
-import * as authMiddleware from '../authMiddleware'
+import * as authMiddleware from '../server/authMiddleware'
 import { fakeCheckJwt } from '../../test/testAuthMiddleware'
 
 const fakeAuth = jest.spyOn(authMiddleware, 'checkJwt').mockImplementation(fakeCheckJwt)
