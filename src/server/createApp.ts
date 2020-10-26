@@ -6,6 +6,7 @@ import { clone } from 'ramda'
 import { Logger } from 'winston'
 import { Config } from '../infra/config'
 import { createApiRouter } from './createApiRouter'
+import cors from 'cors'
 
 interface App {
   app: express.Express
@@ -19,6 +20,8 @@ export const createApp = (config: Config, log: Logger, connectionPool: Pool): Ap
   clonedConfig.set('db.username', '***')
   clonedConfig.set('db.password', '***')
   log.info(`config: ${clonedConfig.toString()}`)
+
+  app.use(cors())
 
   app.use('/api/v2', createApiRouter(log, connectionPool))
 

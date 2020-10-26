@@ -1,5 +1,5 @@
 import { testRecipe } from '../testRecipes'
-import { login, getRecipes, postCreateRecipe } from './apiClient'
+import { getRecipes, postCreateRecipe } from './apiClient'
 import faker from 'faker'
 
 describe('recipes', () => {
@@ -8,16 +8,7 @@ describe('recipes', () => {
     expect(response.status).toEqual(200)
   })
 
-  it('creates a recipe when logged in', async () => {
-    const recipe = testRecipe(faker.random.words(3))
-    await login().then(async (token) => {
-      const response = await postCreateRecipe(token, recipe)
-      expect(response.body).toEqual({ id: expect.any(String) })
-      expect(response.status).toEqual(201)
-    })
-  })
-
-  it('denies access when not logged in', async () => {
+  it('denies access for invalid access token', async () => {
     const recipe = testRecipe(faker.random.words(3))
     await expect(postCreateRecipe('invalid token', recipe)).rejects.toEqual(Error('Unauthorized'))
   })

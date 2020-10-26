@@ -1,6 +1,5 @@
 import request from 'superagent'
 import { Recipe } from '../../src/recipe/recipetypes'
-import * as secrets from './apiSecrets.json'
 
 const BASE_URL = 'http://localhost:3001/api/v2'
 
@@ -18,10 +17,3 @@ export const postCreateRecipe = async (accessToken: string, recipe: Recipe): Pro
     .send(recipe)
     .set('authorization', `Bearer ${accessToken}`)
     .then(({ status, body }) => ({ status, body }))
-
-export const login = async (): Promise<string> =>
-  request
-    .post(`https://dev-27x9tbv3.eu.auth0.com/oauth/token`)
-    .set('content-type', 'application/json')
-    .send(secrets)
-    .then(({ body: { access_token } }) => access_token)

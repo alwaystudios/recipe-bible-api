@@ -9,7 +9,7 @@ export const checkJwt = jwt({
     jwksUri: `https://dev-27x9tbv3.eu.auth0.com/.well-known/jwks.json`,
   }),
 
-  audience: 'https://recipebible.net/api',
+  audience: 'https://dev-27x9tbv3.eu.auth0.com/api/v2/',
   issuer: `https://dev-27x9tbv3.eu.auth0.com/`,
   algorithms: ['RS256'],
 })
