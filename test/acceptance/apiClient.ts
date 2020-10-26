@@ -2,7 +2,7 @@ import request from 'superagent'
 import { Recipe } from '../../src/recipe/recipetypes'
 import * as secrets from './apiSecrets.json'
 
-const BASE_URL = 'http://localhost:3000/api/v2'
+const BASE_URL = 'http://localhost:3001/api/v2'
 
 export const healthCheck = async (): Promise<JSON> =>
   request.get(`${BASE_URL}/healthcheck`).then(({ body }) => {

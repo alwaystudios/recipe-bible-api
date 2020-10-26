@@ -1,9 +1,9 @@
 # recipe-bible-api
 
-Start dev env with
+Start docker postgres db
 
 ```
-./aws/start.sh
+./database/start.sh
 ```
 
 Postgres connection:
@@ -17,3 +17,5 @@ postgres@localhost/recipebible
 - helmet
 - csurf
 - validation
+- feature flags
+- create recipe - set metadata, remove id, title via transformer toRecipeRecord()

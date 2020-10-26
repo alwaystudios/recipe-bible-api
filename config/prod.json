@@ -1,5 +1,5 @@
 {
   "env": "prod",
-  "port": 3000,
+  "port": 8080,
   "logLevel": "info"
 }
