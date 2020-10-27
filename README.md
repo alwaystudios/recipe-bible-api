@@ -20,3 +20,4 @@ postgres@localhost/recipebible
 - feature flags
 - create recipe - set metadata, remove id, title via transformer toRecipeRecord()
 - role middleware - (req as any).user['https://recipebible.net/roles']
+- create recipe fail to return 404
