@@ -1,5 +1,5 @@
+import { Recipe } from '@alwaystudios/recipe-bible-sdk'
 import request from 'superagent'
-import { Recipe } from '../../src/recipe/recipetypes'
 
 const BASE_URL = 'http://localhost:3001/api/v2'
 

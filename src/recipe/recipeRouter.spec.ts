@@ -1,5 +1,4 @@
 import request from 'supertest'
-import { testRecipe, testRecipes } from '../../test/testRecipes'
 import { testApp } from '../../test/testApp'
 import config from '../infra/config'
 import * as recipeRepository from './recipeRepository'
@@ -7,6 +6,7 @@ import { testLog } from '../../test/testLog'
 import { testConnectionPool } from '@alwaystudios/as-pg'
 import * as authMiddleware from '../server/authMiddleware'
 import { fakeCheckJwt } from '../../test/testAuthMiddleware'
+import { testRecipes, testRecipe } from '@alwaystudios/recipe-bible-sdk'
 
 const fakeAuth = jest.spyOn(authMiddleware, 'checkJwt').mockImplementation(fakeCheckJwt)
 const log = testLog()

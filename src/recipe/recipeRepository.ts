@@ -1,8 +1,8 @@
 import { runInPoolClient } from '@alwaystudios/as-pg'
+import { RecipeList, Recipe } from '@alwaystudios/recipe-bible-sdk'
 import { Pool, PoolClient } from 'pg'
 import { omit } from 'ramda'
 import { Logger } from 'winston'
-import { Recipe, RecipeList } from './recipetypes'
 
 export const getRecipes = async (pool: Pool): Promise<RecipeList> =>
   runInPoolClient(pool)((client: PoolClient) =>

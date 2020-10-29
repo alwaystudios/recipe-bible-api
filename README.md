@@ -16,6 +16,7 @@ postgres@localhost/recipebible
 
 - helmet
 - csurf
+- validate schema
 - validation
 - feature flags
 - create recipe - set metadata, remove id, title via transformer toRecipeRecord()

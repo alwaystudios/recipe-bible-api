@@ -1,7 +1,7 @@
 import * as asPg from '@alwaystudios/as-pg'
+import { testRecipes, testRecipe } from '@alwaystudios/recipe-bible-sdk'
 import { omit } from 'ramda'
 import { testLog } from '../../test/testLog'
-import { testRecipe, testRecipes } from '../../test/testRecipes'
 import { createRecipe, getRecipes } from './recipeRepository'
 
 const recipes = testRecipes()

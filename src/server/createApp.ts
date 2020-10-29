@@ -2,7 +2,6 @@ import express from 'express'
 import { UnauthorizedError } from 'express-jwt'
 import { AddressInfo } from 'net'
 import { Pool } from 'pg'
-import { clone } from 'ramda'
 import { Logger } from 'winston'
 import { Config } from '../infra/config'
 import { createApiRouter } from './createApiRouter'
@@ -15,11 +14,7 @@ interface App {
 
 export const createApp = (config: Config, log: Logger, connectionPool: Pool): App => {
   const app = express()
-
-  const clonedConfig = clone(config)
-  clonedConfig.set('db.username', '***')
-  clonedConfig.set('db.password', '***')
-  log.info(`config: ${clonedConfig.toString()}`)
+  log.info(`config: ${config.toString()}`)
 
   app.use(cors())
 

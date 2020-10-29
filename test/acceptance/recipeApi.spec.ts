@@ -1,6 +1,6 @@
-import { testRecipe } from '../testRecipes'
 import { getRecipes, postCreateRecipe } from './apiClient'
 import faker from 'faker'
+import { testRecipe } from '@alwaystudios/recipe-bible-sdk'
 
 describe('recipes', () => {
   it('returns a list of recipes', async () => {
