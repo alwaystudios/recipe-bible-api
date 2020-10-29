@@ -1,4 +1,3 @@
-import cookieParser from 'cookie-parser'
 import { json, Router, urlencoded } from 'express'
 import { Pool } from 'pg'
 import { Logger } from 'winston'
@@ -8,8 +7,6 @@ export const createApiRouter = (log: Logger, connectionPool: Pool): Router => {
   const router = Router()
 
   log.debug('Creating API routes')
-
-  router.use(cookieParser())
   router.use(json({ limit: '100mb' }))
   router.use(urlencoded({ extended: true }))
 

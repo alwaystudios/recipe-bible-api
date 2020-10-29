@@ -1,8 +1,9 @@
-import { Router } from 'express'
+import { Request, NextFunction, Response, Router } from 'express'
 import { Pool } from 'pg'
 import { Logger } from 'winston'
 import { checkJwt } from '../server/authMiddleware'
 import { middlewareError } from '../server/errorHandler'
+import { validateRecipeSchemaMiddleware } from './middleware'
 import { createRecipe, getRecipes } from './recipeRepository'
 
 export const createRecipeRouter = (log: Logger, connectionPool: Pool): Router => {
@@ -14,13 +15,18 @@ export const createRecipeRouter = (log: Logger, connectionPool: Pool): Router =>
       .catch(middlewareError(next, `Unable to get recipes`))
   })
 
-  router.post('/recipe', checkJwt, async (req, res, next) => {
-    const { body } = req
-    const { title } = body
-    await createRecipe(log, connectionPool, title, 'todo: get userId from session', body)
-      .then((id) => res.status(201).send({ id }))
-      .catch(middlewareError(next, `Unable to save recipe`))
-  })
+  router.post(
+    '/recipe',
+    checkJwt,
+    validateRecipeSchemaMiddleware,
+    async (_: Request, res: Response, next: NextFunction) => {
+      const { recipe } = res.locals
+      const { title } = recipe
+      await createRecipe(log, connectionPool, title, 'todo: get userId from session', recipe)
+        .then((id) => res.status(201).send({ id }))
+        .catch(middlewareError(next, `Unable to save recipe`))
+    },
+  )
 
   return router
 }

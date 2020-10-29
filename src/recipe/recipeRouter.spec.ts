@@ -6,12 +6,14 @@ import { testLog } from '../../test/testLog'
 import { testConnectionPool } from '@alwaystudios/as-pg'
 import * as authMiddleware from '../server/authMiddleware'
 import { fakeCheckJwt } from '../../test/testAuthMiddleware'
-import { testRecipes, testRecipe } from '@alwaystudios/recipe-bible-sdk'
+import * as sdk from '@alwaystudios/recipe-bible-sdk'
 
+const recipe = sdk.testRecipe('recipe-router')
+const validateRecipeSchema = jest.spyOn(sdk, 'validateRecipeSchema').mockReturnValue(recipe)
 const fakeAuth = jest.spyOn(authMiddleware, 'checkJwt').mockImplementation(fakeCheckJwt)
 const log = testLog()
 const pool = testConnectionPool()
-const recipes = testRecipes()
+const recipes = sdk.testRecipes()
 const getRecipes = jest.spyOn(recipeRepository, 'getRecipes').mockResolvedValue(recipes)
 const createRecipe = jest.spyOn(recipeRepository, 'createRecipe').mockResolvedValue(1)
 
@@ -44,8 +46,6 @@ describe('recipeRouter', () => {
   describe('POST /api/v2/recipe', () => {
     it('creates a new recipe', async () => {
       const app = testApp(config, log, pool)
-      const recipe = testRecipe('soup')
-
       const { status, body } = await request(app).post('/api/v2/recipe').send(recipe)
 
       expect(status).toEqual(201)
@@ -54,11 +54,13 @@ describe('recipeRouter', () => {
       expect(createRecipe).toHaveBeenLastCalledWith(
         log,
         pool,
-        'soup',
+        recipe.title,
         'todo: get userId from session',
         recipe,
       )
       expect(fakeAuth).toHaveBeenCalledTimes(1)
+      expect(validateRecipeSchema).toHaveBeenCalledTimes(1)
+      expect(validateRecipeSchema).toHaveBeenLastCalledWith(recipe)
     })
 
     it('handles failures', async () => {

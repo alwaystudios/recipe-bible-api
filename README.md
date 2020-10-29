@@ -14,10 +14,7 @@ postgres@localhost/recipebible
 
 ## todo
 
-- helmet
-- csurf
-- validate schema
-- validation
+- validation 25 steps, etc...
 - feature flags
 - create recipe - set metadata, remove id, title via transformer toRecipeRecord()
 - role middleware - (req as any).user['https://recipebible.net/roles']

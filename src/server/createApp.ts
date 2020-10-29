@@ -6,6 +6,8 @@ import { Logger } from 'winston'
 import { Config } from '../infra/config'
 import { createApiRouter } from './createApiRouter'
 import cors from 'cors'
+import helmet from 'helmet'
+import cookieParser from 'cookie-parser'
 
 interface App {
   app: express.Express
@@ -16,7 +18,9 @@ export const createApp = (config: Config, log: Logger, connectionPool: Pool): Ap
   const app = express()
   log.info(`config: ${config.toString()}`)
 
+  app.use(cookieParser())
   app.use(cors())
+  app.use(helmet())
 
   app.use('/api/v2', createApiRouter(log, connectionPool))
 
