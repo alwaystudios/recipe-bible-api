@@ -21,10 +21,10 @@
   dependencies:
     promised-csv "^1.0.1"
 
-"@alwaystudios/recipe-bible-sdk@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@alwaystudios/recipe-bible-sdk/-/recipe-bible-sdk-1.0.1.tgz#a82c83d9e03fdfd680069a3facf228bcc0634f69"
-  integrity sha512-TNbBTFa1ivvZ36lLFRoeL2DFRetWIKYOcqfs2udLNCk3rtpr5/gvU8549La398+jWEt6PbxobT34F53ZCXU6JA==
+"@alwaystudios/recipe-bible-sdk@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@alwaystudios/recipe-bible-sdk/-/recipe-bible-sdk-1.0.4.tgz#24a742baf55f7437903a940a32eb8803fc6dbc5f"
+  integrity sha512-aJzoUh2NPODbq8pKhKLQbSFkYmP0hqRLueqUyLs483ZkseSxEcTSOHcoIqm4R2LITu6H1k5WwD6WSFhblaCnKQ==
   dependencies:
     jsonschema "^1.4.0"
 

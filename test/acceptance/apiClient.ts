@@ -17,3 +17,10 @@ export const postCreateRecipe = async (accessToken: string, recipe: Recipe): Pro
     .send(recipe)
     .set('authorization', `Bearer ${accessToken}`)
     .then(({ status, body }) => ({ status, body }))
+
+export const patchUpdateRecipe = async (accessToken: string, recipe: Recipe): Promise<any> =>
+  request
+    .patch(`${BASE_URL}/recipe`)
+    .send(recipe)
+    .set('authorization', `Bearer ${accessToken}`)
+    .then(({ status, body }) => ({ status, body }))

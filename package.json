@@ -30,7 +30,7 @@
     "@alwaystudios/as-aws": "^1.0.2",
     "@alwaystudios/as-pg": "^1.0.21",
     "@alwaystudios/as-utils": "^1.0.7",
-    "@alwaystudios/recipe-bible-sdk": "^1.0.1",
+    "@alwaystudios/recipe-bible-sdk": "^1.0.4",
     "aws-sdk": "^2.778.0",
     "convict": "^6.0.0",
     "cookie-parser": "^1.4.5",

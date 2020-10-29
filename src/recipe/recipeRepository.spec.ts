@@ -2,7 +2,7 @@ import * as asPg from '@alwaystudios/as-pg'
 import { testRecipes, testRecipe } from '@alwaystudios/recipe-bible-sdk'
 import { omit } from 'ramda'
 import { testLog } from '../../test/testLog'
-import { createRecipe, getRecipes } from './recipeRepository'
+import { createRecipe, getRecipes, updateRecipe } from './recipeRepository'
 
 const recipes = testRecipes()
 const query = jest.fn()
@@ -55,6 +55,49 @@ describe('recipe repository', () => {
       const title = 'my-test-recipe'
       const recipe = testRecipe(title)
       await expect(createRecipe(log, testPool, title, userId, recipe)).rejects.toEqual(
+        new Error('repository error'),
+      )
+      expect(err).toHaveBeenCalledTimes(1)
+      expect(err).toHaveBeenCalledWith('boom')
+    })
+  })
+
+  describe('updateRecipe', () => {
+    it('updates a recipe', async () => {
+      query.mockResolvedValueOnce({ rows: [], rowCount: 1 })
+      const title = 'my-test-recipe'
+      const recipe = testRecipe(title)
+      const recipeRecord = omit(['id, title'], recipe)
+      await updateRecipe(log, testPool, 1, userId, recipeRecord)
+      expect(runInPoolClientSpy).toHaveBeenCalledTimes(1)
+      expect(runInPoolClientSpy).toHaveBeenCalledWith(testPool)
+      expect(query).toHaveBeenCalledTimes(1)
+      expect(
+        query,
+      ).toHaveBeenLastCalledWith('update recipe set details = $1 where id = $2 and userId = $3', [
+        recipeRecord,
+        1,
+        userId,
+      ])
+    })
+
+    it('logs an error when rowCount = 0', async () => {
+      query.mockResolvedValueOnce({ rows: [], rowCount: 0 })
+      const title = 'my-test-recipe'
+      const recipe = testRecipe(title)
+      const error = Error('Expected update recipe to have row count of at least one')
+      await expect(updateRecipe(log, testPool, 1, userId, recipe)).rejects.toEqual(
+        new Error('repository error'),
+      )
+      expect(err).toHaveBeenCalledTimes(1)
+      expect(err).toHaveBeenCalledWith(error)
+    })
+
+    it('logs an error on failure', async () => {
+      query.mockRejectedValueOnce('boom')
+      const title = 'my-test-recipe'
+      const recipe = testRecipe(title)
+      await expect(updateRecipe(log, testPool, 1, userId, recipe)).rejects.toEqual(
         new Error('repository error'),
       )
       expect(err).toHaveBeenCalledTimes(1)

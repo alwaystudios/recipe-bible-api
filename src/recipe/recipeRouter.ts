@@ -1,10 +1,12 @@
+import { RecipeRecord } from '@alwaystudios/recipe-bible-sdk'
 import { Request, NextFunction, Response, Router } from 'express'
 import { Pool } from 'pg'
+import { omit } from 'ramda'
 import { Logger } from 'winston'
 import { checkJwt } from '../server/authMiddleware'
 import { middlewareError } from '../server/errorHandler'
-import { validateRecipeSchemaMiddleware } from './middleware'
-import { createRecipe, getRecipes } from './recipeRepository'
+import { validateRecipeMiddleware, validateRecipeSchemaMiddleware } from './recipeMiddleware'
+import { createRecipe, getRecipes, updateRecipe } from './recipeRepository'
 
 export const createRecipeRouter = (log: Logger, connectionPool: Pool): Router => {
   const router = Router()
@@ -22,11 +24,37 @@ export const createRecipeRouter = (log: Logger, connectionPool: Pool): Router =>
     async (_: Request, res: Response, next: NextFunction) => {
       const { recipe } = res.locals
       const { title } = recipe
+      // todo: set metadata, remove id, title via transformer toRecipeRecord() sdk
       await createRecipe(log, connectionPool, title, 'todo: get userId from session', recipe)
         .then((id) => res.status(201).send({ id }))
-        .catch(middlewareError(next, `Unable to save recipe`))
+        .catch(middlewareError(next, `Unable to create recipe`))
     },
   )
+
+  router.patch(
+    '/recipe',
+    checkJwt,
+    validateRecipeSchemaMiddleware,
+    validateRecipeMiddleware,
+    async (_: Request, res: Response, next: NextFunction) => {
+      const { recipe } = res.locals
+      // todo: sdk toRecipeRecord() transformer
+      const recipeRecord = omit(['title, id'], recipe) as RecipeRecord
+      await updateRecipe(
+        log,
+        connectionPool,
+        recipe.id,
+        'todo: get userId from session',
+        recipeRecord,
+      )
+        .then((id) => res.status(200).send({ id }))
+        .catch(middlewareError(next, `Unable to update recipe`))
+    },
+  )
+
+  router.all('*', (_, res) => {
+    res.sendStatus(405)
+  })
 
   return router
 }

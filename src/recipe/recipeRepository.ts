@@ -1,5 +1,5 @@
-import { runInPoolClient } from '@alwaystudios/as-pg'
-import { RecipeList, Recipe } from '@alwaystudios/recipe-bible-sdk'
+import { runInPoolClient, verifyAtLeastOneRow } from '@alwaystudios/as-pg'
+import { RecipeList, Recipe, RecipeRecord } from '@alwaystudios/recipe-bible-sdk'
 import { Pool, PoolClient } from 'pg'
 import { omit } from 'ramda'
 import { Logger } from 'winston'
@@ -30,6 +30,28 @@ export const createRecipe = async (
       .then(({ rows }) => {
         return rows[0].id as number
       })
+      .catch((err) => {
+        log.error(err)
+        throw new Error('repository error')
+      }),
+  )
+
+export const updateRecipe = async (
+  log: Logger,
+  pool: Pool,
+  id: number,
+  userId: string,
+  recipeRecord: RecipeRecord,
+): Promise<void> =>
+  runInPoolClient(pool)((client: PoolClient) =>
+    // todo: move userId from recipe table and use chef id lookup
+    client
+      .query('update recipe set details = $1 where id = $2 and userId = $3', [
+        recipeRecord,
+        id,
+        userId,
+      ])
+      .then(verifyAtLeastOneRow('update recipe'))
       .catch((err) => {
         log.error(err)
         throw new Error('repository error')
