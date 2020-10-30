@@ -5,7 +5,7 @@ import * as recipeRepository from './recipeRepository'
 import { testLog } from '../../test/testLog'
 import { testConnectionPool } from '@alwaystudios/as-pg'
 import * as authMiddleware from '../server/authMiddleware'
-import { fakeCheckJwt } from '../../test/testAuthMiddleware'
+import { fakeCheckJwt, fakeUserMiddleware } from '../../test/testAuthMiddleware'
 import * as sdk from '@alwaystudios/recipe-bible-sdk'
 import { omit } from 'ramda'
 
@@ -13,6 +13,9 @@ const recipe = { ...sdk.testRecipe('recipe-router'), id: 1 }
 const validateRecipeSchema = jest.spyOn(sdk, 'validateRecipeSchema').mockReturnValue(recipe)
 const validateRecipe = jest.spyOn(sdk, 'validateRecipe').mockReturnValue(null)
 const fakeAuth = jest.spyOn(authMiddleware, 'checkJwt').mockImplementation(fakeCheckJwt)
+const userMiddleware = jest
+  .spyOn(authMiddleware, 'userMiddleware')
+  .mockImplementation(fakeUserMiddleware)
 const log = testLog()
 const pool = testConnectionPool()
 const recipes = sdk.testRecipes()
@@ -64,14 +67,9 @@ describe('recipeRouter', () => {
       expect(status).toEqual(201)
       expect(body).toEqual({ id: 1 })
       expect(createRecipe).toHaveBeenCalledTimes(1)
-      expect(createRecipe).toHaveBeenLastCalledWith(
-        log,
-        pool,
-        recipe.title,
-        'todo: get userId from session',
-        recipe,
-      )
+      expect(createRecipe).toHaveBeenLastCalledWith(log, pool, recipe.title, 'test-abc', recipe)
       expect(fakeAuth).toHaveBeenCalledTimes(1)
+      expect(userMiddleware).toHaveBeenCalledTimes(1)
       expect(validateRecipeSchema).toHaveBeenCalledTimes(1)
       expect(validateRecipeSchema).toHaveBeenLastCalledWith(recipe)
     })
@@ -101,10 +99,11 @@ describe('recipeRouter', () => {
         log,
         pool,
         1,
-        'todo: get userId from session',
+        'test-abc',
         omit(['title, id'], recipe),
       )
       expect(fakeAuth).toHaveBeenCalledTimes(1)
+      expect(userMiddleware).toHaveBeenCalledTimes(1)
       expect(validateRecipeSchema).toHaveBeenCalledTimes(1)
       expect(validateRecipeSchema).toHaveBeenLastCalledWith(recipe)
       expect(validateRecipe).toHaveBeenCalledTimes(1)
