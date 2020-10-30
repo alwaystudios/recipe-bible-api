@@ -16,4 +16,5 @@ postgres@localhost/recipebible
 
 This project is a work in progress
 
-- role middleware - (req as any).user['https://recipebible.net/roles']
+- db migration script
+- recipe table should have foreign key to chef table and not have the userId

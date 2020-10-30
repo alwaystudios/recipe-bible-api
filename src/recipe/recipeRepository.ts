@@ -1,5 +1,5 @@
 import { runInPoolClient, verifyAtLeastOneRow } from '@alwaystudios/as-pg'
-import { RecipeList, Recipe, RecipeRecord } from '@alwaystudios/recipe-bible-sdk'
+import { RecipeList, RecipeRecord } from '@alwaystudios/recipe-bible-sdk'
 import { Pool, PoolClient } from 'pg'
 import { omit } from 'ramda'
 import { Logger } from 'winston'
@@ -18,7 +18,7 @@ export const createRecipe = async (
   pool: Pool,
   title: string,
   userId: string,
-  recipe: Recipe,
+  recipe: RecipeRecord,
 ): Promise<number> =>
   runInPoolClient(pool)((client: PoolClient) =>
     client
@@ -44,7 +44,6 @@ export const updateRecipe = async (
   recipeRecord: RecipeRecord,
 ): Promise<void> =>
   runInPoolClient(pool)((client: PoolClient) =>
-    // todo: move userId from recipe table and use chef id lookup
     client
       .query('update recipe set details = $1 where id = $2 and userId = $3', [
         recipeRecord,

@@ -15,7 +15,7 @@ export const checkJwt = jwt({
   algorithms: ['RS256'],
 })
 
-export const userMiddleware = (req: ApiRequest, res: ApiResponse, next: NextFunction) => {
+export const userMiddleware = (req: ApiRequest, res: ApiResponse, next: NextFunction): void => {
   if (req.user) {
     const sub = req.user.sub
     const roles = req.user['https://recipebible.net/roles']

@@ -7,7 +7,6 @@ import { testConnectionPool } from '@alwaystudios/as-pg'
 import * as authMiddleware from '../server/authMiddleware'
 import { fakeCheckJwt, fakeUserMiddleware } from '../../test/testAuthMiddleware'
 import * as sdk from '@alwaystudios/recipe-bible-sdk'
-import { omit } from 'ramda'
 
 const recipe = { ...sdk.testRecipe('recipe-router'), id: 1 }
 const validateRecipeSchema = jest.spyOn(sdk, 'validateRecipeSchema').mockReturnValue(recipe)
@@ -62,16 +61,23 @@ describe('recipeRouter', () => {
   describe('POST /api/v2/recipe', () => {
     it('creates a new recipe', async () => {
       const app = testApp(config, log, pool)
-      const { status, body } = await request(app).post('/api/v2/recipe').send(recipe)
+      const { status, body } = await request(app)
+        .post('/api/v2/recipe')
+        .send({ title: 'create new' })
 
       expect(status).toEqual(201)
       expect(body).toEqual({ id: 1 })
       expect(createRecipe).toHaveBeenCalledTimes(1)
-      expect(createRecipe).toHaveBeenLastCalledWith(log, pool, recipe.title, 'test-abc', recipe)
+      expect(createRecipe).toHaveBeenLastCalledWith(
+        log,
+        pool,
+        'create new',
+        'test-abc',
+        sdk.emptyRecipeRecord(),
+      )
       expect(fakeAuth).toHaveBeenCalledTimes(1)
       expect(userMiddleware).toHaveBeenCalledTimes(1)
-      expect(validateRecipeSchema).toHaveBeenCalledTimes(1)
-      expect(validateRecipeSchema).toHaveBeenLastCalledWith(recipe)
+      expect(validateRecipeSchema).toHaveBeenCalledTimes(0)
     })
 
     it('handles failures', async () => {
@@ -100,7 +106,7 @@ describe('recipeRouter', () => {
         pool,
         1,
         'test-abc',
-        omit(['title, id'], recipe),
+        sdk.toRecipeRecord(recipe),
       )
       expect(fakeAuth).toHaveBeenCalledTimes(1)
       expect(userMiddleware).toHaveBeenCalledTimes(1)
