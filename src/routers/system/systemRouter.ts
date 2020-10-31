@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { Pool } from 'pg'
-import { middlewareError } from '../server/errorHandler'
+import { middlewareError } from '../../server/errorHandler'
 import { getSystemStatus } from './systemRepository'
 
 export const createSystemRouter = (connectionPool: Pool): Router => {

@@ -1,5 +1,5 @@
 import * as asPg from '@alwaystudios/as-pg'
-import { testSystemStatus, testSystemStatusRecord } from '../../test/testSystemStatus'
+import { testSystemStatus, testSystemStatusRecord } from '../../../test/testSystemStatus'
 import { getSystemStatus } from './systemRepository'
 
 const query = jest.fn()

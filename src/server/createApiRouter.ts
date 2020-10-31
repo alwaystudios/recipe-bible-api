@@ -1,8 +1,8 @@
 import { json, Router, urlencoded } from 'express'
 import { Pool } from 'pg'
 import { Logger } from 'winston'
-import { createRecipeRouter } from '../recipe/recipeRouter'
-import { createSystemRouter } from '../system/systemRouter'
+import { createRecipeRouter } from '../routers/recipe/recipeRouter'
+import { createSystemRouter } from '../routers/system/systemRouter'
 
 export const createApiRouter = (log: Logger, connectionPool: Pool): Router => {
   const router = Router()

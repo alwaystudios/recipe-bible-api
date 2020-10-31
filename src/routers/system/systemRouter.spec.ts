@@ -1,9 +1,9 @@
 import request from 'supertest'
-import { testApp } from '../../test/testApp'
-import config from '../infra/config'
+import { testApp } from '../../../test/testApp'
+import config from '../../infra/config'
 import * as systemRepository from './systemRepository'
-import { testLog } from '../../test/testLog'
-import { testSystemStatus } from '../../test/testSystemStatus'
+import { testLog } from '../../../test/testLog'
+import { testSystemStatus } from '../../../test/testSystemStatus'
 
 const systemStatus = testSystemStatus()
 const getSystemStatus = jest

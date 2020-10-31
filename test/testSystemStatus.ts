@@ -1,4 +1,4 @@
-import { SystemStatus } from '../src/system/systemRepository'
+import { SystemStatus } from '../src/routers/system/systemRepository'
 
 export const testSystemStatus = (): SystemStatus => [
   { setting: 'setting 1', value: 'one' },

@@ -1,11 +1,11 @@
 import request from 'supertest'
-import { testApp } from '../../test/testApp'
-import config from '../infra/config'
+import { testApp } from '../../../test/testApp'
+import config from '../../infra/config'
 import * as recipeRepository from './recipeRepository'
-import { testLog } from '../../test/testLog'
+import { testLog } from '../../../test/testLog'
 import { testConnectionPool } from '@alwaystudios/as-pg'
-import * as authMiddleware from '../server/authMiddleware'
-import { fakeCheckJwt, fakeUserMiddleware } from '../../test/testAuthMiddleware'
+import * as authMiddleware from '../../server/authMiddleware'
+import { fakeCheckJwt, fakeUserMiddleware } from '../../../test/testAuthMiddleware'
 import * as sdk from '@alwaystudios/recipe-bible-sdk'
 
 const recipe = { ...sdk.testRecipe('recipe-router'), id: 1 }

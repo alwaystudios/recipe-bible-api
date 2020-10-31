@@ -1,6 +1,6 @@
 import * as sdk from '@alwaystudios/recipe-bible-sdk'
 import { Request } from 'express'
-import { RecipeResponse } from '../server/types'
+import { RecipeResponse } from '../../server/types'
 import { validateRecipeMiddleware, validateRecipeSchemaMiddleware } from './recipeMiddleware'
 
 const validateRecipe = jest.spyOn(sdk, 'validateRecipe')

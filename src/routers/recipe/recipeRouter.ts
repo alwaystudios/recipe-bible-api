@@ -2,8 +2,8 @@ import { emptyRecipeRecord, toRecipeRecord } from '@alwaystudios/recipe-bible-sd
 import { Request, NextFunction, Response, Router } from 'express'
 import { Pool } from 'pg'
 import { Logger } from 'winston'
-import { checkJwt, userMiddleware } from '../server/authMiddleware'
-import { middlewareError } from '../server/errorHandler'
+import { checkJwt, userMiddleware } from '../../server/authMiddleware'
+import { middlewareError } from '../../server/errorHandler'
 import { validateRecipeMiddleware, validateRecipeSchemaMiddleware } from './recipeMiddleware'
 import { createRecipe, getRecipes, updateRecipe } from './recipeRepository'
 
