@@ -8,6 +8,9 @@ export const healthCheck = async (): Promise<JSON> =>
     return body as JSON
   })
 
+export const getStatus = async (): Promise<any> =>
+  request.get(`${BASE_URL}/system`).then(({ status, body }) => ({ status, body }))
+
 export const getRecipes = async (): Promise<any> =>
   request.get(`${BASE_URL}/recipe`).then(({ status, body }) => ({ status, body }))
 

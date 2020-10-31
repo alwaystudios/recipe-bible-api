@@ -48,9 +48,5 @@ export const createRecipeRouter = (log: Logger, connectionPool: Pool): Router =>
     },
   )
 
-  router.all('*', (_, res) => {
-    res.sendStatus(405)
-  })
-
   return router
 }

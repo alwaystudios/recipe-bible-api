@@ -25,14 +25,6 @@ const updateRecipe = jest.spyOn(recipeRepository, 'updateRecipe').mockResolvedVa
 describe('recipeRouter', () => {
   beforeEach(jest.clearAllMocks)
 
-  it('PUT method not allowed', async () => {
-    const app = testApp(config)
-
-    const { status } = await request(app).put('/api/v2/recipe')
-
-    expect(status).toEqual(405)
-  })
-
   describe('GET /api/v2/recipe', () => {
     it('responds with a list of recipes', async () => {
       const app = testApp(config)
