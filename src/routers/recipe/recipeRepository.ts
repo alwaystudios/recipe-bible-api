@@ -1,5 +1,5 @@
 import { runInPoolClient, verifyAtLeastOneRow } from '@alwaystudios/as-pg'
-import { RecipeList, RecipeRecord } from '@alwaystudios/recipe-bible-sdk'
+import { Ingredient, RecipeList, RecipeRecord } from '@alwaystudios/recipe-bible-sdk'
 import { Pool, PoolClient } from 'pg'
 import { omit } from 'ramda'
 import { Logger } from 'winston'
@@ -8,9 +8,23 @@ export const getRecipes = async (pool: Pool): Promise<RecipeList> =>
   runInPoolClient(pool)((client: PoolClient) =>
     client
       .query(
-        `select title from recipe where coalesce(details->'metadata'->'reviewed', 'false') = 'true'`,
+        `select 
+          title, 
+          details->'imgSrc' as img_src, 
+          details->'categories' as categories, 
+          details->'ingredients' as ingredients, 
+          details->'metadata' as metadata 
+        from recipe where coalesce(details->'metadata'->'published', 'false') = 'true'`,
       )
-      .then(({ rows }) => rows),
+      .then(({ rows }) =>
+        rows.map((row) => ({
+          title: row.title,
+          imgSrc: row.img_src,
+          categories: row.categories,
+          ingredients: row.ingredients.map((ingredient: Ingredient) => ingredient.name),
+          metadata: row.metadata,
+        })),
+      ),
   )
 
 export const createRecipe = async (

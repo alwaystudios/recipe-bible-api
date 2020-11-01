@@ -5,6 +5,13 @@ import { testLog } from '../../../test/testLog'
 import { createRecipe, getRecipes, updateRecipe } from './recipeRepository'
 
 const recipes = testRecipes()
+const recipeRecords = recipes.map((r) => ({
+  title: r.title,
+  img_src: r.imgSrc,
+  categories: r.categories,
+  metadata: r.metadata,
+  ingredients: r.ingredients.map((i) => ({ name: i, quantity: 2 })),
+}))
 const query = jest.fn()
 const testClient = asPg.testPgClient({ query })
 const testPool = asPg.testConnectionPool()
@@ -20,13 +27,19 @@ describe('recipe repository', () => {
   beforeEach(jest.clearAllMocks)
 
   it('getRecipes', async () => {
-    query.mockResolvedValueOnce({ rows: recipes })
+    query.mockResolvedValueOnce({ rows: recipeRecords })
     const result = await getRecipes(testPool)
     expect(runInPoolClientSpy).toHaveBeenCalledTimes(1)
     expect(runInPoolClientSpy).toHaveBeenCalledWith(testPool)
     expect(query).toHaveBeenCalledTimes(1)
-    expect(query).toHaveBeenLastCalledWith(
-      `select title from recipe where coalesce(details->'metadata'->'reviewed', 'false') = 'true'`,
+    expect(query).toHaveBeenCalledWith(
+      `select 
+          title, 
+          details->'imgSrc' as img_src, 
+          details->'categories' as categories, 
+          details->'ingredients' as ingredients, 
+          details->'metadata' as metadata 
+        from recipe where coalesce(details->'metadata'->'published', 'false') = 'true'`,
     )
     expect(result).toEqual(recipes)
   })

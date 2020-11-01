@@ -21,18 +21,19 @@
   dependencies:
     promised-csv "^1.0.1"
 
-"@alwaystudios/as-utils@^1.0.8":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@alwaystudios/as-utils/-/as-utils-1.0.8.tgz#63f8476d1b69cdf54c2cd02b74593e738cc208c6"
-  integrity sha512-K4hh/3Cvln8Z1h6e1EgFUiEi/MbvdfbG76dqvLygBnMiqQCqXsfKuVe7W3zyLGlmJPEi6ZXPicMS7y/4Ja8oFw==
+"@alwaystudios/as-utils@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@alwaystudios/as-utils/-/as-utils-1.0.9.tgz#d7287a9c7b97f7b04e841c084cdbe32d27bbb99d"
+  integrity sha512-UbZHiinU/tnSuhGCD+fsA5uyBu6K1etsJnMdz4WUGuVAkKOuak+im/0LM/u5tPYfP6zFHvIPE2E0Vl8AW8m7vg==
   dependencies:
     promised-csv "^1.0.1"
 
-"@alwaystudios/recipe-bible-sdk@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@alwaystudios/recipe-bible-sdk/-/recipe-bible-sdk-1.0.6.tgz#55693db2c059d8956d7ff3bb567bdbfc99bbd553"
-  integrity sha512-qxjYD22LBqt5aECbM3BvURDAADDEideQ+y2LmLJW+lfnNFsNfcWAPKalz5/evTJ/AOfTGKvVZLlB4Pu5vFTm0w==
+"@alwaystudios/recipe-bible-sdk@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@alwaystudios/recipe-bible-sdk/-/recipe-bible-sdk-1.0.7.tgz#f2977d2776079f4f4fec7f937117f15a9c0a3427"
+  integrity sha512-cbgLV266bzfanzdLDelieqW1uHfZukHEfksNhg3+ta1b/dMV8yugxuHzR8fL/Hmc2kTGznlWcklolDIiCvcsGg==
   dependencies:
+    faker "^5.1.0"
     jsonschema "^1.4.0"
     ramda "^0.27.1"
 
