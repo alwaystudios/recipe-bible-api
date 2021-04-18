@@ -1,12 +1,9 @@
 module.exports = {
-  verbose: true,
-  transform: {
-    '^.+\\.ts$': 'ts-jest',
-  },
-  collectCoverage: false,
-  coverageReporters: ['json', 'html', 'text'],
-  coverageDirectory: 'coverage',
-  testRegex: '(/__tests__/.*|\\.(test|spec))\\.(ts)$',
-  coveragePathIgnorePatterns: ['<rootDir>/test/', '<rootDir>/node_modules'],
-  moduleFileExtensions: ['ts', 'js', 'json'],
+	preset: 'ts-jest/presets/js-with-ts',
+	testEnvironment: 'node',
+	roots: ['<rootDir>/src', '<rootDir>/test'],
+	coverageDirectory: './coverage',
+	collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
+	coveragePathIgnorePatterns: ['logger.ts', 'dynamoClient.ts', 'snsClient.ts', 'getClients.ts', 'subjectTypes.ts'],
+	maxWorkers: 2,
 }

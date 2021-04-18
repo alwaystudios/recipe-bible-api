@@ -1,7 +1,3 @@
-node_modules
-dist
-coverage
+build/
+.build/
 jest.config.js
-database
-storage
-.eslintrc.js
