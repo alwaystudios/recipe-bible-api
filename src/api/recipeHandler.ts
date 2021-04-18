@@ -3,9 +3,13 @@ import createHttpError from 'http-errors'
 import { HandlerProps } from './types'
 import { getRecipes } from '../domain/recipeService'
 
-export const recipeHandler = async ({ httpMethod }: HandlerProps): Promise<ALBResult> => {
+export const recipeHandler = async ({ httpMethod, subsegments }: HandlerProps): Promise<ALBResult> => {
 	switch (httpMethod) {
 		case 'GET':
+			if (subsegments.length) {
+				break
+			}
+
 			const data = await getRecipes()
 
 			return {

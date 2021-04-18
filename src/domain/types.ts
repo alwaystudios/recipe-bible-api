@@ -1,3 +1,30 @@
+export type Category =
+	| 'Chicken'
+	| 'Meat'
+	| 'Fish'
+	| 'Pasta'
+	| 'Salads'
+	| 'Vegetarian'
+	| 'Vegan'
+	| 'Soups'
+	| 'Snacks'
+	| 'Desserts'
+	| 'Other'
+
+export const categories: Category[] = [
+	'Chicken',
+	'Meat',
+	'Fish',
+	'Pasta',
+	'Salads',
+	'Vegetarian',
+	'Vegan',
+	'Soups',
+	'Snacks',
+	'Desserts',
+	'Other',
+]
+
 export type Nutrition = {
 	fat: string
 	carbs: string
@@ -11,21 +38,10 @@ export type Step = {
 
 export type Metadata = {
 	focused: boolean
-	reviewed: boolean
 	published: boolean
 }
 
-export enum Measure {
-	quantity = 'qty',
-	grams = 'g',
-	milliliters = 'ml',
-	teaSpoon = 'tsp',
-	tableSpoon = 'tbsp',
-	handful = 'handful',
-	cup = 'cup',
-	slice = 'slice(s)',
-	kg = 'kg',
-}
+export type Measure = 'qty' | 'g' | 'ml' | 'tsp' | 'tbsp' | 'handful' | 'cup' | 'slice(s)' | 'kg'
 
 export type Ingredient = {
 	name: string
@@ -38,8 +54,8 @@ export type Recipe = {
 	imgSrc: string
 	title: string
 	story: string
-	categories: string[]
-	ingredients: string[]
+	categories: Category[]
+	ingredients: Ingredient[]
 	steps: Step[]
 	metadata: Metadata
 	ratings: number[]

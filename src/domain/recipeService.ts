@@ -1,22 +1,8 @@
 import { DDB_TABLE_NAME } from '../constants'
 import { getDynamoClient } from '../clients/getClients'
 import { QueryInput, QueryOutput } from 'aws-sdk/clients/dynamodb'
-import { Metadata, Recipe } from './types'
+import { Recipe } from './types'
 import _ from 'lodash'
-
-export const saveRecipeMetadata = async (title: string, metadata: Metadata): Promise<void> => {
-	await getDynamoClient().updateItem({
-		TableName: DDB_TABLE_NAME,
-		Key: {
-			pk: 'reipce',
-			sk: title,
-		},
-		UpdateExpression: 'set metadata = :metadata',
-		ExpressionAttributeValues: {
-			':metadata': metadata,
-		},
-	})
-}
 
 export const saveRecipe = async ({
 	title,
@@ -59,7 +45,7 @@ const fromRecipesQuery = (res: QueryOutput): Recipe[] => {
 
 	return recipes.map(
 		({
-			title,
+			sk,
 			steps,
 			story,
 			imgSrc,
@@ -72,8 +58,8 @@ const fromRecipesQuery = (res: QueryOutput): Recipe[] => {
 			youWillNeed,
 			ingredients,
 			ratings,
-		}: Recipe) => ({
-			title,
+		}) => ({
+			title: sk,
 			steps,
 			story,
 			imgSrc,
@@ -90,16 +76,18 @@ const fromRecipesQuery = (res: QueryOutput): Recipe[] => {
 	)
 }
 
+export const getRecipeQuery = {
+	TableName: DDB_TABLE_NAME,
+	KeyConditionExpression: '#pk = :pk',
+	ExpressionAttributeNames: {
+		'#pk': 'pk',
+	},
+	ExpressionAttributeValues: {
+		':pk': 'recipe',
+	},
+} as QueryInput
+
 export const getRecipes = async (): Promise<Recipe[]> =>
 	getDynamoClient()
-		.query({
-			TableName: DDB_TABLE_NAME,
-			KeyConditionExpression: '#pk = :pk',
-			ExpressionAttributeNames: {
-				'#pk': 'pk',
-			},
-			ExpressionAttributeValues: {
-				':pk': 'recipe',
-			},
-		} as QueryInput)
+		.query(getRecipeQuery)
 		.then((res) => fromRecipesQuery(res))

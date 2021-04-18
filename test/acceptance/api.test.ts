@@ -7,7 +7,7 @@ describe('API', () => {
 			const {
 				status,
 				body: { data },
-			} = await request.get(`${BASE_URL}/recipe`)
+			} = await request.get(`${BASE_URL}/recipes`)
 
 			expect(status).toBe(200)
 			expect(data).not.toBeUndefined()

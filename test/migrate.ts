@@ -34,11 +34,14 @@ const migrateRecipe = async ({
 	const carbs = _.get(nutrition, ['carbs'], undefined)
 	const protein = _.get(nutrition, ['protein'], undefined)
 
+	const focused = _.get(metadata, ['focused'], false)
+	const published = _.get(metadata, ['published'], false)
+
 	await testDynamoClient.putItem(
 		{
 			pk: 'recipe',
 			sk: title,
-			metadata,
+			metadata: { focused, published },
 			imgSrc,
 			story,
 			steps,
