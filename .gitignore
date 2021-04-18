@@ -107,3 +107,6 @@ storage
 *secrets.*
 
 .DS_Store
+
+.build
+build
