@@ -11,11 +11,19 @@ jest.spyOn(getClientsModule, 'getDynamoClient').mockImplementation(() => createD
 describe('recipe service', () => {
 	afterEach(jest.clearAllMocks)
 
-	it('gets recipes', async () => {
-		const recipes = [testRecipe(), testRecipe()]
+	test.each<[boolean, boolean | 'all']>([
+		[true, 'all'],
+		[true, false],
+		[false, false],
+		[false, 'all'],
+	])('gets publihsed recipes with all types of focus', async (published: boolean, focused: boolean | 'all') => {
+		const recipes = [
+			testRecipe({ metadata: { published, focused: focused === 'all' ? true : focused } }),
+			testRecipe({ metadata: { published, focused: focused === 'all' ? true : focused } }),
+		]
 		query.mockResolvedValueOnce({ Items: recipes.map((recipe) => ({ ...recipe, sk: recipe.title })) })
 
-		const result = await getRecipes()
+		const result = await getRecipes({ published, focused })
 
 		expect(result).toMatchObject(recipes)
 		expect(query).toHaveBeenCalledTimes(1)

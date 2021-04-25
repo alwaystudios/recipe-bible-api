@@ -39,41 +39,44 @@ export const saveRecipe = async ({
 		DDB_TABLE_NAME,
 	)
 
-const fromRecipesQuery = (res: QueryOutput): Recipe[] => {
+const fromRecipesQuery = (res: QueryOutput, published: boolean, focused: boolean | 'all'): Recipe[] => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const recipes: any[] = _.get(res, ['Items'], [])
 
-	return recipes.map(
-		({
-			sk,
-			steps,
-			story,
-			imgSrc,
-			metadata,
-			servings,
-			nutrition,
-			categories,
-			cookingTime,
-			prepTime,
-			youWillNeed,
-			ingredients,
-			ratings,
-		}) => ({
-			title: sk,
-			steps,
-			story,
-			imgSrc,
-			metadata,
-			servings,
-			nutrition,
-			categories,
-			cookingTime,
-			prepTime,
-			youWillNeed,
-			ingredients,
-			ratings,
-		}),
-	)
+	return recipes
+		.map(
+			({
+				sk,
+				steps,
+				story,
+				imgSrc,
+				metadata,
+				servings,
+				nutrition,
+				categories,
+				cookingTime,
+				prepTime,
+				youWillNeed,
+				ingredients,
+				ratings,
+			}) => ({
+				title: sk,
+				steps,
+				story,
+				imgSrc,
+				metadata,
+				servings,
+				nutrition,
+				categories,
+				cookingTime,
+				prepTime,
+				youWillNeed,
+				ingredients,
+				ratings,
+			}),
+		)
+		.filter((recipe) => recipe.metadata.published === published)
+		.filter((recipe) => (focused === 'all' ? true : recipe.metadata.focused === focused))
 }
 
 export const getRecipeQuery = {
@@ -87,7 +90,12 @@ export const getRecipeQuery = {
 	},
 } as QueryInput
 
-export const getRecipes = async (): Promise<Recipe[]> =>
+type GetRecipeParams = {
+	published: boolean
+	focused: boolean | 'all'
+}
+
+export const getRecipes = async ({ published, focused }: GetRecipeParams): Promise<Recipe[]> =>
 	getDynamoClient()
 		.query(getRecipeQuery)
-		.then((res) => fromRecipesQuery(res))
+		.then((res) => fromRecipesQuery(res, published, focused))

@@ -24,6 +24,46 @@ describe('recipe handler', () => {
 			subsegments: [],
 		})
 
+		expect(getRecipes).toHaveBeenCalledTimes(1)
+		expect(getRecipes).toHaveBeenCalledWith({ published: true, focused: 'all' })
+
+		expect(statusCode).toBe(200)
+		expect(headers).toEqual({ 'content-type': 'application/json' })
+
+		const { status, data } = JSON.parse(body || '')
+		expect(status).toBe('ok')
+		expect(data).toEqual(recipes)
+	})
+
+	test.each([
+		['true', 'true'],
+		['true', 'false'],
+		['false', 'true'],
+		['false', 'false'],
+		['false', 'all'],
+	])('GET /recipes with query string parameters', async (published: string, focused: string) => {
+		const recipes = [testRecipe(), testRecipe()]
+		getRecipes.mockResolvedValueOnce(recipes)
+
+		const awsRequestId = datatype.uuid()
+
+		const { headers, statusCode, body } = await recipeHandler({
+			httpMethod: 'GET',
+			body: null,
+			awsRequestId,
+			subsegments: [],
+			queryStringParameters: {
+				published,
+				focused,
+			},
+		})
+
+		expect(getRecipes).toHaveBeenCalledTimes(1)
+		expect(getRecipes).toHaveBeenCalledWith({
+			published: published === 'true',
+			focused: focused === 'all' ? 'all' : focused === 'true',
+		})
+
 		expect(statusCode).toBe(200)
 		expect(headers).toEqual({ 'content-type': 'application/json' })
 
