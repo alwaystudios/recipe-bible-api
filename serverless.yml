@@ -3,21 +3,12 @@ service: recipe-bible-api
 plugins:
   - serverless-offline
   - serverless-plugin-typescript
-  - serverless-offline-sqs
   - serverless-localstack
 
 custom:
   serverless-offline:
     httpPort: 21111
     lambdaPort: 3111
-  serverless-offline-sqs:
-    autoCreate: false
-    apiVersion: '2012-11-05'
-    endpoint: http://localhost:4566
-    region: eu-west-1
-    accessKeyId: root
-    secretAccessKey: root
-    skipCacheInvalidation: false
 
 provider:
   name: aws
