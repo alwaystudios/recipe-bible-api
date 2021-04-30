@@ -1,14 +1,7 @@
 service: recipe-bible-api
 
 plugins:
-  - serverless-offline
   - serverless-plugin-typescript
-  - serverless-localstack
-
-custom:
-  serverless-offline:
-    httpPort: 21111
-    lambdaPort: 3111
 
 provider:
   name: aws
