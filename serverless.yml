@@ -11,6 +11,7 @@ custom:
     lambdaPort: 3111
 
 provider:
+  stage: prod
   name: aws
   runtime: nodejs12.x
   memorySize: 256
