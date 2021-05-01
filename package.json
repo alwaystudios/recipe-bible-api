@@ -16,6 +16,7 @@
 	"license": "MIT",
 	"scripts": {
 		"migrate": "ts-node --files --project tsconfig.json test/migrate",
+		"migrate-json": "ts-node --files --project tsconfig.json test/migrateToJson",
 		"dev": "rimraf build && serverless offline start --noPrependStageInUrl",
 		"build": "rimraf build && tsc --project tsconfig.production.json",
 		"format": "prettier --write 'src/**/*.{js,ts,json,md}'",

@@ -16,6 +16,16 @@ provider:
   memorySize: 256
   timeout: 30
   region: eu-west-1
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: 'arn:aws:dynamodb:eu-west-1:137374389243:table/recipe-bible'
 
 functions:
   get:
