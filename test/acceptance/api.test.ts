@@ -1,5 +1,5 @@
 import request from 'superagent'
-import { BASE_URL } from '../../src/constants'
+import { LOCAL_BASE_URL } from '../../src/constants'
 
 describe('API', () => {
 	describe('recipes', () => {
@@ -7,7 +7,7 @@ describe('API', () => {
 			const {
 				status,
 				body: { data },
-			} = await request.get(`${BASE_URL}/recipes`)
+			} = await request.get(`${LOCAL_BASE_URL}/recipes`)
 
 			expect(status).toBe(200)
 			expect(data).not.toBeUndefined()

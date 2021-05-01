@@ -6,7 +6,7 @@ Resources:
   ddbTableRecipeBible:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: ddb-local-recipe-bible
+      TableName: recipe-bible
       SSESpecification:
         SSEEnabled: true
       PointInTimeRecoverySpecification:

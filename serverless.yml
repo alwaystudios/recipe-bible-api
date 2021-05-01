@@ -3,7 +3,6 @@ service: recipe-bible-api
 plugins:
   - serverless-offline
   - serverless-plugin-typescript
-  # - serverless-localstack
 
 custom:
   serverless-offline:

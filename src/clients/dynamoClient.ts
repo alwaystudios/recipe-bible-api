@@ -18,7 +18,7 @@ export interface DynamoClient {
 	truncateTable: (TableName: string, hash: string, range?: string) => Promise<void>
 }
 
-export const createDynamoClient = (client = new DocumentClient()): DynamoClient => {
+export const createDynamoClient = (client: DocumentClient): DynamoClient => {
 	const updateItem = async (params: DocumentClient.UpdateItemInput): Promise<DocumentClient.UpdateItemOutput> =>
 		client.update(params).promise()
 
