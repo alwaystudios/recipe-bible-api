@@ -3,6 +3,6 @@
 todo
 
 - deploy lambda
-- add migration lambda endpoint
-- API access to dynamo db
+- use api gateway path params
+- jit migration from json
 - use the same ui but point to new API
