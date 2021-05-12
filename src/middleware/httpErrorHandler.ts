@@ -1,13 +1,13 @@
 import middy from '@middy/core'
 import { ALBEvent, ALBResult } from 'aws-lambda'
-import _ from 'lodash'
+import { pathOr } from 'ramda'
 
 const httpErrorHandler = (): middy.MiddlewareObject<ALBEvent, ALBResult> => {
   return {
     onError: (handler: middy.HandlerLambda, next: middy.NextFunction) => {
       const { error } = handler
 
-      const statusCode = _.get(error, ['statusCode'], 500)
+      const statusCode = pathOr(500, ['statusCode'], error)
 
       // eslint-disable-next-line functional/no-let
       let errors = [{ message: 'Something went wrong' }]

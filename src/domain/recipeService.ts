@@ -2,7 +2,7 @@ import { DDB_TABLE_NAME } from '../constants'
 import { getDynamoClient } from '../clients/getClients'
 import { QueryInput, QueryOutput } from 'aws-sdk/clients/dynamodb'
 import { Recipe } from './types'
-import _ from 'lodash'
+import { pathOr } from 'ramda'
 
 export const saveRecipe = async (recipe: Recipe): Promise<void> =>
   getDynamoClient().putItem(
@@ -20,7 +20,9 @@ const fromRecipesQuery = (
   focused: boolean | 'all'
 ): Recipe[] => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const recipes: any[] = _.map(_.get(res, ['Items'], []), 'recipe')
+  const recipes: any[] = pathOr([], ['Items'], res).map((item) =>
+    pathOr(undefined, ['recipe'], item)
+  )
 
   return recipes
     .filter((recipe) => recipe.metadata.published === published)

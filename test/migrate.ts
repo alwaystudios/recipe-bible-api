@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-var-requires */
 
 import { Pool } from 'pg'
-import _ from 'lodash'
 import { createWriteStream } from 'fs'
+import { pathOr } from 'ramda'
 const { host, password } = require('../secrets.json')
 
 const writeStream = createWriteStream('./recipe-bible-export.json')
@@ -37,12 +37,12 @@ const migrateRecipe = ({
     ratings,
   },
 }: any) => {
-  const fat = _.get(nutrition, ['fat'], undefined)
-  const carbs = _.get(nutrition, ['carbs'], undefined)
-  const protein = _.get(nutrition, ['protein'], undefined)
+  const fat = pathOr(nutrition, ['fat'], nutrition)
+  const carbs = pathOr(nutrition, ['carbs'], nutrition)
+  const protein = pathOr(nutrition, ['protein'], nutrition)
 
-  const focused = _.get(metadata, ['focused'], false)
-  const published = _.get(metadata, ['published'], false)
+  const focused = pathOr(false, ['focused'], metadata)
+  const published = pathOr(false, ['published'], metadata)
 
   return {
     title,

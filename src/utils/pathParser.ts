@@ -1,5 +1,5 @@
 import { truthy } from './truthy'
-import _ from 'lodash'
+import { pathOr, slice } from 'ramda'
 
 export type HandlerAction = {
   handlerName: string
@@ -10,8 +10,8 @@ export const pathParser = (path: string): HandlerAction => {
   const segments = path.split('/').filter(truthy)
   const versionIndex = segments.indexOf('v1')
 
-  const handlerName = _.get(segments, [versionIndex + 1], '')
-  const subsegments = _.slice(segments, versionIndex + 2)
+  const handlerName = pathOr('', [versionIndex + 1], segments)
+  const subsegments = slice(versionIndex + 2, Infinity, segments)
 
   return {
     handlerName,

@@ -5,7 +5,7 @@ import { ALBResult } from 'aws-lambda'
 import createHttpError from 'http-errors'
 import { HandlerProps } from './types'
 import { getRecipes, saveRecipes } from '../domain/recipeService'
-import _ from 'lodash'
+import { pathOr } from 'ramda'
 
 export const recipeHandler = async ({
   httpMethod,
@@ -16,7 +16,7 @@ export const recipeHandler = async ({
   switch (httpMethod) {
     case 'POST':
       if (subsegments.length === 0) {
-        await saveRecipes(_.get(JSON.parse(body || '{}'), ['recipes'], []))
+        await saveRecipes(pathOr([], ['recipes'], JSON.parse(body || '{}')))
 
         return {
           statusCode: 202,
@@ -28,8 +28,8 @@ export const recipeHandler = async ({
       }
 
     case 'GET':
-      const _published = _.get(queryStringParameters, ['published'], 'true')
-      const _focused = _.get(queryStringParameters, ['focused'], 'all')
+      const _published = pathOr('true', ['published'], queryStringParameters)
+      const _focused = pathOr('all', ['focused'], queryStringParameters)
 
       if (subsegments.length) {
         break
