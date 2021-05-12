@@ -7,9 +7,33 @@ import { NotFound } from 'http-errors'
 import * as recipeService from '../domain/recipeService'
 
 const getRecipes = jest.spyOn(recipeService, 'getRecipes')
+const saveRecipes = jest.spyOn(recipeService, 'saveRecipes')
 
 describe('recipe handler', () => {
 	afterEach(jest.clearAllMocks)
+
+	it('POST /recipes', async () => {
+		const recipes = [testRecipe(), testRecipe()]
+		saveRecipes.mockResolvedValueOnce([])
+
+		const awsRequestId = datatype.uuid()
+
+		const { headers, statusCode, body } = await recipeHandler({
+			httpMethod: 'POST',
+			body: JSON.stringify({ recipes }),
+			awsRequestId,
+			subsegments: [],
+		})
+
+		expect(saveRecipes).toHaveBeenCalledTimes(1)
+		expect(saveRecipes).toHaveBeenCalledWith(recipes)
+
+		expect(statusCode).toBe(202)
+		expect(headers).toEqual({ 'content-type': 'application/json' })
+
+		const { status } = JSON.parse(body || '')
+		expect(status).toBe('import recipes accepted')
+	})
 
 	it('GET /recipes', async () => {
 		const recipes = [testRecipe(), testRecipe()]
@@ -73,7 +97,7 @@ describe('recipe handler', () => {
 	})
 
 	test.each<[HttpMethod, string[]]>([
-		['POST', ['/']],
+		['PATCH', ['/']],
 		['GET', ['/1234']],
 	])('returns 404 for unknown subsegment / method', async (httpMethod: HttpMethod, subsegments: string[]) => {
 		const recipes = [testRecipe(), testRecipe()]

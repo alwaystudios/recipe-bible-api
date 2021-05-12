@@ -4,80 +4,26 @@ import { QueryInput, QueryOutput } from 'aws-sdk/clients/dynamodb'
 import { Recipe } from './types'
 import _ from 'lodash'
 
-export const saveRecipe = async ({
-	title,
-	steps,
-	story,
-	imgSrc,
-	metadata,
-	servings,
-	nutrition,
-	categories,
-	cookingTime,
-	prepTime,
-	youWillNeed,
-	ingredients,
-	ratings,
-}: Recipe): Promise<void> =>
+export const saveRecipe = async (recipe: Recipe): Promise<void> =>
 	getDynamoClient().putItem(
 		{
 			pk: 'recipe',
-			sk: title,
-			metadata,
-			imgSrc,
-			story,
-			steps,
-			ingredients,
-			servings,
-			nutrition,
-			categories,
-			cookingTime,
-			prepTime,
-			youWillNeed,
-			ratings,
+			sk: recipe.title,
+			recipe,
 		},
 		DDB_TABLE_NAME,
 	)
 
 const fromRecipesQuery = (res: QueryOutput, published: boolean, focused: boolean | 'all'): Recipe[] => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const recipes: any[] = _.get(res, ['Items'], [])
+	const recipes: any[] = _.map(_.get(res, ['Items'], []), 'recipe')
 
 	return recipes
-		.map(
-			({
-				sk,
-				steps,
-				story,
-				imgSrc,
-				metadata,
-				servings,
-				nutrition,
-				categories,
-				cookingTime,
-				prepTime,
-				youWillNeed,
-				ingredients,
-				ratings,
-			}) => ({
-				title: sk,
-				steps,
-				story,
-				imgSrc,
-				metadata,
-				servings,
-				nutrition,
-				categories,
-				cookingTime,
-				prepTime,
-				youWillNeed,
-				ingredients,
-				ratings,
-			}),
-		)
 		.filter((recipe) => recipe.metadata.published === published)
 		.filter((recipe) => (focused === 'all' ? true : recipe.metadata.focused === focused))
 }
+
+export const saveRecipes = async (recipes: Recipe[]) => Promise.all(recipes.map(saveRecipe))
 
 export const getRecipeQuery = {
 	TableName: DDB_TABLE_NAME,

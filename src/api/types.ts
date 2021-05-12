@@ -1,6 +1,6 @@
 import { ALBEventQueryStringParameters, ALBEventHeaders, ALBResult } from 'aws-lambda'
 
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
 export type HandlerProps = {
 	awsRequestId: string

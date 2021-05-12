@@ -2,7 +2,7 @@ import { createDynamoMockClient } from '../../test/factories/testAwsMockClients'
 import { testRecipe } from '../../test/factories/testFactories'
 import * as getClientsModule from '../clients/getClients'
 import { DDB_TABLE_NAME } from '../constants'
-import { getRecipeQuery, getRecipes, saveRecipe } from './recipeService'
+import { getRecipeQuery, getRecipes, saveRecipe, saveRecipes } from './recipeService'
 
 const putItem = jest.fn()
 const query = jest.fn()
@@ -21,7 +21,7 @@ describe('recipe service', () => {
 			testRecipe({ metadata: { published, focused: focused === 'all' ? true : focused } }),
 			testRecipe({ metadata: { published, focused: focused === 'all' ? true : focused } }),
 		]
-		query.mockResolvedValueOnce({ Items: recipes.map((recipe) => ({ ...recipe, sk: recipe.title })) })
+		query.mockResolvedValueOnce({ Items: recipes.map((recipe) => ({ recipe, sk: recipe.title })) })
 
 		const result = await getRecipes({ published, focused })
 
@@ -30,32 +30,50 @@ describe('recipe service', () => {
 		expect(query).toHaveBeenCalledWith(getRecipeQuery)
 	})
 
-	it('save recipe', async () => {
-		const recipe = testRecipe()
-		putItem.mockResolvedValueOnce(undefined)
+	describe('save', () => {
+		it('save recipes', async () => {
+			const recipe1 = testRecipe()
+			const recipe2 = testRecipe()
+			putItem.mockResolvedValueOnce(undefined)
 
-		await saveRecipe(recipe)
+			await saveRecipes([recipe1, recipe2])
 
-		expect(putItem).toHaveBeenCalledTimes(1)
+			expect(putItem).toHaveBeenCalledTimes(2)
+			expect(putItem).toHaveBeenNthCalledWith(
+				1,
+				{
+					pk: 'recipe',
+					sk: recipe1.title,
+					recipe: recipe1,
+				},
+				DDB_TABLE_NAME,
+			)
+			expect(putItem).toHaveBeenNthCalledWith(
+				2,
+				{
+					pk: 'recipe',
+					sk: recipe2.title,
+					recipe: recipe2,
+				},
+				DDB_TABLE_NAME,
+			)
+		})
 
-		expect(putItem).toHaveBeenCalledWith(
-			{
-				pk: 'recipe',
-				sk: recipe.title,
-				metadata: recipe.metadata,
-				imgSrc: recipe.imgSrc,
-				story: recipe.story,
-				steps: recipe.steps,
-				ingredients: recipe.ingredients,
-				servings: recipe.servings,
-				nutrition: recipe.nutrition,
-				categories: recipe.categories,
-				cookingTime: recipe.cookingTime,
-				prepTime: recipe.prepTime,
-				youWillNeed: recipe.youWillNeed,
-				ratings: recipe.ratings,
-			},
-			DDB_TABLE_NAME,
-		)
+		it('save recipe', async () => {
+			const recipe = testRecipe()
+			putItem.mockResolvedValueOnce(undefined)
+
+			await saveRecipe(recipe)
+
+			expect(putItem).toHaveBeenCalledTimes(1)
+			expect(putItem).toHaveBeenCalledWith(
+				{
+					pk: 'recipe',
+					sk: recipe.title,
+					recipe,
+				},
+				DDB_TABLE_NAME,
+			)
+		})
 	})
 })
