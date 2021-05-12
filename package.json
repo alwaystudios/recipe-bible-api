@@ -16,7 +16,6 @@
   "license": "MIT",
   "scripts": {
     "migrate": "ts-node --files --project tsconfig.json test/migrate",
-    "migrate-json": "ts-node --files --project tsconfig.json test/migrateToJson",
     "dev": "rimraf build && serverless offline start --noPrependStageInUrl",
     "build": "rimraf build && tsc --project tsconfig.production.json",
     "format": "prettier --write 'src/**/*.{js,ts,json,md}'",
@@ -37,7 +36,7 @@
   "dependencies": {
     "@middy/core": "^1.5.2",
     "http-errors": "^1.8.0",
-    "lodash": "^4.17.21",
+    "ramda": "^0.27.1",
     "superagent": "^6.1.0"
   },
   "devDependencies": {
@@ -46,10 +45,10 @@
     "@types/http-errors": "^1.8.0",
     "@types/jest": "^26.0.20",
     "@types/lambda-wrapper": "^0.3.0",
-    "@types/lodash": "^4.14.168",
     "@types/nock": "^11.1.0",
     "@types/node": "^14.14.27",
     "@types/pg": "^7.14.11",
+    "@types/ramda": "^0.27.40",
     "@types/superagent": "^4.1.10",
     "@typescript-eslint/eslint-plugin": "^4.15.0",
     "@typescript-eslint/parser": "^4.15.0",

@@ -1,15 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-var-requires */
 
 import { Pool } from 'pg'
-import { DDB_TABLE_NAME } from '../src/constants'
-import { testDynamoClient } from './acceptance/awsTestClients'
 import _ from 'lodash'
+import { createWriteStream } from 'fs'
 const { host, password } = require('../secrets.json')
 
-const params = {
-  recipes: true,
-  ingredients: true,
-}
+const writeStream = createWriteStream('./recipe-bible-export.json')
 
 const pool = new Pool({
   min: 10,
@@ -26,7 +22,7 @@ pool.on('error', (error: Error) => {
   console.error('PG error', error)
 })
 
-const migrateRecipe = async ({
+const migrateRecipe = ({
   title,
   details: {
     steps,
@@ -48,51 +44,33 @@ const migrateRecipe = async ({
   const focused = _.get(metadata, ['focused'], false)
   const published = _.get(metadata, ['published'], false)
 
-  await testDynamoClient.putItem(
-    {
-      pk: 'recipe',
-      sk: title,
-      metadata: { focused, published },
-      imgSrc,
-      story,
-      steps,
-      ingredients,
-      servings,
-      nutrition: { fat, carbs, protein },
-      categories,
-      cookingTime,
-      prepTime: '',
-      youWillNeed: [],
-      ratings,
-    },
-    DDB_TABLE_NAME
-  )
-}
-
-const migrateIngredient = async ({ title }: any) => {
-  await testDynamoClient.putItem(
-    {
-      pk: 'ingredient',
-      sk: title,
-    },
-    DDB_TABLE_NAME
-  )
+  return {
+    title,
+    metadata: { focused, published },
+    imgSrc,
+    story,
+    steps,
+    ingredients,
+    servings,
+    nutrition: { fat, carbs, protein },
+    categories,
+    cookingTime,
+    prepTime: '',
+    youWillNeed: [],
+    ratings,
+  }
 }
 
 const migrate = async () => {
-  await testDynamoClient.truncateTable(DDB_TABLE_NAME, 'pk', 'sk')
+  const recipes = await pool
+    .query('select * from recipe')
+    .then((res) => res.rows.map(migrateRecipe))
+  const ingredients = await pool
+    .query('select * from ingredient')
+    .then((res) => res.rows.map(({ title }) => title))
 
-  if (params.recipes) {
-    console.log('migrate recipes')
-    await pool.query('select * from recipe').then((res) => Promise.all(res.rows.map(migrateRecipe)))
-  }
-
-  if (params.ingredients) {
-    console.log('migrate ingredients')
-    await pool
-      .query('select * from ingredient')
-      .then((res) => Promise.all(res.rows.map(migrateIngredient)))
-  }
+  writeStream.write(JSON.stringify({ ingredients, recipes }))
+  writeStream.end()
 }
 
 migrate()
