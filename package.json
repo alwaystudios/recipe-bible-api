@@ -1,79 +1,81 @@
 {
-	"name": "recipe-bible-api",
-	"private": true,
-	"version": "1.0.0",
-	"description": "Recipe bible API lambda serverless functions",
-	"author": {
-		"name": "Gary Alway"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/alwaystudios/recipe-bible-api"
-	},
-	"engines": {
-		"node": "14"
-	},
-	"license": "MIT",
-	"scripts": {
-		"migrate": "ts-node --files --project tsconfig.json test/migrate",
-		"migrate-json": "ts-node --files --project tsconfig.json test/migrateToJson",
-		"dev": "rimraf build && serverless offline start --noPrependStageInUrl",
-		"build": "rimraf build && tsc --project tsconfig.production.json",
-		"format": "prettier --write 'src/**/*.{js,ts,json,md}'",
-		"lint": "eslint .",
-		"test": "jest src --coverage",
-		"test:acceptance": "jest --runInBand test/acceptance",
-		"test:watch": "jest --watch",
-		"typecheck": "tsc --noEmit",
-		"local:up": "make -C ./local up",
-		"local:down": "make -C ./local down"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "npm run format && npm run lint && npm run test",
-			"pre-push": "npm run typecheck && npm run test:acceptance"
-		}
-	},
-	"dependencies": {
-		"@middy/core": "^1.5.2",
-		"http-errors": "^1.8.0",
-		"lodash": "^4.17.21",
-		"superagent": "^6.1.0"
-	},
-	"devDependencies": {
-		"@types/aws-lambda": "^8.10.72",
-		"@types/faker": "^5.1.6",
-		"@types/http-errors": "^1.8.0",
-		"@types/jest": "^26.0.20",
-		"@types/lambda-wrapper": "^0.3.0",
-		"@types/lodash": "^4.14.168",
-		"@types/nock": "^11.1.0",
-		"@types/node": "^14.14.27",
-		"@types/pg": "^7.14.11",
-		"@types/superagent": "^4.1.10",
-		"@typescript-eslint/eslint-plugin": "^4.15.0",
-		"@typescript-eslint/parser": "^4.15.0",
-		"eslint": "^7.20.0",
-		"eslint-config-prettier": "^7.2.0",
-		"eslint-import-resolver-typescript": "^2.4.0",
-		"eslint-plugin-deprecation": "^1.2.0",
-		"eslint-plugin-functional": "^3.2.1",
-		"eslint-plugin-import": "^2.22.1",
-		"eslint-plugin-prettier": "^3.3.1",
-		"faker": "^5.4.0",
-		"husky": "^4.3.8",
-		"jest": "^26.6.3",
-		"lambda-wrapper": "^0.3.0",
-		"nock": "^13.0.9",
-		"pg": "^8.6.0",
-		"prettier": "^2.2.1",
-		"rimraf": "^3.0.2",
-		"serverless": "^2.23.0",
-		"serverless-offline": "^6.8.0",
-		"serverless-plugin-typescript": "^1.1.9",
-		"ts-jest": "^26.5.1",
-		"ts-node": "^9.1.1",
-		"typescript": "^4.1.5",
-		"wait-for-expect": "^3.0.2"
-	}
+  "name": "recipe-bible-api",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Recipe bible API lambda serverless functions",
+  "author": {
+    "name": "Gary Alway"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alwaystudios/recipe-bible-api"
+  },
+  "engines": {
+    "node": "14"
+  },
+  "license": "MIT",
+  "scripts": {
+    "migrate": "ts-node --files --project tsconfig.json test/migrate",
+    "migrate-json": "ts-node --files --project tsconfig.json test/migrateToJson",
+    "dev": "rimraf build && serverless offline start --noPrependStageInUrl",
+    "build": "rimraf build && tsc --project tsconfig.production.json",
+    "format": "prettier --write 'src/**/*.{js,ts,json,md}'",
+    "lint": "eslint .",
+    "test": "jest src --coverage",
+    "test:acceptance": "jest --runInBand test/acceptance",
+    "test:watch": "jest --watch",
+    "typecheck": "tsc --noEmit",
+    "local:up": "make -C ./local up",
+    "local:down": "make -C ./local down"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn format && yarn lint && yarn test",
+      "pre-push": "yarn typecheck && yarn test:acceptance"
+    }
+  },
+  "dependencies": {
+    "@middy/core": "^1.5.2",
+    "http-errors": "^1.8.0",
+    "lodash": "^4.17.21",
+    "superagent": "^6.1.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.72",
+    "@types/faker": "^5.1.6",
+    "@types/http-errors": "^1.8.0",
+    "@types/jest": "^26.0.20",
+    "@types/lambda-wrapper": "^0.3.0",
+    "@types/lodash": "^4.14.168",
+    "@types/nock": "^11.1.0",
+    "@types/node": "^14.14.27",
+    "@types/pg": "^7.14.11",
+    "@types/superagent": "^4.1.10",
+    "@typescript-eslint/eslint-plugin": "^4.15.0",
+    "@typescript-eslint/parser": "^4.15.0",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-deprecation": "^1.2.0",
+    "eslint-plugin-functional": "^3.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.3.6",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react": "^7.23.2",
+    "faker": "^5.4.0",
+    "husky": "^4.3.8",
+    "jest": "^26.6.3",
+    "lambda-wrapper": "^0.3.0",
+    "nock": "^13.0.9",
+    "pg": "^8.6.0",
+    "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
+    "serverless": "^2.23.0",
+    "serverless-offline": "^6.8.0",
+    "serverless-plugin-typescript": "^1.1.9",
+    "ts-jest": "^26.5.1",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.5",
+    "wait-for-expect": "^3.0.2"
+  }
 }

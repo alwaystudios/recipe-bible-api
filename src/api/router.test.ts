@@ -13,27 +13,27 @@ const wrapped = wrap(handler, { handler: 'endpoint' })
 
 const awsRequestId = datatype.uuid()
 const event = createALBEventMock({
-	httpMethod: 'PUT',
-	path: '/some/route',
-	body: '123',
-	queryStringParameters: {
-		foo: 'bar',
-	},
-	headers: {
-		test: '1234',
-	},
+  httpMethod: 'PUT',
+  path: '/some/route',
+  body: '123',
+  queryStringParameters: {
+    foo: 'bar',
+  },
+  headers: {
+    test: '1234',
+  },
 })
 
 describe('router', () => {
-	afterEach(jest.clearAllMocks)
+  afterEach(jest.clearAllMocks)
 
-	it('runs execute handler', async () => {
-		fakeHandler.mockResolvedValueOnce({ statusCode: 200 })
+  it('runs execute handler', async () => {
+    fakeHandler.mockResolvedValueOnce({ statusCode: 200 })
 
-		const result = await wrapped.run(event, { awsRequestId })
+    const result = await wrapped.run(event, { awsRequestId })
 
-		expect(result.statusCode).toBe(200)
-		expect(fakeHandler).toHaveBeenCalledTimes(1)
-		expect(fakeHandler).toHaveBeenCalledWith(expect.objectContaining(event), awsRequestId)
-	})
+    expect(result.statusCode).toBe(200)
+    expect(fakeHandler).toHaveBeenCalledTimes(1)
+    expect(fakeHandler).toHaveBeenCalledWith(expect.objectContaining(event), awsRequestId)
+  })
 })

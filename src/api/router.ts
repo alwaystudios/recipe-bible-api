@@ -5,6 +5,6 @@ import { createRouter } from './routerFactory'
 import { recipeHandler as recipes } from './recipeHandler'
 
 const handler = async (event: ALBEvent, { awsRequestId }: Context): Promise<ALBResult> =>
-	createRouter({ recipes }).executeHandler(event, awsRequestId)
+  createRouter({ recipes }).executeHandler(event, awsRequestId)
 
 export const endpoint = middy(handler).use(httpErrorHandler())
