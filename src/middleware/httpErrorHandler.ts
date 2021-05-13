@@ -1,8 +1,12 @@
 import middy from '@middy/core'
-import { ALBEvent, ALBResult } from 'aws-lambda'
+import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda'
 import { pathOr } from 'ramda'
 
-const httpErrorHandler = (): middy.MiddlewareObject<ALBEvent, ALBResult> => {
+export const httpErrorHandler = (): middy.MiddlewareObject<
+  APIGatewayProxyEvent,
+  APIGatewayProxyResult,
+  Context
+> => {
   return {
     onError: (handler: middy.HandlerLambda, next: middy.NextFunction) => {
       const { error } = handler
@@ -27,5 +31,3 @@ const httpErrorHandler = (): middy.MiddlewareObject<ALBEvent, ALBResult> => {
     },
   }
 }
-
-export { httpErrorHandler }

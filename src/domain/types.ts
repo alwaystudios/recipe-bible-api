@@ -47,7 +47,7 @@ export type Ingredient = {
   name: string
   quantity: string
   measure: Measure
-  link?: string
+  link?: string // todo: remove this and remove from migration script
 }
 
 export type Recipe = {

@@ -1,9 +1,8 @@
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'jest', 'react', 'deprecation', 'functional'],
+  plugins: ['@typescript-eslint', 'jest', 'deprecation', 'functional'],
   extends: [
-    'plugin:react/recommended',
     'plugin:jest/recommended',
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
@@ -11,7 +10,6 @@ module.exports = {
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:import/typescript',
-    'plugin:react/recommended',
   ],
   rules: {
     'no-unused-vars': 1,
@@ -25,9 +23,6 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 0,
     'no-useless-escape': 0,
     '@typescript-eslint/camelcase': 0,
-    'react/display-name': 0,
-    'react/prop-types': 0,
-    'react/no-unescaped-entities': 0,
   },
   env: { node: true, jest: true },
   settings: {
