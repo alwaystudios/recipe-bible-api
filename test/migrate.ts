@@ -50,7 +50,11 @@ const migrateRecipe = ({
     imgSrc,
     story,
     steps,
-    ingredients,
+    ingredients: ingredients.map(({ name, quantity, measure }: any) => ({
+      name,
+      quantity,
+      measure,
+    })),
     servings,
     nutrition: { fat, carbs, protein },
     categories,

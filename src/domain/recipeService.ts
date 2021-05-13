@@ -1,7 +1,6 @@
 import { DDB_TABLE_NAME } from '../constants'
 import { getDynamoClient } from '../clients/getClients'
 import { QueryInput, QueryOutput } from 'aws-sdk/clients/dynamodb'
-import { Recipe } from './types'
 import { pathOr } from 'ramda'
 
 export const saveRecipe = async (recipe: Recipe): Promise<void> =>

@@ -1,5 +1,4 @@
 import { lorem, system } from 'faker'
-import { Ingredient, Recipe } from '../../src/domain/types'
 
 export const testIngredient = (overrides?: Partial<Ingredient>): Ingredient => ({
   name: lorem.word(),
