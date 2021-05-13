@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
+      - run: yarn
       - name: serverless deploy --stage prod
         uses: serverless/github-action@master
         with:

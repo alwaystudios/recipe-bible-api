@@ -28,27 +28,12 @@ provider:
       Resource: 'arn:aws:dynamodb:eu-west-1:137374389243:table/recipe-bible'
 
 functions:
-  get:
-    handler: src/api/router.endpoint
+  recipes:
+    handler: src/api/recipes.endpoint
     events:
       - http:
-          path: /{proxy+}
+          path: /recipes/{name}
           method: GET
-  post:
-    handler: src/api/router.endpoint
-    events:
       - http:
-          path: /{proxy+}
-          method: POST
-  put:
-    handler: src/api/router.endpoint
-    events:
-      - http:
-          path: /{proxy+}
-          method: PUT
-  delete:
-    handler: src/api/router.endpoint
-    events:
-      - http:
-          path: /{proxy+}
-          method: DELETE
+          path: /recipes
+          method: GET

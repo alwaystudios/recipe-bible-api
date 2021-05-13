@@ -2,7 +2,7 @@
 Resources:
   S3ContentBucket:
     Type: AWS::S3::Bucket
-    BucketName: recipe-bible-content
+    BucketName: recipe-bible
   ddbTableRecipeBible:
     Type: AWS::DynamoDB::Table
     Properties:
