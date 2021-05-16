@@ -3,7 +3,7 @@ import { LOCAL_BASE_URL } from '../../src/constants'
 
 describe('API', () => {
   describe('recipes', () => {
-    it('GET /recipes', async () => {
+    it.skip('GET /recipes', async () => {
       const {
         status,
         body: { data },

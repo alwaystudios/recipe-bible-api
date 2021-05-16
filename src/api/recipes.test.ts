@@ -8,7 +8,7 @@ const wrapped = wrap(handler, { handler: 'endpoint' })
 const getRecipes = jest.spyOn(recipeService, 'getRecipes')
 
 describe('GET recipes API', () => {
-  it('returns all recipes', async () => {
+  it.skip('returns all recipes', async () => {
     const data = [testRecipe(), testRecipe()]
     getRecipes.mockResolvedValueOnce(data)
     const event = createAPIGatewayEventMock({

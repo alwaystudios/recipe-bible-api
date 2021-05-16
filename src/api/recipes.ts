@@ -3,10 +3,12 @@ import middy from '@middy/core'
 import { httpErrorHandler } from '../middleware/httpErrorHandler'
 import { pathOr } from 'ramda'
 import { getRecipes } from '../domain/recipeService'
+import { authenticate, AuthenticatedContext } from '../middleware/auth'
 
-const handler = async ({
-  queryStringParameters,
-}: APIGatewayEvent): Promise<{
+const handler = async (
+  { queryStringParameters }: APIGatewayEvent,
+  { user }: AuthenticatedContext
+): Promise<{
   statusCode: number
   body: string
 }> => {
@@ -26,8 +28,9 @@ const handler = async ({
     body: JSON.stringify({
       status: 'ok',
       data,
+      user,
     }),
   }
 }
 
-export const endpoint = middy(handler).use(httpErrorHandler())
+export const endpoint = middy(handler).use(authenticate('admin')).use(httpErrorHandler())
