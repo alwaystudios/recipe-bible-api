@@ -1,5 +1,7 @@
 declare type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> }
 
+declare type APIResponse = { statusCode: number; body: string }
+
 declare type Category =
   | 'Chicken'
   | 'Meat'
@@ -12,20 +14,6 @@ declare type Category =
   | 'Snacks'
   | 'Desserts'
   | 'Other'
-
-declare const categories: Category[] = [
-  'Chicken',
-  'Meat',
-  'Fish',
-  'Pasta',
-  'Salads',
-  'Vegetarian',
-  'Vegan',
-  'Soups',
-  'Snacks',
-  'Desserts',
-  'Other',
-]
 
 declare type Nutrition = {
   fat?: string
@@ -65,4 +53,24 @@ declare type Recipe = {
   youWillNeed: string[]
   servings: number
   nutrition: Nutrition
+}
+
+declare type User = {
+  'https://recipebible.net/roles': string[]
+  given_name: string
+  family_name: string
+  nickname: string
+  name: string
+  picture: string
+  locale: string
+  updated_at: string
+  email: string
+  email_verified: boolean
+  iss: string
+  sub: string
+  aud: string
+  iat: number
+  exp: number
+  at_hash: string
+  nonce: string
 }

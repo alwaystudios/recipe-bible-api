@@ -5,6 +5,6 @@ module.exports = {
   roots: ['<rootDir>/src', '<rootDir>/test'],
   coverageDirectory: './coverage',
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
-  coveragePathIgnorePatterns: ['dynamoClient.ts', 'getClients.ts'],
+  coveragePathIgnorePatterns: ['clients*'],
   maxWorkers: 2,
 }

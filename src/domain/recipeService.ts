@@ -28,7 +28,8 @@ const fromRecipesQuery = (
     .filter((recipe) => (focused === 'all' ? true : recipe.metadata.focused === focused))
 }
 
-export const saveRecipes = async (recipes: Recipe[]) => Promise.all(recipes.map(saveRecipe))
+export const saveRecipes = async (recipes: Recipe[]): Promise<void[]> =>
+  Promise.all(recipes.map(saveRecipe))
 
 export const getRecipeQuery = {
   TableName: DDB_TABLE_NAME,

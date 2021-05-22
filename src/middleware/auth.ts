@@ -1,15 +1,14 @@
 import middy from '@middy/core'
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda'
-import { verify } from 'jsonwebtoken'
-import jwksClient from 'jwks-rsa'
 import { pathOr } from 'ramda'
-import { JWKSURI, KID } from '../constants'
+import { IS_OFFLINE } from '../constants'
+import { verifyAuth0Token } from '../clients/auth0'
 
 export interface AuthenticatedContext extends Context {
-  user?: any // todo: proper type
+  user?: User
 }
 
-class AuthenticationError extends Error {
+export class AuthenticationError extends Error {
   error: string
   statusCode: number
   body: string
@@ -23,7 +22,7 @@ class AuthenticationError extends Error {
   }
 }
 
-class AuthorizationError extends Error {
+export class AuthorizationError extends Error {
   error: string
   statusCode: number
   body: string
@@ -49,25 +48,13 @@ export const authenticate = (
       >
     ) => {
       const { event, context } = handler
-      const token = pathOr('', ['headers', 'Authorization'], event).replace('Bearer ', '')
-      const signingKey = await jwksClient({ jwksUri: JWKSURI }).getSigningKey(KID)
-      const publicKey = signingKey.getPublicKey()
 
-      const user = await new Promise((resolve, reject) =>
-        verify(
-          token,
-          publicKey,
-          {
-            algorithms: ['RS256'],
-          },
-          (err, decoded) => {
-            if (err) {
-              reject(err)
-            }
-            resolve(decoded)
-          }
-        )
-      ).catch((err) => {
+      if (IS_OFFLINE && pathOr<string>('', ['headers', 'local-test'], event) === 'true') {
+        return
+      }
+
+      const token = pathOr('', ['headers', 'Authorization'], event)
+      const user = await verifyAuth0Token(token).catch((err) => {
         throw new AuthenticationError(err.message)
       })
 
@@ -79,7 +66,7 @@ export const authenticate = (
         }
       }
 
-      context.user = user
+      Object.assign(context, { user })
     },
   }
 }

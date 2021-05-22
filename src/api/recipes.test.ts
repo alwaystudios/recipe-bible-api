@@ -1,14 +1,14 @@
 import { wrap } from 'lambda-wrapper'
-import * as handler from './recipes'
+import * as recipes from './recipes'
 import * as recipeService from '../domain/recipeService'
 import { testRecipe } from '../../test/factories/testFactories'
 import { createAPIGatewayEventMock } from '../../test/factories/proxyEventMock'
 
-const wrapped = wrap(handler, { handler: 'endpoint' })
+const wrapped = wrap(recipes, { handler: 'endpoint' })
 const getRecipes = jest.spyOn(recipeService, 'getRecipes')
 
 describe('GET recipes API', () => {
-  it.skip('returns all recipes', async () => {
+  it('returns all recipes', async () => {
     const data = [testRecipe(), testRecipe()]
     getRecipes.mockResolvedValueOnce(data)
     const event = createAPIGatewayEventMock({

@@ -110,4 +110,4 @@ storage
 
 .build
 build
-recipe-bible-export.json
+recipe-bible-export*

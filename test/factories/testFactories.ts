@@ -30,3 +30,25 @@ export const testRecipe = (overrides?: Partial<Recipe>): Recipe => ({
   },
   ...overrides,
 })
+
+export const testUser = (overrides?: Partial<User>): User => ({
+  'https://recipebible.net/roles': ['admin'],
+  given_name: 'Gary',
+  family_name: 'Alway',
+  nickname: 'garyalway',
+  name: 'Gary Alway',
+  picture:
+    'https://lh3.googleusercontent.com/a-/AOh14GjdyZ5eCaU-x0oXGnyRx4W0WyTPvPMnXYSU3DkuWA=s96-c',
+  locale: 'en',
+  updated_at: '2021-05-17T06:33:29.089Z',
+  email: 'garyalway@gmail.com',
+  email_verified: true,
+  iss: 'https://eu.auth0.com/',
+  sub: 'google-oauth2|12345',
+  aud: 'abc',
+  iat: 1621233349,
+  exp: 1621269349,
+  at_hash: 'abc',
+  nonce: 'abc',
+  ...overrides,
+})

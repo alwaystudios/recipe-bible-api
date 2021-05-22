@@ -4,40 +4,6 @@ import middy from '@middy/core'
 import { httpErrorHandler } from './httpErrorHandler'
 
 describe('error handler onError', () => {
-  it('should log an error if error status code >= 500', () => {
-    const error = createHttpError(500, 'Something went wrong')
-
-    const emptyHandler: middy.HandlerLambda = {
-      event: {},
-      context: {} as unknown as Context,
-      response: {},
-      error: error,
-      callback: null as unknown as Callback,
-    }
-
-    const next = jest.fn()
-
-    const { onError } = httpErrorHandler()
-    onError && onError(emptyHandler, next)
-  })
-
-  it('should log a warning if error status code < 500', () => {
-    const error = createHttpError(400, 'Something went bad')
-
-    const emptyHandler: middy.HandlerLambda = {
-      event: {},
-      context: {} as unknown as Context,
-      response: {},
-      error: error,
-      callback: null as unknown as Callback,
-    }
-
-    const next = jest.fn()
-
-    const { onError } = httpErrorHandler()
-    onError && onError(emptyHandler, next)
-  })
-
   it('should use a generic message for status code >= 500', () => {
     const emptyHandler: middy.HandlerLambda = {
       event: {},

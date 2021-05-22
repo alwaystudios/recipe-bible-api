@@ -37,3 +37,13 @@ functions:
       - http:
           path: /recipes
           method: GET
+
+  manageRecipes:
+    handler: src/api/manageRecipes.endpoint
+    events:
+      - http:
+          path: /recipes/{name}
+          method: POST
+      - http:
+          path: /recipes
+          method: POST
