@@ -82,5 +82,14 @@ describe('recipe service', () => {
         DDB_TABLE_NAME
       )
     })
+
+    it('save recipe throws an error if no title provided', async () => {
+      const recipe = testRecipe({ title: '' })
+      putItem.mockResolvedValueOnce(undefined)
+
+      await expect(saveRecipe(recipe)).rejects.toEqual(new Error('Missing title'))
+
+      expect(putItem).not.toHaveBeenCalled()
+    })
   })
 })

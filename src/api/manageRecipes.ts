@@ -1,18 +1,42 @@
 import { APIGatewayEvent } from 'aws-lambda'
 import middy from '@middy/core'
-import { authenticate, AuthenticatedContext } from '../middleware/auth'
+import { authenticate } from '../middleware/auth'
 import { httpErrorHandler } from '../middleware/httpErrorHandler'
+import { pathOr } from 'ramda'
+import { saveRecipe, saveRecipes } from '../domain/recipeService'
+import createHttpError from 'http-errors'
 
-const handler = async (
-  { httpMethod }: APIGatewayEvent,
-  { user }: AuthenticatedContext
-): Promise<APIResponse> => {
-  // todo
-  console.log(httpMethod, user)
+const handler = async ({
+  httpMethod,
+  body,
+  pathParameters,
+}: APIGatewayEvent): Promise<APIResponse> => {
+  if (!body) {
+    throw createHttpError(400)
+  }
+
+  const slug = pathOr<string | undefined>(undefined, ['name'], pathParameters)
+  const payload = JSON.parse(body)
+
+  if (slug) {
+    if (slug !== payload.title) {
+      throw createHttpError(400)
+    }
+
+    await saveRecipe(payload)
+
+    if (httpMethod === 'POST') {
+      console.log('todo: create the S3 bucket folder...')
+    }
+  } else {
+    await saveRecipes(pathOr([], ['recipes'], payload))
+  }
 
   return {
-    statusCode: 204,
-    body: '',
+    statusCode: 200,
+    body: JSON.stringify({
+      status: 'ok',
+    }),
   }
 }
 

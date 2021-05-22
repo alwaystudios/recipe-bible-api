@@ -3,8 +3,12 @@ import { getDynamoClient } from '../clients/getClients'
 import { QueryInput, QueryOutput } from 'aws-sdk/clients/dynamodb'
 import { pathOr } from 'ramda'
 
-export const saveRecipe = async (recipe: Recipe): Promise<void> =>
-  getDynamoClient().putItem(
+export const saveRecipe = async (recipe: Recipe): Promise<void> => {
+  if (!recipe.title) {
+    throw new Error('Missing title')
+  }
+
+  return getDynamoClient().putItem(
     {
       pk: 'recipe',
       sk: recipe.title,
@@ -12,6 +16,7 @@ export const saveRecipe = async (recipe: Recipe): Promise<void> =>
     },
     DDB_TABLE_NAME
   )
+}
 
 const fromRecipesQuery = (
   res: QueryOutput,

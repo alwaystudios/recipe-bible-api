@@ -1,7 +1,6 @@
 import middy from '@middy/core'
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda'
 import { pathOr } from 'ramda'
-import { IS_OFFLINE } from '../constants'
 import { verifyAuth0Token } from '../clients/auth0'
 
 export interface AuthenticatedContext extends Context {
@@ -48,10 +47,6 @@ export const authenticate = (
       >
     ) => {
       const { event, context } = handler
-
-      if (IS_OFFLINE && pathOr<string>('', ['headers', 'local-test'], event) === 'true') {
-        return
-      }
 
       const token = pathOr('', ['headers', 'Authorization'], event)
       const user = await verifyAuth0Token(token).catch((err) => {

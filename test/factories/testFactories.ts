@@ -8,7 +8,7 @@ export const testIngredient = (overrides?: Partial<Ingredient>): Ingredient => (
 })
 
 export const testRecipe = (overrides?: Partial<Recipe>): Recipe => ({
-  title: lorem.words(3),
+  title: lorem.word(),
   imgSrc: system.fileName(),
   story: lorem.words(3),
   categories: ['Chicken'],

@@ -45,5 +45,8 @@ functions:
           path: /recipes/{name}
           method: POST
       - http:
+          path: /recipes/{name}
+          method: PUT
+      - http:
           path: /recipes
           method: POST
