@@ -6,37 +6,77 @@ import { createAPIGatewayEventMock } from '../../test/factories/proxyEventMock'
 
 const wrapped = wrap(recipes, { handler: 'endpoint' })
 const getRecipes = jest.spyOn(recipeService, 'getRecipes')
+const getRecipe = jest.spyOn(recipeService, 'getRecipe')
 
-describe('GET recipes API', () => {
-  it('returns all recipes', async () => {
-    const data = [testRecipe(), testRecipe()]
-    getRecipes.mockResolvedValueOnce(data)
-    const event = createAPIGatewayEventMock({
-      httpMethod: 'GET',
-      path: '/recipes',
+describe('recipes API', () => {
+  describe('GET /recipes', () => {
+    it('returns all recipes', async () => {
+      const data = [testRecipe(), testRecipe()]
+      getRecipes.mockResolvedValueOnce(data)
+      const event = createAPIGatewayEventMock({
+        httpMethod: 'GET',
+        path: '/recipes',
+      })
+
+      const result = await wrapped.run(event)
+
+      expect(getRecipes).toHaveBeenCalledTimes(1)
+      expect(getRecipes).toHaveBeenCalledWith({ focused: 'all', published: true })
+      expect(JSON.parse(result.body)).toMatchObject({
+        status: 'ok',
+        data,
+      })
     })
 
-    const result = await wrapped.run(event)
+    it('handles errors', async () => {
+      getRecipes.mockRejectedValueOnce(new Error('boom'))
+      const event = createAPIGatewayEventMock({
+        httpMethod: 'GET',
+        path: '/recipes',
+      })
 
-    expect(getRecipes).toHaveBeenCalledTimes(1)
-    expect(getRecipes).toHaveBeenCalledWith({ focused: 'all', published: true })
-    expect(JSON.parse(result.body)).toMatchObject({
-      status: 'ok',
-      data,
+      const result = await wrapped.run(event)
+
+      expect(JSON.parse(result.body)).toMatchObject({
+        status: 'error',
+      })
     })
   })
 
-  it('handles errors', async () => {
-    getRecipes.mockRejectedValueOnce(new Error('boom'))
-    const event = createAPIGatewayEventMock({
-      httpMethod: 'GET',
-      path: '/recipes',
+  describe('GET /recipes/{name}', () => {
+    it('returns a single recipe', async () => {
+      const data = testRecipe()
+      getRecipe.mockResolvedValueOnce(data)
+      const event = createAPIGatewayEventMock({
+        httpMethod: 'GET',
+        path: '/recipes',
+        pathParameters: { name: 'test' },
+      })
+
+      const result = await wrapped.run(event)
+
+      expect(getRecipe).toHaveBeenCalledTimes(1)
+      expect(getRecipe).toHaveBeenCalledWith('test')
+      expect(JSON.parse(result.body)).toMatchObject({
+        status: 'ok',
+        data,
+      })
     })
 
-    const result = await wrapped.run(event)
+    it('returns 404 if not found', async () => {
+      getRecipe.mockResolvedValueOnce(undefined)
+      const event = createAPIGatewayEventMock({
+        httpMethod: 'GET',
+        path: '/recipes',
+        pathParameters: { name: 'test' },
+      })
 
-    expect(JSON.parse(result.body)).toMatchObject({
-      status: 'error',
+      const result = await wrapped.run(event)
+
+      expect(result.statusCode).toBe(404)
+      expect(JSON.parse(result.body)).toMatchObject({
+        status: 'error',
+      })
     })
   })
 })

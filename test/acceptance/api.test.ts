@@ -11,6 +11,13 @@ describe('API', () => {
 
       expect(status).toBe(200)
       expect(data).not.toBeUndefined()
+      expect(Array.isArray(data)).toBe(true)
+    })
+
+    it('GET /recipes/{name}', async () => {
+      await expect(request.get(`${LOCAL_BASE_URL}/recipes/not-found`)).rejects.toEqual(
+        new Error('Not Found')
+      )
     })
 
     it('POST /recipes is authenticated', async () => {

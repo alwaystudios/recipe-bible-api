@@ -2,13 +2,14 @@ import { createDynamoMockClient } from '../../test/factories/testAwsMockClients'
 import { testRecipe } from '../../test/factories/testFactories'
 import * as getClientsModule from '../clients/getClients'
 import { DDB_TABLE_NAME } from '../constants'
-import { getRecipeQuery, getRecipes, saveRecipe, saveRecipes } from './recipeService'
+import { getRecipe, getRecipeQuery, getRecipes, saveRecipe, saveRecipes } from './recipeService'
 
+const getItem = jest.fn()
 const putItem = jest.fn()
 const query = jest.fn()
 jest
   .spyOn(getClientsModule, 'getDynamoClient')
-  .mockImplementation(() => createDynamoMockClient({ putItem, query }))
+  .mockImplementation(() => createDynamoMockClient({ putItem, query, getItem }))
 
 describe('recipe service', () => {
   afterEach(jest.clearAllMocks)
@@ -36,6 +37,43 @@ describe('recipe service', () => {
       expect(query).toHaveBeenCalledWith(getRecipeQuery)
     }
   )
+
+  describe('get recipe', () => {
+    it('get single recipe', async () => {
+      const recipe = testRecipe()
+      getItem.mockResolvedValueOnce({
+        Item: recipe,
+      })
+
+      const result = await getRecipe('test')
+
+      expect(result).toEqual(recipe)
+      expect(getItem).toHaveBeenCalledTimes(1)
+      expect(getItem).toHaveBeenCalledWith({
+        TableName: DDB_TABLE_NAME,
+        Key: {
+          pk: 'recipe',
+          sk: 'test',
+        } as any,
+      })
+    })
+
+    it('returns undefined if not found', async () => {
+      getItem.mockResolvedValueOnce({})
+
+      const result = await getRecipe('test')
+
+      expect(result).toBeUndefined()
+      expect(getItem).toHaveBeenCalledTimes(1)
+      expect(getItem).toHaveBeenCalledWith({
+        TableName: DDB_TABLE_NAME,
+        Key: {
+          pk: 'recipe',
+          sk: 'test',
+        } as any,
+      })
+    })
+  })
 
   describe('save', () => {
     it('save recipes', async () => {

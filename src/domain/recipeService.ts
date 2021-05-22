@@ -56,3 +56,14 @@ export const getRecipes = async ({ published, focused }: GetRecipeParams): Promi
   getDynamoClient()
     .query(getRecipeQuery)
     .then((res) => fromRecipesQuery(res, published, focused))
+
+export const getRecipe = async (slug: string): Promise<Recipe | undefined> =>
+  getDynamoClient()
+    .getItem({
+      TableName: DDB_TABLE_NAME,
+      Key: {
+        pk: 'recipe',
+        sk: slug,
+      } as any,
+    })
+    .then((res) => pathOr<Recipe | undefined>(undefined, ['Item'], res))
