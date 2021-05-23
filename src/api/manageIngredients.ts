@@ -17,10 +17,6 @@ const handler = async ({ body, queryStringParameters }: APIGatewayEvent): Promis
   if (importIngredients === 'true') {
     const ingredients = pathOr([], ['ingredients'], payload)
 
-    if (!ingredients) {
-      throw createHttpError(400)
-    }
-
     await saveIngredients(ingredients)
   } else {
     const ingredient = pathOr(undefined, ['ingredient'], payload)

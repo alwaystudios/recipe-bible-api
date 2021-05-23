@@ -38,6 +38,24 @@ describe('manage ingredients API', () => {
       })
     })
 
+    it('rejects missing ingredient data', async () => {
+      authMock.mockResolvedValueOnce(testUser())
+      const event = createAPIGatewayEventMock({
+        httpMethod: 'POST',
+        path: '/ingredients',
+        body: JSON.stringify({}),
+      })
+
+      const result = await wrapped.run(event)
+
+      expect(result.statusCode).toBe(400)
+      expect(JSON.parse(result.body)).toMatchObject({
+        status: 'error',
+      })
+      expect(saveIngredient).not.toHaveBeenCalled()
+      expect(saveIngredients).not.toHaveBeenCalled()
+    })
+
     it('imports ingredients', async () => {
       authMock.mockResolvedValueOnce(testUser())
       const ingredients = [random.word(), random.word()]
