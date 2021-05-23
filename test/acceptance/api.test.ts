@@ -44,11 +44,5 @@ describe('API', () => {
         new Error('Unauthorized')
       )
     })
-
-    it('PUT /recipes is authenticated', async () => {
-      await expect(request.put(`${LOCAL_BASE_URL}/recipes/test`)).rejects.toEqual(
-        new Error('Unauthorized')
-      )
-    })
   })
 })
