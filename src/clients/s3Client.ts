@@ -1,5 +1,4 @@
 import { S3, AWSError } from 'aws-sdk'
-import { PutObjectOutput } from 'aws-sdk/clients/s3'
 import { Readable } from 'stream'
 import { BUCKET } from '../constants'
 
@@ -7,8 +6,9 @@ export interface S3Client {
   getObject: (filename: string) => Promise<S3.GetObjectOutput>
   putObject: (
     filename: string,
-    data: string | Buffer | Uint8Array | Blob | Readable
-  ) => Promise<PutObjectOutput | AWSError>
+    data: string | Buffer | Uint8Array | Blob | Readable,
+    type: string
+  ) => Promise<S3.PutObjectOutput | AWSError>
   objectExists: (filename: string) => Promise<boolean>
 }
 
@@ -25,13 +25,16 @@ export const createS3Client = (s3: S3): S3Client => {
 
   const putObject = async (
     filename: string,
-    data: string | Buffer | Uint8Array | Blob | Readable
-  ): Promise<PutObjectOutput | AWSError> =>
+    data: string | Buffer | Uint8Array | Blob | Readable,
+    type: string
+  ): Promise<S3.PutObjectOutput | AWSError> =>
     client
       .putObject({
         Bucket: BUCKET,
         Key: filename,
         Body: data,
+        ContentType: type,
+        ACL: 'public-read',
       })
       .promise()
 

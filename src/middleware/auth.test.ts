@@ -1,7 +1,7 @@
 import middy from '@middy/core'
 import { Callback, Context } from 'aws-lambda'
 import { datatype } from 'faker'
-import { testUser } from '../../test/factories/testFactories'
+import { testUser } from '@alwaystudios/recipe-bible-sdk'
 import * as auth0 from '../clients/auth0'
 import { authenticate, AuthenticationError, AuthorizationError } from './auth'
 

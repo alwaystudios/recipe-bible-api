@@ -1,7 +1,7 @@
 import { wrap } from 'lambda-wrapper'
 import * as recipes from './recipes'
 import * as recipeService from '../domain/recipeService'
-import { testRecipe } from '../../test/factories/testFactories'
+import { testRecipe } from '@alwaystudios/recipe-bible-sdk'
 import { createAPIGatewayEventMock } from '../../test/factories/proxyEventMock'
 
 const wrapped = wrap(recipes, { handler: 'endpoint' })

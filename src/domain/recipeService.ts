@@ -2,6 +2,7 @@ import { DDB_TABLE_NAME } from '../constants'
 import { getDynamoClient } from '../clients/getClients'
 import { QueryInput, QueryOutput } from 'aws-sdk/clients/dynamodb'
 import { pathOr } from 'ramda'
+import { Recipe } from '@alwaystudios/recipe-bible-sdk'
 
 export const saveRecipe = async (recipe: Recipe): Promise<void> => {
   if (!recipe.title) {
@@ -66,4 +67,4 @@ export const getRecipe = async (slug: string): Promise<Recipe | undefined> =>
         sk: slug,
       } as any,
     })
-    .then((res) => pathOr<Recipe | undefined>(undefined, ['Item'], res))
+    .then((res) => pathOr<Recipe | undefined>(undefined, ['Item', 'recipe'], res))

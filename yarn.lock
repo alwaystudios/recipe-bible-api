@@ -10,6 +10,15 @@
     d "1"
     es5-ext "^0.10.47"
 
+"@alwaystudios/recipe-bible-sdk@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@alwaystudios/recipe-bible-sdk/-/recipe-bible-sdk-2.0.2.tgz#959f74e56bff20fa3cdf801923ec0d811c4e92c6"
+  integrity sha512-oyxg3ML4/o4Nlk9AfE22Rv5acrGEy3Fj0mdhye7iy2hsIE6psRoXzuS8jHDqwTYnow7CzKAV+LG1ZB0k1fepuw==
+  dependencies:
+    faker "^5.1.0"
+    jsonschema "^1.4.0"
+    ramda "^0.27.1"
+
 "@babel/code-frame@7.12.11":
   version "7.12.11"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.12.11.tgz#f4ad435aa263db935b8f10f2c552d23fb716a63f"
@@ -3799,7 +3808,7 @@ extsprintf@^1.2.0:
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
   integrity sha1-4mifjzVvrWLMplo6kcXfX5VRaS8=
 
-faker@^5.4.0:
+faker@^5.1.0, faker@^5.4.0:
   version "5.5.3"
   resolved "https://registry.yarnpkg.com/faker/-/faker-5.5.3.tgz#c57974ee484431b25205c2c8dc09fda861e51e0e"
   integrity sha512-wLTv2a28wjUyWkbnX7u/ABZBkUkIF2fCd73V6P2oFqEGEktDfzWx4UxrSqtPRw0xPRAcjeAOIiJWqZm3pP4u3g==

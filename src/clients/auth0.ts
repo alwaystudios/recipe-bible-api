@@ -1,6 +1,7 @@
 import { verify } from 'jsonwebtoken'
 import jwksClient from 'jwks-rsa'
 import { JWKSURI, KID } from '../constants'
+import { User } from '@alwaystudios/recipe-bible-sdk'
 
 export const verifyAuth0Token = async (token: string): Promise<User> => {
   const _token = token.replace('Bearer ', '')

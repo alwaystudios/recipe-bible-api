@@ -1,5 +1,5 @@
 import { createDynamoMockClient } from '../../test/factories/testAwsMockClients'
-import { testRecipe } from '../../test/factories/testFactories'
+import { testRecipe } from '@alwaystudios/recipe-bible-sdk'
 import * as getClientsModule from '../clients/getClients'
 import { DDB_TABLE_NAME } from '../constants'
 import { getRecipe, getRecipeQuery, getRecipes, saveRecipe, saveRecipes } from './recipeService'
@@ -42,7 +42,7 @@ describe('recipe service', () => {
     it('get single recipe', async () => {
       const recipe = testRecipe()
       getItem.mockResolvedValueOnce({
-        Item: recipe,
+        Item: { recipe },
       })
 
       const result = await getRecipe('test')

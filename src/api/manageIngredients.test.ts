@@ -1,7 +1,7 @@
 import { wrap } from 'lambda-wrapper'
 import * as manageIngredients from './manageIngredients'
 import * as ingredientService from '../domain/ingredientService'
-import { testUser } from '../../test/factories/testFactories'
+import { testUser } from '@alwaystudios/recipe-bible-sdk'
 import { createAPIGatewayEventMock } from '../../test/factories/proxyEventMock'
 import { verifyAuth0Token } from '../clients/auth0'
 import { random } from 'faker'

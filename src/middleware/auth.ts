@@ -2,6 +2,7 @@ import middy from '@middy/core'
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda'
 import { pathOr } from 'ramda'
 import { verifyAuth0Token } from '../clients/auth0'
+import { User } from '@alwaystudios/recipe-bible-sdk'
 
 export interface AuthenticatedContext extends Context {
   user?: User
