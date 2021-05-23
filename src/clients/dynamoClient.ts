@@ -7,10 +7,17 @@ import {
   GetItemOutput,
   QueryInput,
   QueryOutput,
+  PutItemInput,
+  PutItemOutput,
 } from 'aws-sdk/clients/dynamodb'
+import { AWSError } from 'aws-sdk'
 
 export interface DynamoClient {
-  putItem: <T>(item: T, table: string) => Promise<void>
+  putItem: <T>(
+    item: T,
+    table: string,
+    params?: Partial<PutItemInput>
+  ) => Promise<PutItemOutput | AWSError>
   updateItem: (params: DocumentClient.UpdateItemInput) => Promise<DocumentClient.UpdateItemOutput>
   getItem: (params: GetItemInput) => Promise<GetItemOutput>
   deleteItem: (params: DeleteItemInput) => Promise<DeleteItemOutput>
@@ -23,25 +30,21 @@ export const createDynamoClient = (client: DocumentClient): DynamoClient => {
     params: DocumentClient.UpdateItemInput
   ): Promise<DocumentClient.UpdateItemOutput> => client.update(params).promise()
 
-  const putItem = async <T>(item: T, table: string): Promise<void> => {
-    return new Promise<void>((resolve, reject) => {
-      client.put(
-        {
-          TableName: table,
-          Item: item,
-        },
-        (err) => {
-          if (err) {
-            return reject(err)
-          }
-          resolve()
-        }
-      )
-    })
-  }
+  const putItem = async <T>(
+    item: T,
+    table: string,
+    params?: Partial<PutItemInput>
+  ): Promise<PutItemOutput | AWSError> =>
+    client
+      .put({
+        TableName: table,
+        Item: item,
+        ...params,
+      })
+      .promise()
 
-  const getItem = async (params: GetItemInput): Promise<GetItemOutput> => {
-    return new Promise<GetItemOutput>((resolve, reject) => {
+  const getItem = async (params: GetItemInput): Promise<GetItemOutput> =>
+    new Promise<GetItemOutput>((resolve, reject) => {
       client.get(params, (err, data) => {
         if (err) {
           reject(err)
@@ -49,10 +52,9 @@ export const createDynamoClient = (client: DocumentClient): DynamoClient => {
         resolve(data)
       })
     })
-  }
 
-  const deleteItem = async (params: DeleteItemInput): Promise<DeleteItemOutput> => {
-    return new Promise<DeleteItemOutput>((resolve, reject) => {
+  const deleteItem = async (params: DeleteItemInput): Promise<DeleteItemOutput> =>
+    new Promise<DeleteItemOutput>((resolve, reject) => {
       client.delete(params, (err, data) => {
         if (err) {
           reject(err)
@@ -60,10 +62,9 @@ export const createDynamoClient = (client: DocumentClient): DynamoClient => {
         resolve(data)
       })
     })
-  }
 
-  const query = async (params: QueryInput): Promise<QueryOutput> => {
-    return new Promise<QueryOutput>((resolve, reject) => {
+  const query = async (params: QueryInput): Promise<QueryOutput> =>
+    new Promise<QueryOutput>((resolve, reject) => {
       client.query(params, (err, data) => {
         if (err) {
           reject(err)
@@ -71,7 +72,6 @@ export const createDynamoClient = (client: DocumentClient): DynamoClient => {
         resolve(data)
       })
     })
-  }
 
   const getItemKeyAndValue = (item: AttributeMap, key?: string) =>
     key ? { [`${key}`]: item[`${key}`] } : {}

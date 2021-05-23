@@ -6,11 +6,7 @@ import { pathOr } from 'ramda'
 import { saveRecipe, saveRecipes } from '../domain/recipeService'
 import createHttpError from 'http-errors'
 
-const handler = async ({
-  httpMethod,
-  body,
-  pathParameters,
-}: APIGatewayEvent): Promise<APIResponse> => {
+const handler = async ({ body, pathParameters }: APIGatewayEvent): Promise<APIResponse> => {
   if (!body) {
     throw createHttpError(400)
   }
@@ -24,10 +20,6 @@ const handler = async ({
     }
 
     await saveRecipe(payload)
-
-    if (httpMethod === 'POST') {
-      console.log('todo: create the S3 bucket folder...')
-    }
   } else {
     await saveRecipes(pathOr([], ['recipes'], payload))
   }

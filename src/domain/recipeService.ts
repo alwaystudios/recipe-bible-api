@@ -9,7 +9,7 @@ export const saveRecipe = async (recipe: Recipe): Promise<void> => {
     throw new Error('Missing title')
   }
 
-  return getDynamoClient().putItem(
+  await getDynamoClient().putItem(
     {
       pk: 'recipe',
       sk: recipe.title,

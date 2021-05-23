@@ -8,8 +8,8 @@ const INGREDIENTS = 'ingredients'
 const saveAllIngredients = async (
   ingredients: string[],
   client: DynamoClient = getDynamoClient()
-): Promise<void> =>
-  client.putItem(
+): Promise<void> => {
+  await client.putItem(
     {
       pk: INGREDIENTS,
       sk: INGREDIENTS,
@@ -17,6 +17,7 @@ const saveAllIngredients = async (
     },
     DDB_TABLE_NAME
   )
+}
 
 export const saveIngredients = async (ingredients: string[]): Promise<void> =>
   saveAllIngredients(ingredients)
