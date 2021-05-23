@@ -19,6 +19,7 @@ describe('ingredients API', () => {
 
       const result = await wrapped.run(event)
 
+      expect(result.statusCode).toBe(200)
       expect(getIngredients).toHaveBeenCalledTimes(1)
       expect(getIngredients).toHaveBeenCalledWith()
       expect(JSON.parse(result.body)).toMatchObject({
@@ -36,6 +37,7 @@ describe('ingredients API', () => {
 
       const result = await wrapped.run(event)
 
+      expect(result.statusCode).toBe(500)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })

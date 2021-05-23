@@ -20,6 +20,7 @@ describe('recipes API', () => {
 
       const result = await wrapped.run(event)
 
+      expect(result.statusCode).toBe(200)
       expect(getRecipes).toHaveBeenCalledTimes(1)
       expect(getRecipes).toHaveBeenCalledWith({ focused: 'all', published: true })
       expect(JSON.parse(result.body)).toMatchObject({
@@ -37,6 +38,7 @@ describe('recipes API', () => {
 
       const result = await wrapped.run(event)
 
+      expect(result.statusCode).toBe(500)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
@@ -55,6 +57,7 @@ describe('recipes API', () => {
 
       const result = await wrapped.run(event)
 
+      expect(result.statusCode).toBe(200)
       expect(getRecipe).toHaveBeenCalledTimes(1)
       expect(getRecipe).toHaveBeenCalledWith('test')
       expect(JSON.parse(result.body)).toMatchObject({

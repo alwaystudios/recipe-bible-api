@@ -13,6 +13,12 @@ describe('API', () => {
       expect(data).not.toBeUndefined()
       expect(Array.isArray(data)).toBe(true)
     })
+
+    it('POST /ingredients is authenticated', async () => {
+      await expect(request.post(`${LOCAL_BASE_URL}/ingredients`)).rejects.toEqual(
+        new Error('Unauthorized')
+      )
+    })
   })
 
   describe('recipes', () => {

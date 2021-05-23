@@ -37,7 +37,7 @@ describe('ingredient service', () => {
     const ingredient1 = random.word()
     const ingredient2 = random.word()
     const ingredients = [ingredient1, ingredient2]
-    getItem.mockResolvedValueOnce({ Items: { ingredients } })
+    getItem.mockResolvedValueOnce({ Item: { ingredients } })
     putItem.mockResolvedValueOnce(undefined)
 
     await saveIngredient('new')
@@ -65,7 +65,7 @@ describe('ingredient service', () => {
     const ingredient1 = random.word()
     const ingredient2 = random.word()
     const ingredients = [ingredient1, ingredient2]
-    getItem.mockResolvedValueOnce({ Items: { ingredients } })
+    getItem.mockResolvedValueOnce({ Item: { ingredients } })
     putItem.mockResolvedValueOnce(undefined)
 
     await saveIngredient(ingredient1)
@@ -93,7 +93,7 @@ describe('ingredient service', () => {
     const ingredient1 = random.word()
     const ingredient2 = random.word()
     const ingredients = [ingredient1, ingredient2]
-    getItem.mockResolvedValueOnce({ Items: { ingredients } })
+    getItem.mockResolvedValueOnce({ Item: { ingredients } })
 
     const result = await getIngredients()
 

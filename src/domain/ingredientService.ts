@@ -30,7 +30,7 @@ export const getIngredients = async (client: DynamoClient = getDynamoClient()): 
         sk: INGREDIENTS,
       } as any,
     })
-    .then((res) => pathOr<string[]>([], ['Items', 'ingredients'], res))
+    .then((res) => pathOr<string[]>([], ['Item', 'ingredients'], res))
 
 export const saveIngredient = async (ingredient: string): Promise<void> => {
   const client = getDynamoClient()

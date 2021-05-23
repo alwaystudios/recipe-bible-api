@@ -28,6 +28,7 @@ describe('manage recipes API', () => {
 
       const result = await wrapped.run(event)
 
+      expect(result.statusCode).toBe(200)
       expect(saveRecipes).toHaveBeenCalledTimes(1)
       expect(saveRecipes).toHaveBeenCalledWith(recipes)
       expect(JSON.parse(result.body)).toMatchObject({
@@ -45,6 +46,7 @@ describe('manage recipes API', () => {
 
       const result = await wrapped.run(event)
 
+      expect(result.statusCode).toBe(400)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
@@ -61,6 +63,7 @@ describe('manage recipes API', () => {
 
       const result = await wrapped.run(event)
 
+      expect(result.statusCode).toBe(403)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
@@ -82,6 +85,7 @@ describe('manage recipes API', () => {
 
       const result = await wrapped.run(event)
 
+      expect(result.statusCode).toBe(200)
       expect(saveRecipe).toHaveBeenCalledTimes(1)
       expect(saveRecipe).toHaveBeenCalledWith(recipe)
       expect(JSON.parse(result.body)).toMatchObject({
@@ -100,6 +104,7 @@ describe('manage recipes API', () => {
 
       const result = await wrapped.run(event)
 
+      expect(result.statusCode).toBe(400)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
@@ -117,6 +122,7 @@ describe('manage recipes API', () => {
 
       const result = await wrapped.run(event)
 
+      expect(result.statusCode).toBe(400)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
@@ -134,6 +140,7 @@ describe('manage recipes API', () => {
 
       const result = await wrapped.run(event)
 
+      expect(result.statusCode).toBe(403)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
@@ -155,6 +162,7 @@ describe('manage recipes API', () => {
 
       const result = await wrapped.run(event)
 
+      expect(result.statusCode).toBe(200)
       expect(saveRecipe).toHaveBeenCalledTimes(1)
       expect(saveRecipe).toHaveBeenCalledWith(recipe)
       expect(JSON.parse(result.body)).toMatchObject({
@@ -173,6 +181,7 @@ describe('manage recipes API', () => {
 
       const result = await wrapped.run(event)
 
+      expect(result.statusCode).toBe(400)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
@@ -190,6 +199,7 @@ describe('manage recipes API', () => {
 
       const result = await wrapped.run(event)
 
+      expect(result.statusCode).toBe(400)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
@@ -207,6 +217,7 @@ describe('manage recipes API', () => {
 
       const result = await wrapped.run(event)
 
+      expect(result.statusCode).toBe(403)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
