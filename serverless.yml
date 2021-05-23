@@ -28,6 +28,13 @@ provider:
       Resource: 'arn:aws:dynamodb:eu-west-1:137374389243:table/recipe-bible'
 
 functions:
+  ingredients:
+    handler: src/api/ingredients.endpoint
+    events:
+      - http:
+          path: /ingredients
+          method: GET
+
   recipes:
     handler: src/api/recipes.endpoint
     events:

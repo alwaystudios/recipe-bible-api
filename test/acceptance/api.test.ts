@@ -2,6 +2,19 @@ import request from 'superagent'
 import { LOCAL_BASE_URL } from '../../src/constants'
 
 describe('API', () => {
+  describe('ingredients', () => {
+    it('GET /ingredients', async () => {
+      const {
+        status,
+        body: { data },
+      } = await request.get(`${LOCAL_BASE_URL}/ingredients`)
+
+      expect(status).toBe(200)
+      expect(data).not.toBeUndefined()
+      expect(Array.isArray(data)).toBe(true)
+    })
+  })
+
   describe('recipes', () => {
     it('GET /recipes', async () => {
       const {

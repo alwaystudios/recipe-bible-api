@@ -19,7 +19,7 @@ const saveAllIngredients = async (
   )
 
 export const saveIngredients = async (ingredients: string[]): Promise<void> =>
-  saveAllIngredients(ingredients, getDynamoClient())
+  saveAllIngredients(ingredients)
 
 export const getIngredients = async (client: DynamoClient = getDynamoClient()): Promise<string[]> =>
   client

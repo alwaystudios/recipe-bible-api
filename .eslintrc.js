@@ -12,7 +12,6 @@ module.exports = {
     'plugin:import/typescript',
   ],
   rules: {
-    'no-unused-vars': 1,
     'no-shadow': 0,
     'import/no-deprecated': 1,
     'functional/immutable-data': 'warn',
