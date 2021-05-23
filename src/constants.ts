@@ -9,3 +9,4 @@ export const LOCAL_AWS_CONFIG = {
   secretAccessKey: 'root',
   endpoint: 'http://localhost:4566',
 }
+export const BUCKET = 'recipe-bible-content'
