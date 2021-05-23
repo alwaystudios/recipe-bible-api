@@ -35,6 +35,13 @@ functions:
           path: /ingredients
           method: GET
 
+  manageIngredients:
+    handler: src/api/manageIngredients.endpoint
+    events:
+      - http:
+          path: /ingredients
+          method: POST
+
   recipes:
     handler: src/api/recipes.endpoint
     events:
