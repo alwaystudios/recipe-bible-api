@@ -34,14 +34,15 @@
     }
   },
   "dependencies": {
-    "@alwaystudios/recipe-bible-sdk": "^2.0.2",
+    "@alwaystudios/recipe-bible-sdk": "^2.0.3",
     "@middy/core": "^1.5.2",
     "http-errors": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^2.0.3",
     "ramda": "^0.27.1",
     "sharp": "^0.28.2",
-    "superagent": "^6.1.0"
+    "superagent": "^6.1.0",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.72",
@@ -56,6 +57,7 @@
     "@types/ramda": "^0.27.40",
     "@types/sharp": "^0.28.1",
     "@types/superagent": "^4.1.10",
+    "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^4.15.0",
     "@typescript-eslint/parser": "^4.15.0",
     "eslint": "^7.20.0",

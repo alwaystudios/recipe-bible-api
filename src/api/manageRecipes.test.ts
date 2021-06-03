@@ -4,8 +4,13 @@ import * as recipeService from '../domain/recipeService'
 import { testRecipe, testUser } from '@alwaystudios/recipe-bible-sdk'
 import { createAPIGatewayEventMock } from '../../test/factories/proxyEventMock'
 import { verifyAuth0Token } from '../clients/auth0'
+import * as loggerModule from '../clients/logger'
+import { testLogger } from '../../test/factories/testLogger'
 
 jest.mock('../clients/auth0')
+
+const err = jest.fn()
+jest.spyOn(loggerModule, 'getLogger').mockReturnValue(testLogger({ err }))
 
 const authMock = verifyAuth0Token as jest.Mock
 const wrapped = wrap(manageRecipes, { handler: 'endpoint' })
@@ -51,6 +56,8 @@ describe('manage recipes API', () => {
         status: 'error',
       })
       expect(saveRecipes).not.toHaveBeenCalled()
+      expect(err).toHaveBeenCalledTimes(1)
+      expect(err).toHaveBeenCalledWith('manage recipe error, missing body')
     })
 
     it('requires the admin role', async () => {

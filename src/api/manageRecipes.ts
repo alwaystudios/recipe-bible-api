@@ -5,9 +5,11 @@ import { httpErrorHandler } from '../middleware/httpErrorHandler'
 import { pathOr } from 'ramda'
 import { saveRecipe, saveRecipes } from '../domain/recipeService'
 import createHttpError from 'http-errors'
+import { getLogger } from '../clients/logger'
 
 const handler = async ({ body, pathParameters }: APIGatewayEvent): Promise<APIResponse> => {
   if (!body) {
+    getLogger().error('manage recipe error, missing body')
     throw createHttpError(400)
   }
 
