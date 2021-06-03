@@ -14,8 +14,8 @@ describe('API', () => {
       expect(Array.isArray(data)).toBe(true)
     })
 
-    it('POST /ingredients is authenticated', async () => {
-      await expect(request.post(`${LOCAL_BASE_URL}/ingredients`)).rejects.toEqual(
+    it('PUT /ingredients is authenticated', async () => {
+      await expect(request.put(`${LOCAL_BASE_URL}/ingredients`)).rejects.toEqual(
         new Error('Unauthorized')
       )
     })
@@ -41,6 +41,12 @@ describe('API', () => {
 
     it('POST /recipes is authenticated', async () => {
       await expect(request.post(`${LOCAL_BASE_URL}/recipes`)).rejects.toEqual(
+        new Error('Unauthorized')
+      )
+    })
+
+    it('PUT /recipes is authenticated', async () => {
+      await expect(request.put(`${LOCAL_BASE_URL}/recipes`)).rejects.toEqual(
         new Error('Unauthorized')
       )
     })

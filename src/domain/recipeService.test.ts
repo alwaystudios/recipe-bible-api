@@ -2,7 +2,14 @@ import { createDynamoMockClient } from '../../test/factories/testAwsMockClients'
 import { testRecipe } from '@alwaystudios/recipe-bible-sdk'
 import * as getClientsModule from '../clients/getClients'
 import { DDB_TABLE_NAME } from '../constants'
-import { getRecipe, getRecipeQuery, getRecipes, saveRecipe, saveRecipes } from './recipeService'
+import {
+  createRecipe,
+  getRecipe,
+  getRecipeQuery,
+  getRecipes,
+  saveRecipe,
+  saveRecipes,
+} from './recipeService'
 
 const getItem = jest.fn()
 const putItem = jest.fn()
@@ -125,9 +132,69 @@ describe('recipe service', () => {
       const recipe = testRecipe({ title: '' })
       putItem.mockResolvedValueOnce(undefined)
 
-      await expect(saveRecipe(recipe)).rejects.toEqual(new Error('Missing title'))
+      await expect(saveRecipe(recipe)).rejects.toEqual(
+        new Error('Failed to save recipe: missing title')
+      )
 
       expect(putItem).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('create', () => {
+    it('create recipe', async () => {
+      putItem.mockResolvedValueOnce(undefined)
+      getItem.mockResolvedValueOnce({})
+
+      await createRecipe('  my new recipe  ')
+
+      expect(getItem).toHaveBeenCalledTimes(1)
+      expect(getItem).toHaveBeenCalledWith({
+        TableName: DDB_TABLE_NAME,
+        Key: {
+          pk: 'recipe',
+          sk: 'my-new-recipe',
+        } as any,
+      })
+      expect(putItem).toHaveBeenCalledTimes(1)
+      expect(putItem).toHaveBeenCalledWith(
+        {
+          pk: 'recipe',
+          sk: 'my-new-recipe',
+          recipe: { title: 'my-new-recipe' },
+        },
+        DDB_TABLE_NAME
+      )
+    })
+
+    it('create recipe throws an error if recipe already exists', async () => {
+      const recipe = testRecipe()
+      putItem.mockResolvedValueOnce(undefined)
+      getItem.mockResolvedValueOnce({
+        Item: { recipe },
+      })
+
+      await expect(createRecipe(recipe.title)).rejects.toEqual(
+        new Error('Failed to create recipe: existing recipe')
+      )
+
+      expect(getItem).toHaveBeenCalledTimes(1)
+      expect(getItem).toHaveBeenCalledWith({
+        TableName: DDB_TABLE_NAME,
+        Key: {
+          pk: 'recipe',
+          sk: recipe.title,
+        } as any,
+      })
+      expect(putItem).not.toHaveBeenCalled()
+    })
+
+    it('create recipe throws an error if recipe title missing', async () => {
+      await expect(createRecipe('')).rejects.toEqual(
+        new Error('Failed to create recipe: missing title')
+      )
+
+      expect(putItem).not.toHaveBeenCalled()
+      expect(getItem).not.toHaveBeenCalled()
     })
   })
 })

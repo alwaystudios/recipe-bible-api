@@ -2,11 +2,35 @@ import { DDB_TABLE_NAME } from '../constants'
 import { getDynamoClient } from '../clients/getClients'
 import { QueryInput, QueryOutput } from 'aws-sdk/clients/dynamodb'
 import { pathOr } from 'ramda'
-import { Recipe } from '@alwaystudios/recipe-bible-sdk'
+import { kebabify, Recipe } from '@alwaystudios/recipe-bible-sdk'
+
+export const createRecipe = async (title: string): Promise<void> => {
+  if (!title) {
+    throw new Error('Failed to create recipe: missing title')
+  }
+
+  const slug = kebabify(title)
+  const client = getDynamoClient()
+
+  const existing = await getRecipe(slug)
+
+  if (existing) {
+    throw new Error('Failed to create recipe: existing recipe')
+  }
+
+  await client.putItem(
+    {
+      pk: 'recipe',
+      sk: slug,
+      recipe: { title: slug },
+    },
+    DDB_TABLE_NAME
+  )
+}
 
 export const saveRecipe = async (recipe: Recipe): Promise<void> => {
   if (!recipe.title) {
-    throw new Error('Missing title')
+    throw new Error('Failed to save recipe: missing title')
   }
 
   await getDynamoClient().putItem(
@@ -49,8 +73,10 @@ const fromRecipesQuery = (
   )
 
   return recipes
-    .filter((recipe) => recipe.metadata.published === published)
-    .filter((recipe) => (focused === 'all' ? true : recipe.metadata.focused === focused))
+    .filter((recipe) => pathOr(false, ['metadata', 'published'], recipe) === published)
+    .filter((recipe) =>
+      focused === 'all' ? true : pathOr(false, ['metadata', 'focused'], recipe) === focused
+    )
 }
 
 export const getRecipes = async ({ published, focused }: GetRecipeParams): Promise<Recipe[]> =>

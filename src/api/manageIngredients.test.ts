@@ -16,13 +16,13 @@ const saveIngredients = jest.spyOn(ingredientService, 'saveIngredients')
 describe('manage ingredients API', () => {
   afterEach(jest.clearAllMocks)
 
-  describe('POST /ingredients', () => {
+  describe('PUT /ingredients', () => {
     it('saves an ingredient', async () => {
       authMock.mockResolvedValueOnce(testUser())
       const ingredient = random.word()
       saveIngredient.mockResolvedValueOnce(undefined)
       const event = createAPIGatewayEventMock({
-        httpMethod: 'POST',
+        httpMethod: 'PUT',
         path: '/ingredients',
         body: JSON.stringify({ ingredient }),
       })
@@ -41,7 +41,7 @@ describe('manage ingredients API', () => {
     it('rejects missing ingredient data', async () => {
       authMock.mockResolvedValueOnce(testUser())
       const event = createAPIGatewayEventMock({
-        httpMethod: 'POST',
+        httpMethod: 'PUT',
         path: '/ingredients',
         body: JSON.stringify({}),
       })
@@ -61,7 +61,7 @@ describe('manage ingredients API', () => {
       const ingredients = [random.word(), random.word()]
       saveIngredients.mockResolvedValueOnce(undefined)
       const event = createAPIGatewayEventMock({
-        httpMethod: 'POST',
+        httpMethod: 'PUT',
         path: '/ingredients',
         queryStringParameters: {
           import: 'true',
@@ -83,7 +83,7 @@ describe('manage ingredients API', () => {
     it('rejects an empty payload', async () => {
       authMock.mockResolvedValueOnce(testUser())
       const event = createAPIGatewayEventMock({
-        httpMethod: 'POST',
+        httpMethod: 'PUT',
         path: '/ingredients',
         body: '',
       })
@@ -101,7 +101,7 @@ describe('manage ingredients API', () => {
     it('requires the admin role', async () => {
       authMock.mockResolvedValueOnce(testUser({ 'https://recipebible.net/roles': ['non-admin'] }))
       const event = createAPIGatewayEventMock({
-        httpMethod: 'POST',
+        httpMethod: 'PUT',
         path: '/ingredients',
         body: JSON.stringify({ test: '123' }),
       })

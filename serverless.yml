@@ -40,7 +40,7 @@ functions:
     events:
       - http:
           path: /ingredients
-          method: POST
+          method: PUT
 
   recipes:
     handler: src/api/recipes.endpoint
@@ -57,7 +57,10 @@ functions:
     events:
       - http:
           path: /recipes/{name}
-          method: POST
+          method: PUT
+      - http:
+          path: /recipes
+          method: PUT
       - http:
           path: /recipes
           method: POST
