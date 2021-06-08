@@ -4,14 +4,17 @@ import { httpErrorHandler } from '../middleware/httpErrorHandler'
 import { pathOr } from 'ramda'
 import { getRecipe, getRecipes } from '../domain/recipeService'
 import createHttpError from 'http-errors'
+import { toApiRecipeResponseData } from './recipeTransformer'
 
 const handler = async ({
   queryStringParameters,
+  multiValueQueryStringParameters,
   pathParameters,
 }: APIGatewayEvent): Promise<APIResponse> => {
   const slug = pathOr<string | undefined>(undefined, ['name'], pathParameters)
   const _published = pathOr('true', ['published'], queryStringParameters)
   const _focused = pathOr('all', ['focused'], queryStringParameters)
+  const fields = pathOr<string[] | undefined>(undefined, ['field'], multiValueQueryStringParameters)
 
   const data = slug
     ? await getRecipe(slug)
@@ -28,7 +31,7 @@ const handler = async ({
     statusCode: 200,
     body: JSON.stringify({
       status: 'ok',
-      data,
+      data: toApiRecipeResponseData(data, fields),
     }),
   }
 }
