@@ -4,6 +4,7 @@ import * as recipeService from '../domain/recipeService'
 import { testRecipe } from '@alwaystudios/recipe-bible-sdk'
 import { createAPIGatewayEventMock } from '../../test/factories/proxyEventMock'
 import { toApiRecipeResponseData } from './recipeTransformer'
+import { CORS_HEADERS } from '../constants'
 
 const wrapped = wrap(recipes, { handler: 'endpoint' })
 const getRecipes = jest.spyOn(recipeService, 'getRecipes')
@@ -24,6 +25,7 @@ describe('recipes API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(200)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(getRecipes).toHaveBeenCalledTimes(1)
       expect(getRecipes).toHaveBeenCalledWith({ focused: 'all', published: true })
       expect(JSON.parse(result.body)).toMatchObject({
@@ -47,6 +49,7 @@ describe('recipes API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(200)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(getRecipes).toHaveBeenCalledTimes(1)
       expect(getRecipes).toHaveBeenCalledWith({ focused: 'all', published: true })
       expect(JSON.parse(result.body)).toMatchObject({
@@ -65,6 +68,7 @@ describe('recipes API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(500)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
@@ -84,6 +88,7 @@ describe('recipes API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(200)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(getRecipe).toHaveBeenCalledTimes(1)
       expect(getRecipe).toHaveBeenCalledWith('test')
       expect(JSON.parse(result.body)).toMatchObject({
@@ -106,6 +111,7 @@ describe('recipes API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(200)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(getRecipe).toHaveBeenCalledTimes(1)
       expect(getRecipe).toHaveBeenCalledWith('test')
       expect(JSON.parse(result.body)).toMatchObject({
@@ -125,6 +131,7 @@ describe('recipes API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(404)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })

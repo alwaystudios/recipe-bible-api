@@ -5,6 +5,7 @@ import { httpErrorHandler } from '../middleware/httpErrorHandler'
 import { pathOr } from 'ramda'
 import createHttpError from 'http-errors'
 import { saveIngredient, saveIngredients } from '../domain/ingredientService'
+import { CORS_HEADERS } from '../constants'
 
 const handler = async ({ body, queryStringParameters }: APIGatewayEvent): Promise<APIResponse> => {
   if (!body) {
@@ -30,10 +31,7 @@ const handler = async ({ body, queryStringParameters }: APIGatewayEvent): Promis
 
   return {
     statusCode: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true,
-    },
+    headers: CORS_HEADERS,
     body: JSON.stringify({
       status: 'ok',
     }),

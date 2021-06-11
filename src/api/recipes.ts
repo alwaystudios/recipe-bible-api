@@ -5,6 +5,7 @@ import { pathOr } from 'ramda'
 import { getRecipe, getRecipes } from '../domain/recipeService'
 import createHttpError from 'http-errors'
 import { toApiRecipeResponseData } from './recipeTransformer'
+import { CORS_HEADERS } from '../constants'
 
 const handler = async ({
   queryStringParameters,
@@ -29,10 +30,7 @@ const handler = async ({
 
   return {
     statusCode: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true,
-    },
+    headers: CORS_HEADERS,
     body: JSON.stringify({
       status: 'ok',
       data: toApiRecipeResponseData(data, fields),

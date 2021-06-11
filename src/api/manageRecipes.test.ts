@@ -6,6 +6,7 @@ import { createAPIGatewayEventMock } from '../../test/factories/proxyEventMock'
 import { verifyAuth0Token } from '../clients/auth0'
 import * as loggerModule from '../clients/logger'
 import { testLogger } from '../../test/factories/testLogger'
+import { CORS_HEADERS } from '../constants'
 
 jest.mock('../clients/auth0')
 
@@ -35,6 +36,7 @@ describe('manage recipes API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(200)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(saveRecipes).toHaveBeenCalledTimes(1)
       expect(saveRecipes).toHaveBeenCalledWith(recipes)
       expect(JSON.parse(result.body)).toMatchObject({
@@ -53,6 +55,7 @@ describe('manage recipes API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(400)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
@@ -72,6 +75,7 @@ describe('manage recipes API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(403)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
@@ -94,6 +98,7 @@ describe('manage recipes API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(200)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(saveRecipe).toHaveBeenCalledTimes(1)
       expect(saveRecipe).toHaveBeenCalledWith(recipe)
       expect(JSON.parse(result.body)).toMatchObject({
@@ -113,6 +118,7 @@ describe('manage recipes API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(400)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
@@ -131,6 +137,7 @@ describe('manage recipes API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(400)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
@@ -149,6 +156,7 @@ describe('manage recipes API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(403)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
@@ -170,6 +178,7 @@ describe('manage recipes API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(200)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(createRecipe).toHaveBeenCalledTimes(1)
       expect(createRecipe).toHaveBeenCalledWith(title)
       expect(JSON.parse(result.body)).toMatchObject({
@@ -190,6 +199,7 @@ describe('manage recipes API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(400)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
@@ -210,6 +220,7 @@ describe('manage recipes API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(400)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
@@ -229,6 +240,7 @@ describe('manage recipes API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(403)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
@@ -247,6 +259,7 @@ describe('manage recipes API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(404)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })

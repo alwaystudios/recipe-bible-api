@@ -5,6 +5,7 @@ import { testUser } from '@alwaystudios/recipe-bible-sdk'
 import { createAPIGatewayEventMock } from '../../test/factories/proxyEventMock'
 import { verifyAuth0Token } from '../clients/auth0'
 import { random } from 'faker'
+import { CORS_HEADERS } from '../constants'
 
 jest.mock('../clients/auth0')
 
@@ -30,6 +31,7 @@ describe('manage ingredients API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(200)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(saveIngredients).not.toHaveBeenCalled()
       expect(saveIngredient).toHaveBeenCalledTimes(1)
       expect(saveIngredient).toHaveBeenCalledWith(ingredient)
@@ -49,6 +51,7 @@ describe('manage ingredients API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(400)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
@@ -72,6 +75,7 @@ describe('manage ingredients API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(200)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(saveIngredient).not.toHaveBeenCalled()
       expect(saveIngredients).toHaveBeenCalledTimes(1)
       expect(saveIngredients).toHaveBeenCalledWith(ingredients)
@@ -91,6 +95,7 @@ describe('manage ingredients API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(400)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
@@ -109,6 +114,7 @@ describe('manage ingredients API', () => {
       const result = await wrapped.run(event)
 
       expect(result.statusCode).toBe(403)
+      expect(result.headers).toEqual(CORS_HEADERS)
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })

@@ -10,3 +10,8 @@ export const LOCAL_AWS_CONFIG = {
   endpoint: 'http://localhost:4566',
 }
 export const BUCKET = 'recipe-bible-content'
+
+export const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Credentials': true,
+}

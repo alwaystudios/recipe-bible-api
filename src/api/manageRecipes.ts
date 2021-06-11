@@ -6,6 +6,7 @@ import { pathOr } from 'ramda'
 import { createRecipe, saveRecipe, saveRecipes } from '../domain/recipeService'
 import createHttpError from 'http-errors'
 import { getLogger } from '../clients/logger'
+import { CORS_HEADERS } from '../constants'
 
 const handler = async ({
   body,
@@ -42,10 +43,7 @@ const handler = async ({
 
   return {
     statusCode: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true,
-    },
+    headers: CORS_HEADERS,
     body: JSON.stringify({
       status: 'ok',
     }),
