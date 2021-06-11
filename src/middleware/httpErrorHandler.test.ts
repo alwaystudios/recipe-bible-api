@@ -23,7 +23,10 @@ describe('error handler onError', () => {
         status: 'error',
         errors: [{ message: 'Something went wrong' }],
       }),
-      headers: { 'content-type': 'application/json' },
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       statusCode: 500,
     })
   })
@@ -47,7 +50,10 @@ describe('error handler onError', () => {
         status: 'error',
         errors: [{ message: 'Something went wrong' }],
       }),
-      headers: { 'content-type': 'application/json' },
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       statusCode: 400,
     })
   })
@@ -71,7 +77,10 @@ describe('error handler onError', () => {
         status: 'error',
         errors: [{ message: 'Something went wrong' }],
       }),
-      headers: { 'content-type': 'application/json' },
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       statusCode: 500,
     })
   })

@@ -34,6 +34,7 @@ functions:
       - http:
           path: /ingredients
           method: GET
+          cors: true
 
   manageIngredients:
     handler: src/api/manageIngredients.endpoint
@@ -41,6 +42,7 @@ functions:
       - http:
           path: /ingredients
           method: PUT
+          cors: true
 
   recipes:
     handler: src/api/recipes.endpoint
@@ -48,9 +50,11 @@ functions:
       - http:
           path: /recipes/{name}
           method: GET
+          cors: true
       - http:
           path: /recipes
           method: GET
+          cors: true
 
   manageRecipes:
     handler: src/api/manageRecipes.endpoint
@@ -58,9 +62,12 @@ functions:
       - http:
           path: /recipes/{name}
           method: PUT
+          cors: true
       - http:
           path: /recipes
           method: PUT
+          cors: true
       - http:
           path: /recipes
           method: POST
+          cors: true

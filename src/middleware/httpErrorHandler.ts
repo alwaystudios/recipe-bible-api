@@ -22,7 +22,10 @@ export const httpErrorHandler = (): middy.MiddlewareObject<
       Object.assign(handler, {
         response: {
           statusCode,
-          headers: { 'content-type': 'application/json' },
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': true,
+          },
           body: JSON.stringify({ status: 'error', errors }),
         },
       })
