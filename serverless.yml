@@ -26,8 +26,21 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: 'arn:aws:dynamodb:eu-west-1:137374389243:table/recipe-bible'
+    - Effect: 'Allow'
+      Action:
+        - s3:PutObject
+        - s3:GetObject
+      Resource: 'arn:aws:s3:::recipe-bible-content/*'
 
 functions:
+  assets:
+    handler: src/api/assetUpload.endpoint
+    events:
+      - http:
+          path: /asset-upload
+          method: POST
+          cors: true
+
   ingredients:
     handler: src/api/ingredients.endpoint
     events:

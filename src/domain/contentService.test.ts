@@ -32,7 +32,7 @@ describe('content service', () => {
     })
 
     expect(putObject).toHaveBeenCalledTimes(1)
-    expect(putObject).toHaveBeenCalledWith(filename, resizedImage, type)
+    expect(putObject).toHaveBeenCalledWith(`${folder}/${filename}`, resizedImage, type)
     expect(resizeImage).toHaveBeenCalledTimes(1)
     expect(resizeImage).toHaveBeenCalledWith(data, 500)
     expect(objectExists).toHaveBeenCalledTimes(1)
@@ -54,7 +54,7 @@ describe('content service', () => {
     })
 
     expect(putObject).toHaveBeenCalledTimes(1)
-    expect(putObject).toHaveBeenCalledWith(filename, resizedImage, type)
+    expect(putObject).toHaveBeenCalledWith(`${folder}/${filename}`, resizedImage, type)
     expect(resizeImage).toHaveBeenCalledTimes(1)
     expect(resizeImage).toHaveBeenCalledWith(data, 1000)
     expect(objectExists).toHaveBeenCalledTimes(1)

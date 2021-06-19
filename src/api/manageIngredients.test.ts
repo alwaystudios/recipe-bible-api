@@ -30,6 +30,7 @@ describe('manage ingredients API', () => {
 
       const result = await wrapped.run(event)
 
+      expect(authMock).toHaveBeenCalledTimes(1)
       expect(result.statusCode).toBe(200)
       expect(result.headers).toEqual(CORS_HEADERS)
       expect(saveIngredients).not.toHaveBeenCalled()

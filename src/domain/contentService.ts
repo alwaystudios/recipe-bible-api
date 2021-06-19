@@ -1,7 +1,7 @@
 import { getS3Client } from '../clients/getClients'
 import { resizeImage } from '../clients/sharpClient'
 
-type AssetType = 'recipe' | 'ingredient' | 'step'
+export type AssetType = 'recipe' | 'ingredient' | 'step'
 
 type UploadImage = {
   filename: string
@@ -19,7 +19,9 @@ export const uploadImage = async ({
   assetType,
 }: UploadImage): Promise<void> => {
   const client = getS3Client()
-  const exists = await client.objectExists(`${folder}/${filename}`)
+
+  const location = `${folder}/${filename}`
+  const exists = await client.objectExists(location)
 
   if (exists) {
     throw new Error('S3 object already exists')
@@ -28,5 +30,5 @@ export const uploadImage = async ({
   const width = assetType === 'recipe' ? 1000 : 500
   const resizedImage = await resizeImage(data, width)
 
-  await client.putObject(filename, resizedImage, type)
+  await client.putObject(location, resizedImage, type)
 }

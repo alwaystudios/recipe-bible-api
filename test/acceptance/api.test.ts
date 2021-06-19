@@ -2,6 +2,14 @@ import request from 'superagent'
 import { LOCAL_BASE_URL } from '../../src/constants'
 
 describe('API', () => {
+  describe('asset upload', () => {
+    it('POST /asset-upload is authenticated', async () => {
+      await expect(request.post(`${LOCAL_BASE_URL}/asset-upload`)).rejects.toEqual(
+        new Error('Unauthorized')
+      )
+    })
+  })
+
   describe('ingredients', () => {
     it('GET /ingredients', async () => {
       const {
