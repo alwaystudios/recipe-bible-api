@@ -9,6 +9,7 @@ type UploadImage = {
   data: string | Buffer
   type: string
   assetType: AssetType
+  overwrite?: boolean
 }
 
 export const uploadImage = async ({
@@ -17,13 +18,14 @@ export const uploadImage = async ({
   data,
   type,
   assetType,
+  overwrite = true,
 }: UploadImage): Promise<void> => {
   const client = getS3Client()
 
   const location = `${folder}/${filename}`
   const exists = await client.objectExists(location)
 
-  if (exists) {
+  if (exists && !overwrite) {
     throw new Error('S3 object already exists')
   }
 

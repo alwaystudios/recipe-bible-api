@@ -2,6 +2,11 @@ import createHttpError from 'http-errors'
 import { Context, Callback } from 'aws-lambda'
 import middy from '@middy/core'
 import { httpErrorHandler } from './httpErrorHandler'
+import * as loggerModule from '../clients/logger'
+import { testLogger } from '../../test/factories/testLogger'
+
+const err = jest.fn()
+jest.spyOn(loggerModule, 'getLogger').mockReturnValue(testLogger({ err }))
 
 describe('error handler onError', () => {
   it('should use a generic message for status code >= 500', () => {
@@ -9,7 +14,7 @@ describe('error handler onError', () => {
       event: {},
       context: {} as unknown as Context,
       response: {},
-      error: createHttpError(500, 'Do not send that'),
+      error: createHttpError(500, 'boom'),
       callback: null as unknown as Callback,
     }
 
@@ -29,6 +34,8 @@ describe('error handler onError', () => {
       },
       statusCode: 500,
     })
+    expect(err).toHaveBeenCalledTimes(1)
+    expect(err).toHaveBeenCalledWith('Server error: InternalServerError: boom')
   })
 
   it('should return response with statusCode provided and error message', () => {
@@ -59,11 +66,12 @@ describe('error handler onError', () => {
   })
 
   it('should return response with status code 500 when no statusCode provided', () => {
+    const error = new Error('boom')
     const emptyHandler: middy.HandlerLambda = {
       event: {},
       context: {} as unknown as Context,
       response: {},
-      error: { message: 'this is a message' } as Error,
+      error,
       callback: null as unknown as Callback,
     }
 
@@ -83,5 +91,7 @@ describe('error handler onError', () => {
       },
       statusCode: 500,
     })
+    expect(err).toHaveBeenCalledTimes(1)
+    expect(err).toHaveBeenCalledWith('Server error: Error: boom')
   })
 })

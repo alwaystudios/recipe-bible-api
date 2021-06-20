@@ -4,6 +4,11 @@ import * as ingredientService from '../domain/ingredientService'
 import { createAPIGatewayEventMock } from '../../test/factories/proxyEventMock'
 import { random } from 'faker'
 import { CORS_HEADERS } from '../constants'
+import * as loggerModule from '../clients/logger'
+import { testLogger } from '../../test/factories/testLogger'
+
+const err = jest.fn()
+jest.spyOn(loggerModule, 'getLogger').mockReturnValue(testLogger({ err }))
 
 const wrapped = wrap(ingredients, { handler: 'endpoint' })
 const getIngredients = jest.spyOn(ingredientService, 'getIngredients')
@@ -44,6 +49,8 @@ describe('ingredients API', () => {
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
+      expect(err).toHaveBeenCalledTimes(1)
+      expect(err).toHaveBeenCalledWith('Server error: Error: boom')
     })
   })
 })

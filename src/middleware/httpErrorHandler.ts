@@ -1,6 +1,7 @@
 import middy from '@middy/core'
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda'
 import { pathOr } from 'ramda'
+import { getLogger } from '../clients/logger'
 
 export const httpErrorHandler = (): middy.MiddlewareObject<
   APIGatewayProxyEvent,
@@ -12,6 +13,10 @@ export const httpErrorHandler = (): middy.MiddlewareObject<
       const { error } = handler
 
       const statusCode = pathOr(500, ['statusCode'], error)
+
+      if (statusCode === 500) {
+        getLogger().error(`Server error: ${error}`)
+      }
 
       // eslint-disable-next-line functional/no-let
       let errors = [{ message: 'Something went wrong' }]

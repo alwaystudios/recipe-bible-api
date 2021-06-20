@@ -5,6 +5,11 @@ import { testRecipe } from '@alwaystudios/recipe-bible-sdk'
 import { createAPIGatewayEventMock } from '../../test/factories/proxyEventMock'
 import { toApiRecipeResponseData } from './recipeTransformer'
 import { CORS_HEADERS } from '../constants'
+import * as loggerModule from '../clients/logger'
+import { testLogger } from '../../test/factories/testLogger'
+
+const err = jest.fn()
+jest.spyOn(loggerModule, 'getLogger').mockReturnValue(testLogger({ err }))
 
 const wrapped = wrap(recipes, { handler: 'endpoint' })
 const getRecipes = jest.spyOn(recipeService, 'getRecipes')
@@ -72,6 +77,8 @@ describe('recipes API', () => {
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'error',
       })
+      expect(err).toHaveBeenCalledTimes(1)
+      expect(err).toHaveBeenCalledWith('Server error: Error: boom')
     })
   })
 

@@ -61,7 +61,7 @@ describe('content service', () => {
     expect(objectExists).toHaveBeenCalledWith(`${folder}/${filename}`)
   })
 
-  it('throws an error if the object already exists', async () => {
+  it('throws an error if the object already exists and overwright is false', async () => {
     objectExists.mockResolvedValueOnce(true)
 
     await expect(
@@ -71,11 +71,34 @@ describe('content service', () => {
         data,
         type,
         assetType: 'recipe',
+        overwrite: false,
       })
     ).rejects.toEqual(new Error('S3 object already exists'))
 
     expect(putObject).not.toHaveBeenCalled()
     expect(resizeImage).not.toHaveBeenCalled()
+    expect(objectExists).toHaveBeenCalledTimes(1)
+    expect(objectExists).toHaveBeenCalledWith(`${folder}/${filename}`)
+  })
+
+  it('overwrights an ingredient image', async () => {
+    const resizedImage = Buffer.from(data)
+    objectExists.mockResolvedValueOnce(true)
+    resizeImage.mockResolvedValueOnce(resizedImage)
+    putObject.mockResolvedValueOnce(undefined)
+
+    await uploadImage({
+      filename,
+      folder,
+      data,
+      type,
+      assetType: 'ingredient',
+    })
+
+    expect(putObject).toHaveBeenCalledTimes(1)
+    expect(putObject).toHaveBeenCalledWith(`${folder}/${filename}`, resizedImage, type)
+    expect(resizeImage).toHaveBeenCalledTimes(1)
+    expect(resizeImage).toHaveBeenCalledWith(data, 500)
     expect(objectExists).toHaveBeenCalledTimes(1)
     expect(objectExists).toHaveBeenCalledWith(`${folder}/${filename}`)
   })
