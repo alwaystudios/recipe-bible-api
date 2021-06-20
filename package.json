@@ -25,7 +25,8 @@
     "test:watch": "jest --watch",
     "typecheck": "tsc --noEmit",
     "local:up": "make -C ./local up",
-    "local:down": "make -C ./local down"
+    "local:down": "make -C ./local down",
+    "purge": "ts-node --files --project tsconfig.json test/purge.cmd"
   },
   "husky": {
     "hooks": {
