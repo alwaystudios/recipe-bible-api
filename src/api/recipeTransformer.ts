@@ -1,10 +1,19 @@
 import { Recipe } from '@alwaystudios/recipe-bible-sdk'
 import { pathOr } from 'ramda'
 
-const toApiRecipe = (recipe: Recipe, fields?: string[]): Partial<Recipe> =>
-  fields
+const DEFAULT_METADATA = {
+  focused: false,
+  published: false,
+}
+
+const toApiRecipe = (recipe: Recipe, fields?: string[]): Partial<Recipe> => {
+  const metadata = recipe.metadata || DEFAULT_METADATA
+  const _recipe = fields
     ? fields.reduce((acc, field) => ({ ...acc, [field]: pathOr(undefined, [field], recipe) }), {})
     : recipe
+
+  return { ..._recipe, metadata }
+}
 
 const toApiRecipes = (recipes: Recipe[], fields?: string[]): Array<Partial<Recipe>> =>
   fields ? recipes.map((recipe) => toApiRecipe(recipe, fields)) : recipes

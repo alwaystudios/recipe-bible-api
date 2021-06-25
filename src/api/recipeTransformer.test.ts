@@ -8,6 +8,7 @@ describe('api recipe transformer', () => {
     expect(result).toEqual({
       imgSrc: recipe.imgSrc,
       title: recipe.title,
+      metadata: recipe.metadata,
     })
   })
 
@@ -17,12 +18,19 @@ describe('api recipe transformer', () => {
     expect(result).toEqual(recipe)
   })
 
+  it('transforms a single recipe to api data without metadata to defaults', () => {
+    const recipe = testRecipe({ metadata: undefined })
+    const result = toApiRecipeResponseData(recipe)
+    expect(result).toEqual({ ...recipe, metadata: { focused: false, published: false } })
+  })
+
   it('ignores unknown keys', () => {
     const recipe = testRecipe()
     const result = toApiRecipeResponseData(recipe, ['imgSrc', 'title', 'unknown'])
     expect(result).toEqual({
       imgSrc: recipe.imgSrc,
       title: recipe.title,
+      metadata: recipe.metadata,
     })
   })
 
@@ -35,6 +43,7 @@ describe('api recipe transformer', () => {
       recipes.map((recipe) => ({
         imgSrc: recipe.imgSrc,
         title: recipe.title,
+        metadata: recipe.metadata,
       }))
     )
   })
