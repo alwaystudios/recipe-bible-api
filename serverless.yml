@@ -28,8 +28,7 @@ provider:
       Resource: 'arn:aws:dynamodb:eu-west-1:137374389243:table/recipe-bible'
     - Effect: 'Allow'
       Action:
-        - s3:PutObject
-        - s3:GetObject
+        - s3:*
       Resource: 'arn:aws:s3:::recipe-bible-content/*'
 
 functions:
@@ -83,4 +82,12 @@ functions:
       - http:
           path: /recipes
           method: POST
+          cors: true
+
+  deleteRecipe:
+    handler: src/api/deleteRecipe.endpoint
+    events:
+      - http:
+          path: /recipes/{name}
+          method: DELETE
           cors: true

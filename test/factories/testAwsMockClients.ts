@@ -21,8 +21,10 @@ export const createS3MockClient = ({
   getObject = jest.fn(),
   putObject = jest.fn(),
   objectExists = jest.fn(),
+  rmdir = jest.fn(),
 } = {}): S3Client => ({
   getObject,
   putObject,
   objectExists,
+  rmdir,
 })

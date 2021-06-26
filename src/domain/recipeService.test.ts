@@ -1,22 +1,28 @@
-import { createDynamoMockClient } from '../../test/factories/testAwsMockClients'
+import { createDynamoMockClient, createS3MockClient } from '../../test/factories/testAwsMockClients'
 import { testRecipe } from '@alwaystudios/recipe-bible-sdk'
 import * as getClientsModule from '../clients/getClients'
 import { DDB_TABLE_NAME } from '../constants'
 import {
   createRecipe,
+  deleteRecipe,
   getRecipe,
   getRecipeQuery,
   getRecipes,
   saveRecipe,
   saveRecipes,
 } from './recipeService'
+import { lorem } from 'faker'
 
+const rmdir = jest.fn()
+jest.spyOn(getClientsModule, 'getS3Client').mockImplementation(() => createS3MockClient({ rmdir }))
+
+const deleteItem = jest.fn()
 const getItem = jest.fn()
 const putItem = jest.fn()
 const query = jest.fn()
 jest
   .spyOn(getClientsModule, 'getDynamoClient')
-  .mockImplementation(() => createDynamoMockClient({ putItem, query, getItem }))
+  .mockImplementation(() => createDynamoMockClient({ putItem, query, getItem, deleteItem }))
 
 describe('recipe service', () => {
   afterEach(jest.clearAllMocks)
@@ -195,6 +201,27 @@ describe('recipe service', () => {
 
       expect(putItem).not.toHaveBeenCalled()
       expect(getItem).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('delete', () => {
+    it('delete a recipe', async () => {
+      const title = lorem.word()
+      deleteItem.mockResolvedValueOnce(undefined)
+      rmdir.mockResolvedValueOnce(undefined)
+
+      await deleteRecipe(title)
+
+      expect(rmdir).toHaveBeenCalledTimes(1)
+      expect(rmdir).toHaveBeenCalledWith(`recipes/${title}`)
+      expect(deleteItem).toHaveBeenCalledTimes(1)
+      expect(deleteItem).toHaveBeenCalledWith({
+        Key: {
+          pk: 'recipe',
+          sk: title,
+        },
+        TableName: DDB_TABLE_NAME,
+      })
     })
   })
 })

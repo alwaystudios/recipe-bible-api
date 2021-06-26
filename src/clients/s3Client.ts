@@ -3,6 +3,7 @@ import { Readable } from 'stream'
 import { BUCKET } from '../constants'
 
 export interface S3Client {
+  rmdir: (dir: string) => Promise<void>
   getObject: (filename: string) => Promise<S3.GetObjectOutput>
   putObject: (
     filename: string,
@@ -14,6 +15,34 @@ export interface S3Client {
 
 export const createS3Client = (s3: S3): S3Client => {
   const client = s3
+
+  const rmdir = async (dir: string): Promise<void> => {
+    const listedObjects = await s3
+      .listObjectsV2({
+        Bucket: BUCKET,
+        Prefix: dir,
+      })
+      .promise()
+
+    if (listedObjects?.Contents?.length === 0) {
+      return
+    }
+
+    const Objects = listedObjects!.Contents!.reduce<S3.ObjectIdentifierList>((acc, { Key }) => {
+      return Key ? [...acc, { Key }] : acc
+    }, [])
+
+    await s3
+      .deleteObjects({
+        Bucket: BUCKET,
+        Delete: { Objects },
+      })
+      .promise()
+
+    if (listedObjects.IsTruncated) {
+      await rmdir(dir)
+    }
+  }
 
   const getObject = async (filename: string): Promise<S3.GetObjectOutput> =>
     client
@@ -54,6 +83,7 @@ export const createS3Client = (s3: S3): S3Client => {
       })
 
   return {
+    rmdir,
     getObject,
     objectExists,
     putObject,

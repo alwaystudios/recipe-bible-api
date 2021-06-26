@@ -1,5 +1,5 @@
 import { DDB_TABLE_NAME } from '../constants'
-import { getDynamoClient } from '../clients/getClients'
+import { getDynamoClient, getS3Client } from '../clients/getClients'
 import { QueryInput, QueryOutput } from 'aws-sdk/clients/dynamodb'
 import { pathOr } from 'ramda'
 import { kebabify, Recipe } from '@alwaystudios/recipe-bible-sdk'
@@ -94,3 +94,15 @@ export const getRecipe = async (slug: string): Promise<Recipe | undefined> =>
       } as any,
     })
     .then((res) => pathOr<Recipe | undefined>(undefined, ['Item', 'recipe'], res))
+
+export const deleteRecipe = async (title: string): Promise<void> => {
+  await getDynamoClient().deleteItem({
+    TableName: DDB_TABLE_NAME,
+    Key: {
+      pk: 'recipe',
+      sk: title,
+    } as any,
+  })
+
+  await getS3Client().rmdir(`recipes/${title}`)
+}

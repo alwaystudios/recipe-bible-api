@@ -47,16 +47,23 @@ describe('API', () => {
       )
     })
 
-    it('POST /recipes is authenticated', async () => {
-      await expect(request.post(`${LOCAL_BASE_URL}/recipes`)).rejects.toEqual(
-        new Error('Unauthorized')
-      )
-    })
-
-    it('PUT /recipes is authenticated', async () => {
-      await expect(request.put(`${LOCAL_BASE_URL}/recipes`)).rejects.toEqual(
-        new Error('Unauthorized')
-      )
+    test.each([
+      ['post', 'recipes'],
+      ['put', 'recipes'],
+      ['delete', 'recipes/test'],
+    ])('%s /%s is authenticated', async (method: string, url: string) => {
+      const req =
+        method === 'post'
+          ? request.post
+          : method === 'put'
+          ? request.put
+          : method === 'delete'
+          ? request.delete
+          : undefined
+      if (!req) {
+        throw new Error(`http method: ${method} not supported`)
+      }
+      await expect(req(`${LOCAL_BASE_URL}/${url}`)).rejects.toEqual(new Error('Unauthorized'))
     })
   })
 })
