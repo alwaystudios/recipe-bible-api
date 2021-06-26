@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-var-requires */
 
 import fs from 'fs'
-import { createS3Client, DIR } from '../src/clients/s3Client'
+import { parse } from 'path'
+import { createS3Client } from '../src/clients/s3Client'
 import { S3 } from 'aws-sdk'
 const { region, accessKeyId, secretAccessKey } = require('../secrets.json')
 
@@ -10,19 +11,26 @@ const BASE_FOLDER = './migrate'
 export const testS3Client = createS3Client(new S3({ region, accessKeyId, secretAccessKey }))
 
 const migrateAsset = async (key: string) => {
-  const asset = await testS3Client.getObject(key)
-  const unix_friendly_folder_name = key.replace(`'`, '-')
-
-  console.log(asset)
-
-  if (asset.ContentType === DIR) {
-    fs.mkdirSync(`${BASE_FOLDER}/${unix_friendly_folder_name}`, { recursive: true })
+  if (!key) {
     return
   }
 
-  // fs.writeFileSync(`${BASE_FOLDER}/${unix_friendly_folder_name}`, asset.Body as string, {
-  //   flag: 'wx',
-  // })
+  if (key.endsWith('/')) {
+    return
+  }
+
+  const { dir, base } = parse(key)
+  const fullpath = `${BASE_FOLDER}/${dir}`
+
+  if (!fs.existsSync(fullpath)) {
+    fs.mkdirSync(fullpath, { recursive: true })
+  }
+
+  const asset = await testS3Client.getObject(key)
+  const filename = `${fullpath}/${base}`
+  fs.writeFileSync(filename, asset.Body as string, {
+    flag: 'wx',
+  })
 }
 
 const migrateFolder = async (dir: string) => {
@@ -34,8 +42,8 @@ const migrateFolder = async (dir: string) => {
 }
 
 const migrate = async () => {
-  // await migrateFolder('recipes')
   await migrateFolder('ingredients')
+  await migrateFolder('recipes')
 }
 
 migrate()

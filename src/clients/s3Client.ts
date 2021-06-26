@@ -2,8 +2,6 @@ import { S3, AWSError } from 'aws-sdk'
 import { Readable } from 'stream'
 import { BUCKET } from '../constants'
 
-export const DIR = 'application/x-directory'
-
 export interface S3Client {
   ls: (dir?: string) => Promise<string[]>
   rmdir: (dir: string) => Promise<void>
