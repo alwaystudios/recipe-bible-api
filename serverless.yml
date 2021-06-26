@@ -30,6 +30,10 @@ provider:
       Action:
         - s3:*
       Resource: 'arn:aws:s3:::recipe-bible-content/*'
+    - Effect: 'Allow'
+      Action:
+        - s3:*
+      Resource: 'arn:aws:s3:::recipe-bible-content'
 
 functions:
   assets:
