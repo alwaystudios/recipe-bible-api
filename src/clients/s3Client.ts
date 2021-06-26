@@ -2,7 +2,10 @@ import { S3, AWSError } from 'aws-sdk'
 import { Readable } from 'stream'
 import { BUCKET } from '../constants'
 
+export const DIR = 'application/x-directory'
+
 export interface S3Client {
+  ls: (dir?: string) => Promise<string[]>
   rmdir: (dir: string) => Promise<void>
   getObject: (filename: string) => Promise<S3.GetObjectOutput>
   putObject: (
@@ -15,6 +18,15 @@ export interface S3Client {
 
 export const createS3Client = (s3: S3): S3Client => {
   const client = s3
+
+  const ls = async (dir?: string) =>
+    s3
+      .listObjectsV2({
+        Bucket: BUCKET,
+        Prefix: dir,
+      })
+      .promise()
+      .then(({ Contents }) => (Contents || []).map(({ Key }) => Key || 'missing key'))
 
   const rmdir = async (dir: string): Promise<void> => {
     const listedObjects = await s3
@@ -83,6 +95,7 @@ export const createS3Client = (s3: S3): S3Client => {
       })
 
   return {
+    ls,
     rmdir,
     getObject,
     objectExists,
