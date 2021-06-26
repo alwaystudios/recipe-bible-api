@@ -56,10 +56,11 @@ describe('asset upload API', () => {
     })
 
     test.each([
-      ['', 'folder', 'type'],
-      ['filename', '', 'type'],
-      ['filename', 'folder', ''],
-    ])('rejects an incomplete payload', async (filename, folder, type) => {
+      ['', 'folder', 'type', file],
+      ['filename', '', 'type', file],
+      ['filename', 'folder', '', file],
+      ['filename', 'folder', type, undefined],
+    ])('rejects an incomplete payload', async (filename, folder, type, file) => {
       authMock.mockResolvedValueOnce(testUser())
       const body = JSON.stringify({ file, folder, type, filename })
 
