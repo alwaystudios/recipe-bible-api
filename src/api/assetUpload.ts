@@ -5,25 +5,22 @@ import { CORS_HEADERS } from '../constants'
 import { pathOr } from 'ramda'
 import { AssetType, uploadImage } from '../domain/contentService'
 import { authenticate } from '../middleware/auth'
-import { parse } from 'lambda-multipart-parser'
 import createHttpError from 'http-errors'
 import { getLogger } from '../clients/logger'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const handler = async (event: APIGatewayEvent): Promise<APIResponse> => {
+const handler = async ({ body, queryStringParameters }: APIGatewayEvent): Promise<APIResponse> => {
   const logger = getLogger()
 
-  const assetType = pathOr<AssetType>('recipe', ['assetType'], event.queryStringParameters)
-  const result = await parse(event)
-  const asset = pathOr(undefined, ['files', 0, 'content'], result)
-  const { filename, folder, type } = result
+  const assetType = pathOr<AssetType>('recipe', ['assetType'], queryStringParameters)
+  const { filename, folder, type, file } = JSON.parse(body || '{}')
 
-  if (!asset || !filename || !folder || !type) {
+  if (!file || !filename || !folder || !type) {
     logger.error('upload asset, invalid payload')
     throw createHttpError(400)
   }
 
-  const data = Buffer.from(asset, 'base64')
+  const data = Buffer.from(file.split('data:image/jpeg;base64,').pop(), 'base64')
   await uploadImage({ assetType, filename, folder, data, type })
 
   return {

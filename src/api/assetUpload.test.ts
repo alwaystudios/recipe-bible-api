@@ -7,9 +7,6 @@ import { verifyAuth0Token } from '../clients/auth0'
 import * as loggerModule from '../clients/logger'
 import { testLogger } from '../../test/factories/testLogger'
 import { CORS_HEADERS } from '../constants'
-import { parse } from 'lambda-multipart-parser'
-
-jest.mock('lambda-multipart-parser')
 
 jest.mock('../clients/auth0')
 
@@ -20,19 +17,18 @@ const authMock = verifyAuth0Token as jest.Mock
 const wrapped = wrap(assetUpload, { handler: 'endpoint' })
 const uploadImage = jest.spyOn(contentService, 'uploadImage')
 
+const file = 'data:image/jpeg;base64,1234'
+const folder = 'some-folder'
+const type = 'file-type'
+const filename = 'filename'
+
 describe('asset upload API', () => {
   afterEach(jest.clearAllMocks)
 
   describe('POST /asset-upload', () => {
     it('uploads an image', async () => {
-      const body = JSON.stringify({ test: '1234' })
-      const files = [{ content: 'content' }] as any
-      ;(parse as any).mockResolvedValueOnce({
-        filename: 'filename',
-        folder: 'folder',
-        type: 'type',
-        files,
-      })
+      const body = JSON.stringify({ file, folder, type, filename })
+
       authMock.mockResolvedValueOnce(testUser())
       uploadImage.mockResolvedValueOnce(undefined)
       const event = createAPIGatewayEventMock({
@@ -43,18 +39,16 @@ describe('asset upload API', () => {
 
       const result = await wrapped.run(event)
 
-      expect(parse).toHaveBeenCalledTimes(1)
-      expect(parse).toHaveBeenCalledWith(expect.objectContaining({ body }))
       expect(authMock).toHaveBeenCalledTimes(1)
       expect(result.statusCode).toBe(200)
       expect(result.headers).toEqual(CORS_HEADERS)
       expect(uploadImage).toHaveBeenCalledTimes(1)
       expect(uploadImage).toHaveBeenCalledWith({
         assetType: 'recipe',
-        data: Buffer.from('content', 'base64'),
-        filename: 'filename',
-        folder: 'folder',
-        type: 'type',
+        data: Buffer.from('1234', 'base64'),
+        filename,
+        folder,
+        type,
       })
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'ok',
@@ -62,22 +56,17 @@ describe('asset upload API', () => {
     })
 
     test.each([
-      ['', 'folder', 'type', [{ content: 'content' }]],
-      ['filename', '', 'type', [{ content: 'content' }]],
-      ['filename', 'folder', '', [{ content: 'content' }]],
-      ['filename', 'folder', 'type', []],
-    ])('rejects an incomplete payload', async (filename, folder, type, files) => {
+      ['', 'folder', 'type'],
+      ['filename', '', 'type'],
+      ['filename', 'folder', ''],
+    ])('rejects an incomplete payload', async (filename, folder, type) => {
       authMock.mockResolvedValueOnce(testUser())
-      ;(parse as any).mockResolvedValueOnce({
-        filename,
-        folder,
-        type,
-        files,
-      })
+      const body = JSON.stringify({ file, folder, type, filename })
 
       const event = createAPIGatewayEventMock({
         httpMethod: 'POST',
         path: '/asset-upload',
+        body,
       })
 
       const result = await wrapped.run(event)
