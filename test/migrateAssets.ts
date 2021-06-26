@@ -28,9 +28,13 @@ const migrateAsset = async (key: string) => {
 
   const asset = await testS3Client.getObject(key)
   const filename = `${fullpath}/${base}`
-  fs.writeFileSync(filename, asset.Body as string, {
-    flag: 'wx',
-  })
+  try {
+    fs.writeFileSync(filename, asset.Body as string, {
+      flag: 'wx',
+    })
+  } catch (error) {
+    console.error(`Failed to save asset: ${key}`)
+  }
 }
 
 const migrateFolder = async (dir: string) => {
