@@ -13,7 +13,7 @@ jest
 
 const folder = 'folder'
 const filename = 'filename.png'
-const data = 'some data'
+const data = Buffer.from('some data')
 const type = 'png'
 
 describe('content service', () => {

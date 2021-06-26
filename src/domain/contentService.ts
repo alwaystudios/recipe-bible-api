@@ -1,5 +1,4 @@
 import { getS3Client } from '../clients/getClients'
-import { getLogger } from '../clients/logger'
 import { resizeImage } from '../clients/sharpClient'
 
 export type AssetType = 'recipe' | 'ingredient' | 'step'
@@ -7,7 +6,7 @@ export type AssetType = 'recipe' | 'ingredient' | 'step'
 type UploadImage = {
   filename: string
   folder: string
-  data: string | Buffer
+  data: Buffer
   type: string
   assetType: AssetType
   overwrite?: boolean
@@ -22,17 +21,6 @@ export const uploadImage = async ({
   overwrite = true,
 }: UploadImage): Promise<void> => {
   const client = getS3Client()
-  const logger = getLogger()
-  logger.info(
-    JSON.stringify({
-      filename,
-      folder,
-      type,
-      assetType,
-      overwrite,
-    })
-  )
-  logger.info(data)
 
   const location = `${folder}/${filename}`
   const exists = await client.objectExists(location)

@@ -51,7 +51,7 @@ describe('asset upload API', () => {
       expect(uploadImage).toHaveBeenCalledTimes(1)
       expect(uploadImage).toHaveBeenCalledWith({
         assetType: 'recipe',
-        data: 'content',
+        data: Buffer.from('content', 'base64'),
         filename: 'filename',
         folder: 'folder',
         type: 'type',

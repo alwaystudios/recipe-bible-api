@@ -13,25 +13,29 @@ const migrateAsset = async (key: string) => {
   const asset = await testS3Client.getObject(key)
   const unix_friendly_folder_name = key.replace(`'`, '-')
 
+  console.log(asset)
+
   if (asset.ContentType === DIR) {
     fs.mkdirSync(`${BASE_FOLDER}/${unix_friendly_folder_name}`, { recursive: true })
     return
   }
 
-  fs.writeFileSync(`${BASE_FOLDER}/${unix_friendly_folder_name}`, asset.Body?.toString() || '', {
-    flag: 'wx',
-  })
+  // fs.writeFileSync(`${BASE_FOLDER}/${unix_friendly_folder_name}`, asset.Body as string, {
+  //   flag: 'wx',
+  // })
 }
 
 const migrateFolder = async (dir: string) => {
   const contents = await testS3Client.ls(dir)
 
-  await Promise.all(contents.map(migrateAsset))
+  for (const asset of contents) {
+    await migrateAsset(asset)
+  }
 }
 
 const migrate = async () => {
-  await migrateFolder('recipes')
-  // await migrateFolder('ingredients')
+  // await migrateFolder('recipes')
+  await migrateFolder('ingredients')
 }
 
 migrate()

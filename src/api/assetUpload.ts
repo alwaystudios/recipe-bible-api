@@ -15,14 +15,15 @@ const handler = async (event: APIGatewayEvent): Promise<APIResponse> => {
 
   const assetType = pathOr<AssetType>('recipe', ['assetType'], event.queryStringParameters)
   const result = await parse(event)
-  const data = pathOr(undefined, ['files', 0, 'content'], result)
+  const asset = pathOr(undefined, ['files', 0, 'content'], result)
   const { filename, folder, type } = result
 
-  if (!data || !filename || !folder || !type) {
+  if (!asset || !filename || !folder || !type) {
     logger.error('upload asset, invalid payload')
     throw createHttpError(400)
   }
 
+  const data = Buffer.from(asset, 'base64')
   await uploadImage({ assetType, filename, folder, data, type })
 
   return {
