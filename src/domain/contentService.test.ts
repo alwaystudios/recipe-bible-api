@@ -16,7 +16,7 @@ const filename = 'filename.png'
 const data = 'some data'
 const type = 'png'
 
-describe.skip('content service', () => {
+describe('content service', () => {
   it('uploads an ingredient image', async () => {
     const resizedImage = Buffer.from(data)
     objectExists.mockResolvedValueOnce(false)

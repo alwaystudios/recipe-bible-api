@@ -5,7 +5,7 @@ import { createWriteStream } from 'fs'
 import { pathOr } from 'ramda'
 const { host, password } = require('../secrets.json')
 
-const writeStream = createWriteStream('./recipe-bible-export.json')
+const writeStream = createWriteStream('./migrate/recipe-bible-export.json')
 
 const pool = new Pool({
   min: 10,
