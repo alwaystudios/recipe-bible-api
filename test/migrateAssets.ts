@@ -33,7 +33,9 @@ const migrateAsset = async (key: string) => {
       flag: 'wx',
     })
   } catch (error) {
-    console.error(`Failed to save asset: ${key}`)
+    if (!error.message.includes('file already exists')) {
+      console.error(`Failed to save asset: ${key}`, error)
+    }
   }
 }
 
