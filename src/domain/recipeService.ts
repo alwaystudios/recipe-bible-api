@@ -58,14 +58,14 @@ export const getRecipeQuery = {
 } as QueryInput
 
 type GetRecipeParams = {
-  published: boolean
-  focused: boolean | 'all'
+  published: BooleanOrAll
+  focused: BooleanOrAll
 }
 
 const fromRecipesQuery = (
   res: QueryOutput,
-  published: boolean,
-  focused: boolean | 'all'
+  published: BooleanOrAll,
+  focused: BooleanOrAll
 ): Recipe[] => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recipes: any[] = pathOr([], ['Items'], res).map((item) =>
@@ -73,7 +73,9 @@ const fromRecipesQuery = (
   )
 
   return recipes
-    .filter((recipe) => pathOr(false, ['metadata', 'published'], recipe) === published)
+    .filter((recipe) =>
+      published === 'all' ? true : pathOr(false, ['metadata', 'published'], recipe) === published
+    )
     .filter((recipe) =>
       focused === 'all' ? true : pathOr(false, ['metadata', 'focused'], recipe) === focused
     )

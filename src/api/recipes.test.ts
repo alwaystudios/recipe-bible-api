@@ -19,7 +19,7 @@ describe('recipes API', () => {
   beforeEach(jest.clearAllMocks)
 
   describe('GET /recipes', () => {
-    it('returns all recipes', async () => {
+    it('returns all published recipes', async () => {
       const data = [testRecipe(), testRecipe()]
       getRecipes.mockResolvedValueOnce(data)
       const event = createAPIGatewayEventMock({
@@ -33,6 +33,43 @@ describe('recipes API', () => {
       expect(result.headers).toEqual(CORS_HEADERS)
       expect(getRecipes).toHaveBeenCalledTimes(1)
       expect(getRecipes).toHaveBeenCalledWith({ focused: 'all', published: true })
+      expect(JSON.parse(result.body)).toMatchObject({
+        status: 'ok',
+        data,
+      })
+    })
+
+    test.each([
+      ['true', 'all'],
+      ['true', 'false'],
+      ['true', 'true'],
+      ['all', 'false'],
+      ['all', 'true'],
+      ['all', 'all'],
+      ['false', 'false'],
+      ['false', 'all'],
+      ['false', 'true'],
+    ])('returns published: %s, focused: %s', async (published: string, focused: string) => {
+      const data = [testRecipe(), testRecipe()]
+      getRecipes.mockResolvedValueOnce(data)
+      const event = createAPIGatewayEventMock({
+        httpMethod: 'GET',
+        path: '/recipes',
+        queryStringParameters: {
+          published,
+          focused,
+        },
+      })
+
+      const result = await wrapped.run(event)
+
+      const _focused = focused === 'all' ? 'all' : focused === 'true'
+      const _published = published === 'all' ? 'all' : published === 'true'
+
+      expect(result.statusCode).toBe(200)
+      expect(result.headers).toEqual(CORS_HEADERS)
+      expect(getRecipes).toHaveBeenCalledTimes(1)
+      expect(getRecipes).toHaveBeenCalledWith({ focused: _focused, published: _published })
       expect(JSON.parse(result.body)).toMatchObject({
         status: 'ok',
         data,

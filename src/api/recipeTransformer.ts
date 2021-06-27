@@ -7,7 +7,7 @@ const DEFAULT_METADATA = {
 }
 
 const toApiRecipe = (recipe: Recipe, fields?: string[]): Partial<Recipe> => {
-  const metadata = recipe.metadata || DEFAULT_METADATA
+  const metadata = { ...DEFAULT_METADATA, ...recipe.metadata }
   const _recipe = fields
     ? fields.reduce((acc, field) => ({ ...acc, [field]: pathOr(undefined, [field], recipe) }), {})
     : recipe

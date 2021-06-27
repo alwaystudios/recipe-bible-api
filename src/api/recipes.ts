@@ -7,20 +7,22 @@ import createHttpError from 'http-errors'
 import { toApiRecipeResponseData } from './recipeTransformer'
 import { CORS_HEADERS } from '../constants'
 
+type AllTrueFalse = 'all' | 'true' | 'false'
+
 const handler = async ({
   queryStringParameters,
   multiValueQueryStringParameters,
   pathParameters,
 }: APIGatewayEvent): Promise<APIResponse> => {
   const slug = pathOr<string | undefined>(undefined, ['name'], pathParameters)
-  const _published = pathOr('true', ['published'], queryStringParameters)
-  const _focused = pathOr('all', ['focused'], queryStringParameters)
+  const _published = pathOr<AllTrueFalse>('true', ['published'], queryStringParameters)
+  const _focused = pathOr<AllTrueFalse>('all', ['focused'], queryStringParameters)
   const fields = pathOr<string[] | undefined>(undefined, ['field'], multiValueQueryStringParameters)
 
   const data = slug
     ? await getRecipe(slug)
     : await getRecipes({
-        published: _published === 'true',
+        published: _published === 'all' ? 'all' : _published === 'true',
         focused: _focused === 'all' ? 'all' : _focused === 'true',
       })
 

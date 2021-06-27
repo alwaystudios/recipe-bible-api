@@ -7,3 +7,5 @@ declare type APIResponse = {
     [header: string]: boolean | number | string
   }
 }
+
+declare type BooleanOrAll = boolean | 'all'

@@ -27,17 +27,32 @@ jest
 describe('recipe service', () => {
   afterEach(jest.clearAllMocks)
 
-  test.each<[boolean, boolean | 'all']>([
+  test.each<[BooleanOrAll, BooleanOrAll]>([
     [true, 'all'],
     [true, false],
+    [true, true],
+    ['all', false],
+    ['all', true],
+    ['all', 'all'],
     [false, false],
     [false, 'all'],
+    [false, true],
   ])(
     'gets publihsed recipes with all types of focus',
-    async (published: boolean, focused: boolean | 'all') => {
+    async (published: BooleanOrAll, focused: BooleanOrAll) => {
       const recipes = [
-        testRecipe({ metadata: { published, focused: focused === 'all' ? true : focused } }),
-        testRecipe({ metadata: { published, focused: focused === 'all' ? true : focused } }),
+        testRecipe({
+          metadata: {
+            published: published === 'all' ? true : Boolean(published),
+            focused: focused === 'all' ? true : Boolean(focused),
+          },
+        }),
+        testRecipe({
+          metadata: {
+            published: published === 'all' ? true : Boolean(published),
+            focused: focused === 'all' ? true : Boolean(focused),
+          },
+        }),
       ]
       query.mockResolvedValueOnce({
         Items: recipes.map((recipe) => ({ recipe, sk: recipe.title })),
