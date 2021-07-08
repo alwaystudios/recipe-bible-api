@@ -30,7 +30,7 @@ export const createS3Client = (s3: S3): S3Client => {
     const listedObjects = await s3
       .listObjectsV2({
         Bucket: BUCKET,
-        Prefix: dir,
+        Prefix: `${dir}/`,
       })
       .promise()
 
