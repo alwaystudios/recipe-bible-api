@@ -98,7 +98,6 @@ describe('asset upload API', () => {
         status: 'error',
       })
       expect(uploadImage).not.toHaveBeenCalled()
-      expect(uploadImage).not.toHaveBeenCalled()
     })
   })
 })

@@ -51,6 +51,8 @@ describe('API', () => {
       ['post', 'recipes'],
       ['put', 'recipes'],
       ['delete', 'recipes/test'],
+      ['get', 'adverts'],
+      ['post', 'adverts'],
     ])('%s /%s is authenticated', async (method: string, url: string) => {
       const req =
         method === 'post'
@@ -59,6 +61,8 @@ describe('API', () => {
           ? request.put
           : method === 'delete'
           ? request.delete
+          : method === 'get'
+          ? request.get
           : undefined
       if (!req) {
         throw new Error(`http method: ${method} not supported`)

@@ -44,6 +44,22 @@ functions:
           method: POST
           cors: true
 
+  adverts:
+    handler: src/api/adverts.endpoint
+    events:
+      - http:
+          path: /adverts
+          method: GET
+          cors: true
+
+  manageAdverts:
+    handler: src/api/manageAdverts.endpoint
+    events:
+      - http:
+          path: /adverts
+          method: POST
+          cors: true
+
   ingredients:
     handler: src/api/ingredients.endpoint
     events:
