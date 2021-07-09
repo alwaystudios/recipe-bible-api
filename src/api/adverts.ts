@@ -3,7 +3,6 @@ import { httpErrorHandler } from '../middleware/httpErrorHandler'
 import { APIGatewayEvent } from 'aws-lambda'
 import { CORS_HEADERS } from '../constants'
 import { getAdverts } from '../domain/advertService'
-import { authenticate } from '../middleware/auth'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const handler = async (_: APIGatewayEvent): Promise<APIResponse> => {
@@ -19,4 +18,4 @@ const handler = async (_: APIGatewayEvent): Promise<APIResponse> => {
   }
 }
 
-export const endpoint = middy(handler).use(authenticate('admin')).use(httpErrorHandler())
+export const endpoint = middy(handler).use(httpErrorHandler())

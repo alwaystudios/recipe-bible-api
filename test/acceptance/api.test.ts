@@ -29,6 +29,19 @@ describe('API', () => {
     })
   })
 
+  describe('adverts', () => {
+    it('GET /adverts', async () => {
+      const {
+        status,
+        body: { data },
+      } = await request.get(`${LOCAL_BASE_URL}/adverts`)
+
+      expect(status).toBe(200)
+      expect(data).not.toBeUndefined()
+      expect(Array.isArray(data)).toBe(true)
+    })
+  })
+
   describe('recipes', () => {
     it('GET /recipes', async () => {
       const {
@@ -51,7 +64,6 @@ describe('API', () => {
       ['post', 'recipes'],
       ['put', 'recipes'],
       ['delete', 'recipes/test'],
-      ['get', 'adverts'],
       ['post', 'adverts'],
     ])('%s /%s is authenticated', async (method: string, url: string) => {
       const req =

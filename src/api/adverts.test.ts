@@ -5,11 +5,7 @@ import { createAPIGatewayEventMock } from '../../test/factories/proxyEventMock'
 import { CORS_HEADERS } from '../constants'
 import * as loggerModule from '../clients/logger'
 import { testLogger } from '../../test/factories/testLogger'
-import { testAdvert, testUser } from '@alwaystudios/recipe-bible-sdk'
-import { verifyAuth0Token } from '../clients/auth0'
-
-jest.mock('../clients/auth0')
-const authMock = verifyAuth0Token as jest.Mock
+import { testAdvert } from '@alwaystudios/recipe-bible-sdk'
 
 const err = jest.fn()
 jest.spyOn(loggerModule, 'getLogger').mockReturnValue(testLogger({ err }))
@@ -20,7 +16,6 @@ const getadverts = jest.spyOn(advertservice, 'getAdverts')
 describe('adverts API', () => {
   describe('GET /adverts', () => {
     it('returns all adverts', async () => {
-      authMock.mockResolvedValueOnce(testUser())
       const data = [testAdvert(), testAdvert()]
       getadverts.mockResolvedValueOnce(data)
       const event = createAPIGatewayEventMock({
@@ -41,7 +36,6 @@ describe('adverts API', () => {
     })
 
     it('handles errors', async () => {
-      authMock.mockResolvedValueOnce(testUser())
       getadverts.mockRejectedValueOnce(new Error('boom'))
       const event = createAPIGatewayEventMock({
         httpMethod: 'GET',
@@ -57,23 +51,6 @@ describe('adverts API', () => {
       })
       expect(err).toHaveBeenCalledTimes(1)
       expect(err).toHaveBeenCalledWith('Server error: Error: boom')
-    })
-
-    it('requires the admin role', async () => {
-      authMock.mockResolvedValueOnce(testUser({ 'https://recipebible.net/roles': ['non-admin'] }))
-      const event = createAPIGatewayEventMock({
-        httpMethod: 'GET',
-        path: '/adverts',
-      })
-
-      const result = await wrapped.run(event)
-
-      expect(result.statusCode).toBe(403)
-      expect(result.headers).toEqual(CORS_HEADERS)
-      expect(JSON.parse(result.body)).toMatchObject({
-        status: 'error',
-      })
-      expect(getadverts).not.toHaveBeenCalled()
     })
   })
 })
