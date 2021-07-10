@@ -64,6 +64,7 @@ describe('API', () => {
       ['post', 'recipes'],
       ['put', 'recipes'],
       ['delete', 'recipes/test'],
+      ['post', 'recipe-ratings/test'],
       ['post', 'adverts'],
       ['delete', 'adverts'],
     ])('%s /%s is authenticated', async (method: string, url: string) => {

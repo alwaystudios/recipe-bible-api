@@ -44,6 +44,22 @@ functions:
           method: POST
           cors: true
 
+  recipeRatings:
+    handler: src/api/recipeRatings.endpoint
+    events:
+      - http:
+          path: /recipe-ratings/{name}
+          method: GET
+          cors: true
+
+  manageRecipeRatings:
+    handler: src/api/manageRecipeRatings.endpoint
+    events:
+      - http:
+          path: /recipe-ratings/{name}
+          method: POST
+          cors: true
+
   adverts:
     handler: src/api/adverts.endpoint
     events:
