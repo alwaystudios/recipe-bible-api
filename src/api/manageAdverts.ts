@@ -4,14 +4,25 @@ import { authenticate } from '../middleware/auth'
 import { httpErrorHandler } from '../middleware/httpErrorHandler'
 import createHttpError from 'http-errors'
 import { CORS_HEADERS } from '../constants'
-import { saveAdvert } from '../domain/advertService'
+import { deleteAdvert, saveAdvert } from '../domain/advertService'
 
-const handler = async ({ body }: APIGatewayEvent): Promise<APIResponse> => {
+const handler = async ({ body, httpMethod }: APIGatewayEvent): Promise<APIResponse> => {
   if (!body) {
     throw createHttpError(400)
   }
 
-  await saveAdvert(JSON.parse(body))
+  const payload = JSON.parse(body)
+
+  switch (httpMethod) {
+    case 'POST':
+      await saveAdvert(payload)
+      break
+    case 'DELETE':
+      await deleteAdvert(payload)
+      break
+    default:
+      throw createHttpError(400)
+  }
 
   return {
     statusCode: 200,

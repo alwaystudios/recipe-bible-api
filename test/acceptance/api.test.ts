@@ -65,6 +65,7 @@ describe('API', () => {
       ['put', 'recipes'],
       ['delete', 'recipes/test'],
       ['post', 'adverts'],
+      ['delete', 'adverts'],
     ])('%s /%s is authenticated', async (method: string, url: string) => {
       const req =
         method === 'post'

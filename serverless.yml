@@ -59,6 +59,10 @@ functions:
           path: /adverts
           method: POST
           cors: true
+      - http:
+          path: /adverts
+          method: DELETE
+          cors: true
 
   ingredients:
     handler: src/api/ingredients.endpoint

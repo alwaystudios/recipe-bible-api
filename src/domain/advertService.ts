@@ -6,6 +6,17 @@ import { DDB_TABLE_NAME } from '../constants'
 
 const ADVERTS = 'adverts'
 
+const saveAllAdverts = async (client: DynamoClient, adverts: Advert[]): Promise<void> => {
+  await client.putItem(
+    {
+      pk: ADVERTS,
+      sk: ADVERTS,
+      adverts,
+    },
+    DDB_TABLE_NAME
+  )
+}
+
 export const getAdverts = async (client: DynamoClient = getDynamoClient()): Promise<Advert[]> =>
   client
     .getItem({
@@ -24,12 +35,13 @@ export const saveAdvert = async (advert: Advert): Promise<void> => {
     ? adverts
     : [...adverts, advert]
 
-  await client.putItem(
-    {
-      pk: ADVERTS,
-      sk: ADVERTS,
-      adverts: updatedAdverts,
-    },
-    DDB_TABLE_NAME
-  )
+  return saveAllAdverts(client, updatedAdverts)
+}
+
+export const deleteAdvert = async (advert: Advert): Promise<void> => {
+  const client = getDynamoClient()
+  const adverts = await getAdverts(client)
+  const updatedAdverts = adverts.filter(({ src }) => src !== advert.src)
+
+  return saveAllAdverts(client, updatedAdverts)
 }
