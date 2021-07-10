@@ -1,6 +1,5 @@
 import { APIGatewayEvent } from 'aws-lambda'
 import middy from '@middy/core'
-import { authenticate } from '../middleware/auth'
 import { httpErrorHandler } from '../middleware/httpErrorHandler'
 import createHttpError from 'http-errors'
 import { CORS_HEADERS } from '../constants'
@@ -23,4 +22,4 @@ const handler = async ({ body, pathParameters }: APIGatewayEvent): Promise<APIRe
   }
 }
 
-export const endpoint = middy(handler).use(authenticate('admin')).use(httpErrorHandler())
+export const endpoint = middy(handler).use(httpErrorHandler())

@@ -7,4 +7,4 @@ import { createS3Client } from '../../src/clients/s3Client'
 import { LOCAL_AWS_CONFIG } from '../../src/constants'
 
 export const testDynamoClient = createDynamoClient(new DocumentClient(LOCAL_AWS_CONFIG))
-export const testS3Client = createS3Client(new S3(LOCAL_AWS_CONFIG))
+export const testS3Client = createS3Client(new S3({ ...LOCAL_AWS_CONFIG, s3ForcePathStyle: true }))
