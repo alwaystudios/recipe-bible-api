@@ -1,4 +1,4 @@
-import { kebabify } from '@alwaystudios/recipe-bible-sdk'
+import { kebabify, RecipeRating } from '@alwaystudios/recipe-bible-sdk'
 import { getDynamoClient } from '../clients/getClients'
 import { v4 as uuidv4 } from 'uuid'
 import { DDB_TABLE_NAME } from '../constants'
@@ -49,11 +49,6 @@ export const getRecipeRatings = async (title: string): Promise<number[]> =>
       },
     } as QueryInput)
     .then((res: any) => pathOr([], ['Items'], res).map(({ rating }) => rating))
-
-export type RecipeRating = {
-  title: string
-  rating: number
-}
 
 export const getAllRecipeRatings = async (): Promise<RecipeRating[]> =>
   getDynamoClient()
