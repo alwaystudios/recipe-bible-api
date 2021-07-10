@@ -34,7 +34,7 @@ export const rateRecipe = async (title: string, rating: number): Promise<void> =
   )
 }
 
-export const getRecipeRatings = async (title: string): Promise<any> =>
+export const getRecipeRatings = async (title: string): Promise<number[]> =>
   getDynamoClient()
     .query({
       TableName: DDB_TABLE_NAME,
@@ -49,3 +49,27 @@ export const getRecipeRatings = async (title: string): Promise<any> =>
       },
     } as QueryInput)
     .then((res: any) => pathOr([], ['Items'], res).map(({ rating }) => rating))
+
+export type RecipeRating = {
+  title: string
+  rating: number
+}
+
+export const getAllRecipeRatings = async (): Promise<RecipeRating[]> =>
+  getDynamoClient()
+    .query({
+      TableName: DDB_TABLE_NAME,
+      KeyConditionExpression: '#pk = :pk',
+      ExpressionAttributeNames: {
+        '#pk': 'pk',
+      },
+      ExpressionAttributeValues: {
+        ':pk': pk,
+      },
+    } as QueryInput)
+    .then((res: any) =>
+      pathOr([], ['Items'], res).map(({ rating, sk }: { rating: number; sk: string }) => ({
+        rating,
+        title: sk.split('#')[0],
+      }))
+    )

@@ -2,7 +2,7 @@ import { random } from 'faker'
 import { createDynamoMockClient } from '../../test/factories/testAwsMockClients'
 import * as getClientsModule from '../clients/getClients'
 import { DDB_TABLE_NAME } from '../constants'
-import { getRecipeRatings, rateRecipe } from './ratingService'
+import { getAllRecipeRatings, getRecipeRatings, rateRecipe } from './ratingService'
 import { kebabify, testRecipe } from '@alwaystudios/recipe-bible-sdk'
 import { mocked } from 'ts-jest/utils'
 import { v4 } from 'uuid'
@@ -85,6 +85,35 @@ describe('rating service', () => {
         ExpressionAttributeValues: {
           ':pk': RECIPE_RATING,
           ':sk': `${kebabify(title)}#`,
+        },
+      })
+    })
+  })
+
+  describe('get all recipe ratings', () => {
+    it('gets all the ratings in the database', async () => {
+      query.mockResolvedValueOnce({
+        Items: [
+          { rating: 1, sk: 'my-recipe#1' },
+          { rating: 2, sk: 'my-recipe-2#1' },
+          { rating: 4, sk: 'another-recipe#4' },
+        ],
+      })
+      const ratings = await getAllRecipeRatings()
+      expect(ratings).toEqual([
+        { rating: 1, title: 'my-recipe' },
+        { rating: 2, title: 'my-recipe-2' },
+        { rating: 4, title: 'another-recipe' },
+      ])
+      expect(query).toHaveBeenCalledTimes(1)
+      expect(query).toHaveBeenCalledWith({
+        TableName: DDB_TABLE_NAME,
+        KeyConditionExpression: '#pk = :pk',
+        ExpressionAttributeNames: {
+          '#pk': 'pk',
+        },
+        ExpressionAttributeValues: {
+          ':pk': RECIPE_RATING,
         },
       })
     })

@@ -48,6 +48,10 @@ functions:
     handler: src/api/recipeRatings.endpoint
     events:
       - http:
+          path: /recipe-ratings
+          method: GET
+          cors: true
+      - http:
           path: /recipe-ratings/{name}
           method: GET
           cors: true
