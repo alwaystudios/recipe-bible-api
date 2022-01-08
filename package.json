@@ -37,7 +37,7 @@
     }
   },
   "dependencies": {
-    "@alwaystudios/recipe-bible-sdk": "^2.0.20",
+    "@alwaystudios/recipe-bible-sdk": "^2.0.21",
     "@middy/core": "^1.5.2",
     "http-errors": "^1.8.0",
     "jsonwebtoken": "^8.5.1",

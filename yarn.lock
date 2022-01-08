@@ -10,10 +10,10 @@
     d "1"
     es5-ext "^0.10.47"
 
-"@alwaystudios/recipe-bible-sdk@^2.0.20":
-  version "2.0.20"
-  resolved "https://registry.yarnpkg.com/@alwaystudios/recipe-bible-sdk/-/recipe-bible-sdk-2.0.20.tgz#bb96683ac6036a57f9b1d0b398b343396699810a"
-  integrity sha512-FCbtRNSNqtGF0N1Pmd1iYEZfltpJ5B5mVGNoXl/1ESlfWff3CDOq5j3wOEbECYJvehq9XRHOMCar4xVeQ9F5mw==
+"@alwaystudios/recipe-bible-sdk@^2.0.21":
+  version "2.0.21"
+  resolved "https://registry.yarnpkg.com/@alwaystudios/recipe-bible-sdk/-/recipe-bible-sdk-2.0.21.tgz#fda9fa4c647dfecca1eff5c3c8d44459de084f4e"
+  integrity sha512-qajx5rnC9N0NYcRETwXubB2uIeI5BSKfseG6b1ofgg5Z06Xwnt/9dQC16NTcVHMkYXezl1BGKmiyBzj57VMiIw==
   dependencies:
     faker "^5.1.0"
     ramda "^0.27.1"
