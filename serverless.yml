@@ -12,7 +12,7 @@ custom:
 provider:
   stage: prod
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   memorySize: 256
   timeout: 30
   region: eu-west-1
